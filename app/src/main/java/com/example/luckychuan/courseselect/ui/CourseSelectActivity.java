@@ -1,7 +1,10 @@
-package com.example.luckychuan.courseselect;
+package com.example.luckychuan.courseselect.ui;
 
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -10,21 +13,24 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.luckychuan.courseselect.R;
+import com.example.luckychuan.courseselect.adapter.CourseSelectPagerAdapter;
+
+import java.util.ArrayList;
+
 /**
  * Created by Luckychuan on 2017/11/20.
  */
 
 public class CourseSelectActivity extends AppCompatActivity {
 
-    private SearchView mSearchView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_select);
 
+        //初始化toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.course_toolbar);
-        //设置我们的ToolBar
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -34,20 +40,42 @@ public class CourseSelectActivity extends AppCompatActivity {
             }
         });
 
+        //初始化TabLayout和ViewPager
+        ArrayList<Fragment> fragments = new ArrayList<>();
+        CourseSelectFragment fragment1 = new CourseSelectFragment();
+        fragments.add(fragment1);
+        CourseSelectFragment fragment2 = new CourseSelectFragment();
+        fragments.add(fragment2);
+
+        ViewPager viewPager = (ViewPager) findViewById(R.id.course_viewPager);
+        CourseSelectPagerAdapter adapter = new CourseSelectPagerAdapter(getSupportFragmentManager(),fragments);
+        viewPager.setAdapter(adapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.campus_tabLayout);
+        tabLayout.setupWithViewPager(viewPager);
+
+
+
+
 
 
     }
 
+    /**
+     * 初始化SearchView和Menu
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_course_select_activity, menu);
         MenuItem searchItem = menu.findItem(R.id.menu_search);
         //通过MenuItem得到SearchView
-        mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        mSearchView.setIconifiedByDefault(true);
-        mSearchView.setIconified(true);
-        mSearchView.setQueryHint("输入课类、教师名");
-        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setIconifiedByDefault(true);
+        searchView.setIconified(true);
+        searchView.setQueryHint("输入课类、教师名");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
