@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CourseSelect</string>
+    <string name="course_level">课程等级</string>
 </resources>
