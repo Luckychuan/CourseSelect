@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">CourseSelect</string>
     <string name="course_level">课程等级</string>
+    <string name="tv_level">1</string>
+    <string name="tv_classTime">0:00~00:00</string>
+    <string name="tv_teacher">teacher</string>
+    <string name="tv_studentLeft">7</string>
+    <string name="tv_course_name">tv_course_name</string>
+
+
 </resources>

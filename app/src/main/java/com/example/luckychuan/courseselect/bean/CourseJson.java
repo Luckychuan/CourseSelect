@@ -71,7 +71,7 @@ public class CourseJson {
                 '}';
     }
 
-    class Course {
+    public static class Course {
         @SerializedName("KCMC")
         private String name;
         @SerializedName("SHENGYU")

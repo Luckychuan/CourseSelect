@@ -3,6 +3,8 @@ package com.example.luckychuan.courseselect.ui;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +12,12 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.luckychuan.courseselect.R;
+import com.example.luckychuan.courseselect.adapter.SelectCourseRecyclerAdapter;
 import com.example.luckychuan.courseselect.bean.CourseJson;
+import com.example.luckychuan.courseselect.bean.CourseRecycler;
 import com.example.luckychuan.courseselect.presenter.SelectCoursePresenter;
+import com.example.luckychuan.courseselect.test.TestJsonData;
+import com.example.luckychuan.courseselect.util.FormatUtil;
 import com.example.luckychuan.courseselect.view.SelectCourseView;
 
 import java.util.ArrayList;
@@ -27,7 +33,12 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
 
     private String mCampus;
     private SelectCoursePresenter mPresenter;
-    private ArrayList<CourseJson> mCourses;
+    //http返回来的数据集
+    private ArrayList<CourseJson> mCourseJsons;
+
+    //RecyclerView要用的的List
+    private ArrayList<SelectCourseRecyclerAdapter.RecyclerItem> mRecyclerItems;
+    private SelectCourseRecyclerAdapter mAdapter;
 
     @Nullable
     @Override
@@ -42,7 +53,14 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
         mCampus = getArguments().getString("campus");
         mPresenter = new SelectCoursePresenter(this);
         mPresenter.attach(this);
-        mCourses = new ArrayList<>();
+
+        mCourseJsons = new ArrayList<>();
+        mRecyclerItems = new ArrayList<>();
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_course);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mAdapter = new SelectCourseRecyclerAdapter(mRecyclerItems);
+        recyclerView.setAdapter(mAdapter);
+
 
         requestSelectCourse();
 
@@ -61,22 +79,57 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
 
     @Override
     public void toastErrorMsg(String errorMsg) {
-        Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_SHORT).show();
+
+//        Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_SHORT).show();
 //        Log.d(TAG, "toastErrorMsg: "+errorMsg);
+
+        //// TODO: 2017/11/25 test使用的假数据
+        for (CourseJson c : TestJsonData.getTestCourseData()) {
+//            Log.d(TAG, "e: "+ c.toString());
+            mCourseJsons.add(c);
+        }
+
+        //添加RecyclerView使用的Items
+        for (CourseJson courseJson : mCourseJsons) {
+            String time = FormatUtil.sectionToTime(courseJson.getSection());
+            int level = courseJson.getLevel();
+            for (CourseJson.Course course : courseJson.getCourses()) {
+                String name = course.getName();
+                String teacher = course.getTeacher();
+                String studentLeft = course.getStudentLeft();
+                String teacherId = course.getTeacherId();
+                String id = course.getId();
+                CourseRecycler cr = new CourseRecycler(name, time, teacher, level, studentLeft, teacherId, id);
+                SelectCourseRecyclerAdapter.RecyclerItem<CourseRecycler> item =
+                        new SelectCourseRecyclerAdapter.RecyclerItem<>(SelectCourseRecyclerAdapter.COURSE, cr);
+                mRecyclerItems.add(item);
+            }
+
+        }
+        mAdapter.notifyDataSetChanged();
+
+
     }
 
     @Override
     public void requestSelectCourse() {
-        for (int i = 0; i < LEVELS.length; i++) {
-            mPresenter.requestData(LEVELS[i], mCampus);
-//            Log.d(TAG, "level:"+LEVELS[i]+" campus:"+mCampus);
+//        for (int i = 0; i < LEVELS.length; i++) {
+//            mPresenter.requestData(LEVELS[i], mCampus);
+////            Log.d(TAG, "level:"+LEVELS[i]+" campus:"+mCampus);
+//        }
+
+        //// TODO: 2017/11/25 test 只加载一次
+        if (mCampus.equals("曲江校区")) {
+            mPresenter.requestData(LEVELS[0], mCampus);
         }
+
+
     }
 
     @Override
     public void loadSelectCourseUI(CourseJson[] courseJson) {
-        for(CourseJson c:courseJson){
-            Log.d(TAG, c.toString());
+        for (CourseJson c : courseJson) {
+            mCourseJsons.add(c);
         }
     }
 
@@ -87,4 +140,11 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
             mPresenter.detach();
         }
     }
+
+    private void refreshCourse() {
+        //// TODO: 2017/11/22
+        mCourseJsons.clear();
+    }
+
+
 }
