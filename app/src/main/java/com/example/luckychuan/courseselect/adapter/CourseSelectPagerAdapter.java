@@ -12,13 +12,14 @@ import java.util.ArrayList;
 
 public class CourseSelectPagerAdapter extends FragmentPagerAdapter {
 
-    private static final String[] title = {"金花校区", "曲江校区"};
     private ArrayList<Fragment> fragments;
+    private String[] titles;
 
 
-    public CourseSelectPagerAdapter(FragmentManager fm,ArrayList<Fragment> fragments) {
+    public CourseSelectPagerAdapter(FragmentManager fm,ArrayList<Fragment> fragments,String[] titles) {
         super(fm);
         this.fragments = fragments;
+        this.titles = titles;
     }
 
     @Override
@@ -33,6 +34,6 @@ public class CourseSelectPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return title[position];
+        return titles[position];
     }
 }

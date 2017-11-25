@@ -24,6 +24,8 @@ import java.util.ArrayList;
 
 public class CourseSelectActivity extends AppCompatActivity {
 
+    private static final String[] CAMPUSES = {"曲江校区", "金花校区"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,19 +42,28 @@ public class CourseSelectActivity extends AppCompatActivity {
             }
         });
 
-        //初始化TabLayout和ViewPager
+        //初始化Fragments,TabLayout和ViewPager
         ArrayList<Fragment> fragments = new ArrayList<>();
         CourseSelectFragment fragment1 = new CourseSelectFragment();
+        Bundle bundle1 = new Bundle();
+        bundle1.putString("campus",CAMPUSES[0]);
+        fragment1.setArguments(bundle1);
         fragments.add(fragment1);
+
         CourseSelectFragment fragment2 = new CourseSelectFragment();
+        Bundle bundle2 = new Bundle();
+        bundle2.putString("campus",CAMPUSES[1]);
+        fragment2.setArguments(bundle2);
         fragments.add(fragment2);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.course_viewPager);
-        CourseSelectPagerAdapter adapter = new CourseSelectPagerAdapter(getSupportFragmentManager(),fragments);
+        CourseSelectPagerAdapter adapter = new CourseSelectPagerAdapter(getSupportFragmentManager(),fragments,CAMPUSES);
         viewPager.setAdapter(adapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.campus_tabLayout);
         tabLayout.setupWithViewPager(viewPager);
+
+
 
 
 
