@@ -19,6 +19,7 @@ import com.example.luckychuan.courseselect.presenter.SelectCoursePresenter;
 import com.example.luckychuan.courseselect.test.TestJsonData;
 import com.example.luckychuan.courseselect.util.FormatUtil;
 import com.example.luckychuan.courseselect.view.SelectCourseView;
+import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -60,6 +61,9 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mAdapter = new SelectCourseRecyclerAdapter(mRecyclerItems);
         recyclerView.setAdapter(mAdapter);
+
+        FloatingActionButton button = (FloatingActionButton) view.findViewById(R.id.float_button);
+        button.attachToRecyclerView(recyclerView);
 
 
         requestSelectCourse();

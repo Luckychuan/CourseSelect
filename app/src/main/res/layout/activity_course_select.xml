@@ -20,7 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:title="课程"/>
+                app:title="可选课程"/>
 
             <android.support.design.widget.TabLayout
                 android:id="@+id/campus_tabLayout"

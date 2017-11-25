@@ -34,7 +34,7 @@ public class CourseViewHolder extends CourseBaseViewHolder<CourseRecycler> {
     @Override
     public void bindViewHolder(CourseRecycler data) {
 //        Log.d(TAG, "bindViewHolder: "+data.toString());
-        mLevel.setText(data.getLevel() + " ");
+        mLevel.setText("等级" + data.getLevel());
         mTime.setText(data.getTime());
         mTeacher.setText(data.getTeacher());
         mName.setText(data.getName());
