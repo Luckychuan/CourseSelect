@@ -15,6 +15,7 @@ import com.example.luckychuan.courseselect.R;
 import com.example.luckychuan.courseselect.adapter.SelectCourseRecyclerAdapter;
 import com.example.luckychuan.courseselect.bean.CourseJson;
 import com.example.luckychuan.courseselect.bean.CourseRecycler;
+import com.example.luckychuan.courseselect.bean.WeekRecycler;
 import com.example.luckychuan.courseselect.presenter.SelectCoursePresenter;
 import com.example.luckychuan.courseselect.test.TestJsonData;
 import com.example.luckychuan.courseselect.util.FormatUtil;
@@ -22,6 +23,9 @@ import com.example.luckychuan.courseselect.view.SelectCourseView;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by Luckychuan on 2017/11/20.
@@ -35,7 +39,7 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
     private String mCampus;
     private SelectCoursePresenter mPresenter;
     //http返回来的数据集
-    private ArrayList<CourseJson> mCourseJsons;
+    private ArrayList<CourseJson> mJsonCourses;
 
     //RecyclerView要用的的List
     private ArrayList<SelectCourseRecyclerAdapter.RecyclerItem> mRecyclerItems;
@@ -55,7 +59,7 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
         mPresenter = new SelectCoursePresenter(this);
         mPresenter.attach(this);
 
-        mCourseJsons = new ArrayList<>();
+        mJsonCourses = new ArrayList<>();
         mRecyclerItems = new ArrayList<>();
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_course);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -85,39 +89,81 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
     public void toastErrorMsg(String errorMsg) {
 
 //        Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "toastErrorMsg: "+errorMsg);
+        Log.d(TAG, "toastErrorMsg: " + errorMsg);
 
 //        //// TODO: 2017/11/25 test使用的假数据
 //        for (CourseJson c : TestJsonData.getTestCourseData()) {
 ////            Log.d(TAG, "e: "+ c.toString());
-//            mCourseJsons.add(c);
+//            mOriginCourse.add(c);
 //        }
     }
 
     @Override
     public void requestSelectCourse() {
-       mPresenter.requestData(LEVELS,mCampus);
-
-//        //// TODO: 2017/11/25 test 只加载一次
-//        if (mCampus.equals("曲江校区")) {
-//            mPresenter.requestData(LEVELS[0], mCampus);
-//        }
-
-
+        mPresenter.requestData(LEVELS, mCampus);
     }
 
     @Override
     public void addData(CourseJson[] courseJson) {
         for (CourseJson c : courseJson) {
-            mCourseJsons.add(c);
+            mJsonCourses.add(c);
         }
 
-        SelectCourseRecyclerAdapter.RecyclerItem<String> weekItem =
-                new SelectCourseRecyclerAdapter.RecyclerItem<>(SelectCourseRecyclerAdapter.WEEK, "");
-        mRecyclerItems.add(weekItem);
+//        //添加RecyclerView使用的Items
+//        for (CourseJson cj : mJsonCourses) {
+//            String time = "节次" + cj.getSection();
+//            int level = cj.getLevel();
+//            for (CourseJson.Course course : cj.getCourses()) {
+//                String name = course.getName();
+//                String teacher = course.getTeacher();
+//                String studentLeft = course.getStudentLeft();
+//                String teacherId = course.getTeacherId();
+//                String id = course.getId();
+//                CourseRecycler cr = new CourseRecycler(name, time, teacher, level, studentLeft, teacherId, id);
+//                SelectCourseRecyclerAdapter.RecyclerItem<CourseRecycler> item =
+//                        new SelectCourseRecyclerAdapter.RecyclerItem<>(SelectCourseRecyclerAdapter.COURSE, cr);
+//                mRecyclerItems.add(item);
+//            }
+//        }
+    }
 
-        //添加RecyclerView使用的Items
-        for (CourseJson cj : mCourseJsons) {
+    @Override
+    public void loadSelectCourseUI() {
+        //按星期排序
+        Collections.sort(mJsonCourses, new Comparator<CourseJson>() {
+            @Override
+            public int compare(CourseJson courseJson, CourseJson t1) {
+                if (courseJson.getWeek() > t1.getWeek()) {
+                    return 1;
+                } else if (courseJson.getWeek() < t1.getWeek()) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            }
+        });
+
+        //打印结果
+//        for(CourseJson cj: mJsonCourses){
+//            Log.d("mJsonCourses", cj.toString());
+//        }
+
+        //为RecyclerView添加item
+        WeekRecycler[] weeks = new WeekRecycler[5];
+        for (CourseJson cj : mJsonCourses) {
+            //添加Week
+            int w = cj.getWeek();
+            int i = w -1;
+            if (weeks[i] == null) {
+                weeks[i] = new WeekRecycler();
+                weeks[i].setWeek(w);
+                weeks[i].setSize(0);
+                SelectCourseRecyclerAdapter.RecyclerItem<WeekRecycler> weekItem =
+                        new SelectCourseRecyclerAdapter.RecyclerItem<>(SelectCourseRecyclerAdapter.WEEK, weeks[i]);
+                mRecyclerItems.add(weekItem);
+            }
+
+            //添加Course
             String time = "节次" + cj.getSection();
             int level = cj.getLevel();
             for (CourseJson.Course course : cj.getCourses()) {
@@ -130,15 +176,19 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
                 SelectCourseRecyclerAdapter.RecyclerItem<CourseRecycler> item =
                         new SelectCourseRecyclerAdapter.RecyclerItem<>(SelectCourseRecyclerAdapter.COURSE, cr);
                 mRecyclerItems.add(item);
-            }
 
+                weeks[i].setSize(weeks[i].getSize() + 1);
         }
-        mAdapter.notifyDataSetChanged();
-    }
 
-    @Override
-    public void loadSelectCourseUI() {
-        Log.d("rx_json", "loadSelectCourseUI: ");
+        mAdapter.notifyDataSetChanged();
+
+//        //打印结果
+//        for (SelectCourseRecyclerAdapter.RecyclerItem ri : mRecyclerItems) {
+//            if (ri.type == SelectCourseRecyclerAdapter.WEEK) {
+//                Log.d("mRecyclerItems", ((WeekRecycler) ri.bean).toString());
+//            }
+        }
+
     }
 
     @Override
@@ -151,7 +201,7 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
 
     private void refreshCourse() {
         //// TODO: 2017/11/22
-        mCourseJsons.clear();
+        mJsonCourses.clear();
     }
 
 

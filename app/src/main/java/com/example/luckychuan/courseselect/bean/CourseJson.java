@@ -67,7 +67,7 @@ public class CourseJson {
                 ", level=" + level +
                 ", section=" + section +
                 ", week=" + week +
-                ", courses=" + Arrays.toString(courses) +
+//                ", courses=" + Arrays.toString(courses) +
                 '}';
     }
 
