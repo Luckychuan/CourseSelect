@@ -1,14 +1,18 @@
 package com.example.luckychuan.courseselect.ui;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.luckychuan.courseselect.R;
@@ -18,6 +22,7 @@ import com.example.luckychuan.courseselect.bean.CourseRecycler;
 import com.example.luckychuan.courseselect.bean.WeekRecycler;
 import com.example.luckychuan.courseselect.presenter.SelectCoursePresenter;
 import com.example.luckychuan.courseselect.test.TestJsonData;
+import com.example.luckychuan.courseselect.util.Constant;
 import com.example.luckychuan.courseselect.util.FormatUtil;
 import com.example.luckychuan.courseselect.view.SelectCourseView;
 import com.melnykov.fab.FloatingActionButton;
@@ -34,7 +39,6 @@ import java.util.Comparator;
 public class CourseSelectFragment extends Fragment implements SelectCourseView {
 
     private static final String TAG = "CourseSelectFragment";
-    private static final int[] LEVELS = {1, 2, 3, 4};
 
     private String mCampus;
     private SelectCoursePresenter mPresenter;
@@ -61,13 +65,42 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
 
         mJsonCourses = new ArrayList<>();
         mRecyclerItems = new ArrayList<>();
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_course);
+        final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_course);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mAdapter = new SelectCourseRecyclerAdapter(mRecyclerItems);
         recyclerView.setAdapter(mAdapter);
 
+        //设置悬浮按钮
         FloatingActionButton button = (FloatingActionButton) view.findViewById(R.id.float_button);
         button.attachToRecyclerView(recyclerView);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setSingleChoiceItems(Constant.WEEK, 0, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //找到当前星期在list中的position
+                        int position = 0;
+                        for (int j = 0; j < mRecyclerItems.size(); j++) {
+                            SelectCourseRecyclerAdapter.RecyclerItem item = mRecyclerItems.get(j);
+                            if (item.type == SelectCourseRecyclerAdapter.WEEK) {
+                                if (((WeekRecycler) item.bean).getWeek() == i + 1) {
+                                    position = j;
+                                }
+                            }
+                        }
+                        //定位到当前位置
+                        LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                        manager.scrollToPositionWithOffset(position, 0);
+                        manager.setStackFromEnd(true);
+
+                        dialogInterface.dismiss();
+                    }
+                });
+                builder.create().show();
+            }
+        });
 
 
         requestSelectCourse();
@@ -100,7 +133,7 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
 
     @Override
     public void requestSelectCourse() {
-        mPresenter.requestData(LEVELS, mCampus);
+        mPresenter.requestData(Constant.LEVELS, mCampus);
     }
 
     @Override
@@ -153,7 +186,7 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
         for (CourseJson cj : mJsonCourses) {
             //添加Week
             int w = cj.getWeek();
-            int i = w -1;
+            int i = w - 1;
             if (weeks[i] == null) {
                 weeks[i] = new WeekRecycler();
                 weeks[i].setWeek(w);
@@ -178,9 +211,9 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
                 mRecyclerItems.add(item);
 
                 weeks[i].setSize(weeks[i].getSize() + 1);
-        }
+            }
 
-        mAdapter.notifyDataSetChanged();
+            mAdapter.notifyDataSetChanged();
 
 //        //打印结果
 //        for (SelectCourseRecyclerAdapter.RecyclerItem ri : mRecyclerItems) {
