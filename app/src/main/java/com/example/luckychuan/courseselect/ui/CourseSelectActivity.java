@@ -23,9 +23,9 @@ import java.util.ArrayList;
  * Created by Luckychuan on 2017/11/20.
  */
 
-public class CourseSelectActivity extends AppCompatActivity {
+public class CourseSelectActivity extends AppCompatActivity implements CourseSelectFragment.OnTitleChangeListener {
 
-
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +33,10 @@ public class CourseSelectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_course_select);
 
         //初始化toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.course_toolbar);
-        setSupportActionBar(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.course_toolbar);
+        setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
@@ -49,6 +49,7 @@ public class CourseSelectActivity extends AppCompatActivity {
         Bundle bundle1 = new Bundle();
         bundle1.putString("campus", Constant.CAMPUSES[0]);
         fragment1.setArguments(bundle1);
+        fragment1.setTitleChangeListener(this);
         fragments.add(fragment1);
 
 //        CourseSelectFragment fragment2 = new CourseSelectFragment();
@@ -117,4 +118,10 @@ public class CourseSelectActivity extends AppCompatActivity {
     public void refreshData(){
         Toast.makeText(this, "刷新数据", Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void changeToolbarTitle(String title) {
+        mToolbar.setTitle(title);
+    }
+    
 }

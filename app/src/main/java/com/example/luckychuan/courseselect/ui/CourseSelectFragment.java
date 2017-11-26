@@ -49,6 +49,8 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
     private ArrayList<SelectCourseRecyclerAdapter.RecyclerItem> mRecyclerItems;
     private SelectCourseRecyclerAdapter mAdapter;
 
+    private OnTitleChangeListener mListener;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -69,6 +71,22 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mAdapter = new SelectCourseRecyclerAdapter(mRecyclerItems);
         recyclerView.setAdapter(mAdapter);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                //获得RecyclerView当前可见的item的日期，给ToolBar设置日期
+                LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                int position = manager.findFirstVisibleItemPosition();
+                String week = mAdapter.getWeekString(position);
+                if (week == null) {
+                    mListener.changeToolbarTitle(getContext().getString(R.string.selectCourseActivity_title));
+                } else {
+                    mListener.changeToolbarTitle(week);
+                }
+            }
+        });
 
         //设置悬浮按钮
         FloatingActionButton button = (FloatingActionButton) view.findViewById(R.id.float_button);
@@ -237,5 +255,16 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
         mJsonCourses.clear();
     }
 
+    public void setTitleChangeListener(OnTitleChangeListener listener) {
+        mListener = listener;
+    }
+
+    /**
+     * 当Fragment的标题改变时，让Activity修改Toolbar的标题
+     */
+    public interface OnTitleChangeListener {
+
+        void changeToolbarTitle(String title);
+    }
 
 }

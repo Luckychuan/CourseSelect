@@ -10,6 +10,8 @@ import com.example.luckychuan.courseselect.adapter.viewholder.CourseBaseViewHold
 import com.example.luckychuan.courseselect.adapter.viewholder.CourseViewHolder;
 import com.example.luckychuan.courseselect.adapter.viewholder.WeekViewHolder;
 import com.example.luckychuan.courseselect.bean.CourseRecycler;
+import com.example.luckychuan.courseselect.bean.WeekRecycler;
+import com.example.luckychuan.courseselect.util.Constant;
 
 import java.util.ArrayList;
 
@@ -24,7 +26,7 @@ public class SelectCourseRecyclerAdapter extends RecyclerView.Adapter<CourseBase
 
     private ArrayList<RecyclerItem> mList;
 
-    public SelectCourseRecyclerAdapter(ArrayList<RecyclerItem> list){
+    public SelectCourseRecyclerAdapter(ArrayList<RecyclerItem> list) {
         mList = list;
     }
 
@@ -32,11 +34,11 @@ public class SelectCourseRecyclerAdapter extends RecyclerView.Adapter<CourseBase
     public CourseBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CourseBaseViewHolder holder = null;
         View view;
-        if(viewType == WEEK){
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_week,parent,false);
+        if (viewType == WEEK) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_week, parent, false);
             holder = new WeekViewHolder(view);
-        }else if(viewType == COURSE){
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_course,parent,false);
+        } else if (viewType == COURSE) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_course, parent, false);
             holder = new CourseViewHolder(view);
         }
 
@@ -66,6 +68,22 @@ public class SelectCourseRecyclerAdapter extends RecyclerView.Adapter<CourseBase
             this.type = type;
             this.bean = bean;
         }
+    }
+
+
+    /**
+     * 找到当前列表的星期返回给Activity动态设置Toolbar标题
+     *
+     * @param position 当前view中第一个item的position
+     * @return
+     */
+    public String getWeekString(int position) {
+        for (int i = position; i >= 0; i--) {
+            if (mList.get(i).type == WEEK) {
+                return Constant.WEEK[((WeekRecycler) mList.get(i).bean).getWeek() - 1];
+            }
+        }
+        return null;
     }
 
 
