@@ -44,7 +44,7 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.frament_course_select, container, false);
+        return inflater.inflate(R.layout.fragment_course_select, container, false);
     }
 
     @Override
@@ -85,19 +85,45 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
     public void toastErrorMsg(String errorMsg) {
 
 //        Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_SHORT).show();
-//        Log.d(TAG, "toastErrorMsg: "+errorMsg);
+        Log.d(TAG, "toastErrorMsg: "+errorMsg);
 
-        //// TODO: 2017/11/25 test使用的假数据
-        for (CourseJson c : TestJsonData.getTestCourseData()) {
-//            Log.d(TAG, "e: "+ c.toString());
+//        //// TODO: 2017/11/25 test使用的假数据
+//        for (CourseJson c : TestJsonData.getTestCourseData()) {
+////            Log.d(TAG, "e: "+ c.toString());
+//            mCourseJsons.add(c);
+//        }
+    }
+
+    @Override
+    public void requestSelectCourse() {
+        for (int i = 0; i < LEVELS.length; i++) {
+            mPresenter.requestData(LEVELS[i], mCampus);
+//            Log.d(TAG, "level:"+LEVELS[i]+" campus:"+mCampus);
+        }
+
+//        //// TODO: 2017/11/25 test 只加载一次
+//        if (mCampus.equals("曲江校区")) {
+//            mPresenter.requestData(LEVELS[0], mCampus);
+//        }
+
+
+    }
+
+    @Override
+    public void loadSelectCourseUI(CourseJson[] courseJson) {
+        for (CourseJson c : courseJson) {
             mCourseJsons.add(c);
         }
 
+        SelectCourseRecyclerAdapter.RecyclerItem<String> weekItem =
+                new SelectCourseRecyclerAdapter.RecyclerItem<>(SelectCourseRecyclerAdapter.WEEK, "");
+        mRecyclerItems.add(weekItem);
+
         //添加RecyclerView使用的Items
-        for (CourseJson courseJson : mCourseJsons) {
-            String time = FormatUtil.sectionToTime(courseJson.getSection());
-            int level = courseJson.getLevel();
-            for (CourseJson.Course course : courseJson.getCourses()) {
+        for (CourseJson cj : mCourseJsons) {
+            String time = "节次" + cj.getSection();
+            int level = cj.getLevel();
+            for (CourseJson.Course course : cj.getCourses()) {
                 String name = course.getName();
                 String teacher = course.getTeacher();
                 String studentLeft = course.getStudentLeft();
@@ -111,30 +137,6 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
 
         }
         mAdapter.notifyDataSetChanged();
-
-
-    }
-
-    @Override
-    public void requestSelectCourse() {
-//        for (int i = 0; i < LEVELS.length; i++) {
-//            mPresenter.requestData(LEVELS[i], mCampus);
-////            Log.d(TAG, "level:"+LEVELS[i]+" campus:"+mCampus);
-//        }
-
-        //// TODO: 2017/11/25 test 只加载一次
-        if (mCampus.equals("曲江校区")) {
-            mPresenter.requestData(LEVELS[0], mCampus);
-        }
-
-
-    }
-
-    @Override
-    public void loadSelectCourseUI(CourseJson[] courseJson) {
-        for (CourseJson c : courseJson) {
-            mCourseJsons.add(c);
-        }
     }
 
     @Override

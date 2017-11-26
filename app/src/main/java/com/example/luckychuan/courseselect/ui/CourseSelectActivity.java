@@ -14,7 +14,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.luckychuan.courseselect.R;
-import com.example.luckychuan.courseselect.adapter.CourseSelectPagerAdapter;
+import com.example.luckychuan.courseselect.adapter.CampusPagerAdapter;
 
 import java.util.ArrayList;
 
@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 public class CourseSelectActivity extends AppCompatActivity {
 
-    private static final String[] CAMPUSES = {"曲江校区", "金花校区"};
+    private static final String[] CAMPUSES = {"长安校区", "太白校区"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +57,7 @@ public class CourseSelectActivity extends AppCompatActivity {
         fragments.add(fragment2);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.course_viewPager);
-        CourseSelectPagerAdapter adapter = new CourseSelectPagerAdapter(getSupportFragmentManager(),fragments,CAMPUSES);
+        CampusPagerAdapter adapter = new CampusPagerAdapter(getSupportFragmentManager(),fragments,CAMPUSES);
         viewPager.setAdapter(adapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.campus_tabLayout);

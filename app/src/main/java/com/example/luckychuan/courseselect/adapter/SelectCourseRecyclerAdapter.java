@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import com.example.luckychuan.courseselect.R;
 import com.example.luckychuan.courseselect.adapter.viewholder.CourseBaseViewHolder;
 import com.example.luckychuan.courseselect.adapter.viewholder.CourseViewHolder;
+import com.example.luckychuan.courseselect.adapter.viewholder.WeekViewHolder;
 import com.example.luckychuan.courseselect.bean.CourseRecycler;
 
 import java.util.ArrayList;
@@ -30,10 +31,12 @@ public class SelectCourseRecyclerAdapter extends RecyclerView.Adapter<CourseBase
     @Override
     public CourseBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CourseBaseViewHolder holder = null;
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_course,parent,false);
+        View view;
         if(viewType == WEEK){
-
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_week,parent,false);
+            holder = new WeekViewHolder(view);
         }else if(viewType == COURSE){
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_course,parent,false);
             holder = new CourseViewHolder(view);
         }
 
@@ -42,7 +45,7 @@ public class SelectCourseRecyclerAdapter extends RecyclerView.Adapter<CourseBase
 
     @Override
     public void onBindViewHolder(CourseBaseViewHolder holder, int position) {
-        holder.bindViewHolder((CourseRecycler)mList.get(position).bean);
+        holder.bindViewHolder(mList.get(position).bean);
     }
 
     @Override

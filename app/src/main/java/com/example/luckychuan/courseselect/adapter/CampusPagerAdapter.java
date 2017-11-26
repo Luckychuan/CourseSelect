@@ -10,13 +10,13 @@ import java.util.ArrayList;
  * TabLayout使用的PagerAdapter
  */
 
-public class CourseSelectPagerAdapter extends FragmentPagerAdapter {
+public class CampusPagerAdapter extends FragmentPagerAdapter {
 
     private ArrayList<Fragment> fragments;
     private String[] titles;
 
 
-    public CourseSelectPagerAdapter(FragmentManager fm,ArrayList<Fragment> fragments,String[] titles) {
+    public CampusPagerAdapter(FragmentManager fm, ArrayList<Fragment> fragments, String[] titles) {
         super(fm);
         this.fragments = fragments;
         this.titles = titles;
