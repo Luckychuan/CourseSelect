@@ -1,10 +1,12 @@
 package com.example.luckychuan.courseselect.ui;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -40,12 +42,13 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
 
     private static final String TAG = "CourseSelectFragment";
 
+    private SwipeRefreshLayout mRefreshLayout;
+
     private String mCampus;
     private SelectCoursePresenter mPresenter;
 
     //http返回来的数据集
     private ArrayList<CourseJson> mJsonCourses;
-
 
     //RecyclerView要用的的List
     private ArrayList<SelectCourseRecyclerAdapter.RecyclerItem> mRecyclerItems;
@@ -91,6 +94,15 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
                 } else {
                     mListener.changeToolbarTitle(week);
                 }
+            }
+        });
+
+        mRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
+        mRefreshLayout.setColorSchemeColors(Color.parseColor("#03A9F4"));
+        mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                requestSelectCourse();
             }
         });
 
@@ -148,7 +160,6 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
 //        Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_SHORT).show();
         Log.d(TAG, "toastErrorMsg: " + errorMsg);
 
-//        //// TODO: 2017/11/25 test使用的假数据
 //        for (CourseJson c : TestJsonData.getTestCourseData()) {
 ////            Log.d(TAG, "e: "+ c.toString());
 //            mOriginCourse.add(c);
@@ -157,6 +168,9 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
 
     @Override
     public void requestSelectCourse() {
+        mFilterItems.clear();
+        mJsonCourses.clear();
+        mRecyclerItems.clear();
         if (mCampus.equals("长安校区")) {
             mPresenter.requestData(new int[]{1, 3}, mCampus);
         } else if (mCampus.equals("太白校区")) {
@@ -176,6 +190,8 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
 
     @Override
     public void loadSelectCourseUI() {
+        mRefreshLayout.setRefreshing(false);
+
         //按星期排序
         Collections.sort(mJsonCourses, new Comparator<CourseJson>() {
             @Override
@@ -246,10 +262,7 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
         }
     }
 
-    private void refreshCourse() {
-        //// TODO: 2017/11/22
-        mJsonCourses.clear();
-    }
+
 
     /**
      * 按等级筛选
