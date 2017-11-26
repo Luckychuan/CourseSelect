@@ -25,9 +25,8 @@ public class SelectCourseModelImpl implements SelectCourseModel {
             integers[i] = levels[i];
         }
 
-        //// TODO: 2017/11/26 记得改回1234
         //循环4个level请求http
-        Observable.from(new Integer[]{1,3})
+        Observable.from(integers)
                 .flatMap(new Func1<Integer, Observable<CourseJson[]>>() {
                     @Override
                     public Observable<CourseJson[]> call(Integer integer) {
@@ -56,25 +55,5 @@ public class SelectCourseModelImpl implements SelectCourseModel {
                     }
                 });
 
-//        CustomRetrofit.getService().
-//                getSelectCourse(level, campus)
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribeOn(Schedulers.io())
-//                .subscribe(new Subscriber<CourseJson[]>() {
-//                    @Override
-//                    public void onCompleted() {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        callback.onFail(e.toString());
-//                    }
-//
-//                    @Override
-//                    public void onNext(CourseJson[] courseJson) {
-//                        callback.onSuccess(courseJson);
-//                    }
-//                });
     }
 }

@@ -1,11 +1,14 @@
 package com.example.luckychuan.courseselect.ui;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -15,6 +18,8 @@ import android.widget.Toast;
 
 import com.example.luckychuan.courseselect.R;
 import com.example.luckychuan.courseselect.adapter.CampusPagerAdapter;
+import com.example.luckychuan.courseselect.adapter.SelectCourseRecyclerAdapter;
+import com.example.luckychuan.courseselect.bean.WeekRecycler;
 import com.example.luckychuan.courseselect.util.Constant;
 
 import java.util.ArrayList;
@@ -26,6 +31,8 @@ import java.util.ArrayList;
 public class CourseSelectActivity extends AppCompatActivity implements CourseSelectFragment.OnTitleChangeListener {
 
     private Toolbar mToolbar;
+    private CourseSelectFragment mFragment1;
+    private CourseSelectFragment mFragment2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,37 +52,33 @@ public class CourseSelectActivity extends AppCompatActivity implements CourseSel
 
         //初始化Fragments,TabLayout和ViewPager
         ArrayList<Fragment> fragments = new ArrayList<>();
-        CourseSelectFragment fragment1 = new CourseSelectFragment();
+        mFragment1 = new CourseSelectFragment();
         Bundle bundle1 = new Bundle();
         bundle1.putString("campus", Constant.CAMPUSES[0]);
-        fragment1.setArguments(bundle1);
-        fragment1.setTitleChangeListener(this);
-        fragments.add(fragment1);
+        mFragment1.setArguments(bundle1);
+        mFragment1.setTitleChangeListener(this);
+        fragments.add(mFragment1);
 
-//        CourseSelectFragment fragment2 = new CourseSelectFragment();
-//        Bundle bundle2 = new Bundle();
-//        bundle2.putString("campus",Constant.CAMPUSES[1]);
-//        fragment2.setArguments(bundle2);
-//        fragments.add(fragment2);
+        mFragment2 = new CourseSelectFragment();
+        Bundle bundle2 = new Bundle();
+        bundle2.putString("campus", Constant.CAMPUSES[1]);
+        mFragment2.setArguments(bundle2);
+        mFragment2.setTitleChangeListener(this);
+        fragments.add(mFragment2);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.course_viewPager);
-        CampusPagerAdapter adapter = new CampusPagerAdapter(getSupportFragmentManager(),fragments,Constant.CAMPUSES);
+        CampusPagerAdapter adapter = new CampusPagerAdapter(getSupportFragmentManager(), fragments, Constant.CAMPUSES);
         viewPager.setAdapter(adapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.campus_tabLayout);
         tabLayout.setupWithViewPager(viewPager);
 
 
-
-
-
-
-
-
     }
 
     /**
      * 初始化SearchView和Menu
+     *
      * @param menu
      * @return
      */
@@ -96,7 +99,8 @@ public class CourseSelectActivity extends AppCompatActivity implements CourseSel
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                refreshData();
+                mFragment1.filterByString(newText);
+                mFragment2.filterByString(newText);
                 return false;
             }
         });
@@ -106,16 +110,31 @@ public class CourseSelectActivity extends AppCompatActivity implements CourseSel
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.menu_level:
-                refreshData();
+                String[] levels = new String[Constant.LEVELS.length];
+                levels[0] = "显示全部";
+                for (int i = 1; i < Constant.LEVELS.length; i++) {
+                    levels[i] = Constant.LEVELS[i] + "";
+                }
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setSingleChoiceItems(levels, 0, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        mFragment1.filterByLevel(i);
+                        mFragment2.filterByLevel(i);
+                        dialogInterface.dismiss();
+                    }
+                });
+                builder.create().show();
+
                 break;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    public void refreshData(){
+    public void refreshData() {
         Toast.makeText(this, "刷新数据", Toast.LENGTH_SHORT).show();
     }
 
@@ -123,5 +142,5 @@ public class CourseSelectActivity extends AppCompatActivity implements CourseSel
     public void changeToolbarTitle(String title) {
         mToolbar.setTitle(title);
     }
-    
+
 }
