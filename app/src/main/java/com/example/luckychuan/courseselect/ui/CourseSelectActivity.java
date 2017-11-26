@@ -50,11 +50,11 @@ public class CourseSelectActivity extends AppCompatActivity {
         fragment1.setArguments(bundle1);
         fragments.add(fragment1);
 
-        CourseSelectFragment fragment2 = new CourseSelectFragment();
-        Bundle bundle2 = new Bundle();
-        bundle2.putString("campus",CAMPUSES[1]);
-        fragment2.setArguments(bundle2);
-        fragments.add(fragment2);
+//        CourseSelectFragment fragment2 = new CourseSelectFragment();
+//        Bundle bundle2 = new Bundle();
+//        bundle2.putString("campus",CAMPUSES[1]);
+//        fragment2.setArguments(bundle2);
+//        fragments.add(fragment2);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.course_viewPager);
         CampusPagerAdapter adapter = new CampusPagerAdapter(getSupportFragmentManager(),fragments,CAMPUSES);

@@ -10,6 +10,8 @@ public interface SelectCourseView extends BaseView {
 
     void requestSelectCourse();
 
-    void loadSelectCourseUI(CourseJson[] courseJson);
+    void addData(CourseJson[] courseJson);
+
+    void loadSelectCourseUI();
 
 }

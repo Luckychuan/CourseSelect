@@ -20,13 +20,18 @@ public class SelectCoursePresenter extends BasePresenter {
         mModel = new SelectCourseModelImpl();
     }
 
-    public void requestData(int level, String campus) {
+    public void requestData(int[] levels, String campus) {
         mView.showProgressbar();
-        mModel.requestData(level, campus, new Callback<CourseJson[]>() {
+        mModel.requestData(levels, campus, new Callback<CourseJson[]>() {
             @Override
-            public void onSuccess(CourseJson[] bean) {
+            public void onNext(CourseJson[] bean) {
+                mView.addData(bean);
+            }
+
+            @Override
+            public void onCompleted() {
                 mView.hideProgressbar();
-                mView.loadSelectCourseUI(bean);
+                mView.loadSelectCourseUI();
             }
 
             @Override

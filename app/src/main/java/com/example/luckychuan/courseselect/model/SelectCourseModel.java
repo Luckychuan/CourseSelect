@@ -8,6 +8,6 @@ import com.example.luckychuan.courseselect.bean.CourseJson;
 
 public interface SelectCourseModel {
 
-    void requestData(int level, String campus, Callback<CourseJson[]> callback);
+    void requestData(int[] levels, String campus, Callback<CourseJson[]> callback);
 
 }

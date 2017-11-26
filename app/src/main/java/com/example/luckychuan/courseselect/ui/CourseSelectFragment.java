@@ -96,10 +96,7 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
 
     @Override
     public void requestSelectCourse() {
-        for (int i = 0; i < LEVELS.length; i++) {
-            mPresenter.requestData(LEVELS[i], mCampus);
-//            Log.d(TAG, "level:"+LEVELS[i]+" campus:"+mCampus);
-        }
+       mPresenter.requestData(LEVELS,mCampus);
 
 //        //// TODO: 2017/11/25 test 只加载一次
 //        if (mCampus.equals("曲江校区")) {
@@ -110,7 +107,7 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
     }
 
     @Override
-    public void loadSelectCourseUI(CourseJson[] courseJson) {
+    public void addData(CourseJson[] courseJson) {
         for (CourseJson c : courseJson) {
             mCourseJsons.add(c);
         }
@@ -137,6 +134,11 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
 
         }
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void loadSelectCourseUI() {
+        Log.d("rx_json", "loadSelectCourseUI: ");
     }
 
     @Override

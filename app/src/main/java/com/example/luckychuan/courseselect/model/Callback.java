@@ -6,7 +6,9 @@ package com.example.luckychuan.courseselect.model;
 
 public interface Callback<T> {
 
-    void onSuccess(T bean);
+    void onNext(T bean);
+
+    void onCompleted();
 
     void onFail(String errorMsg);
 
