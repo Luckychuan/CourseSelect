@@ -8,4 +8,5 @@
     <color name="hintGray">#88333333</color>
     <color name="hintWhite">#90ffffff</color>
     <color name="ripple_material_dark">#44000000</color>
+    <color name="colorNavigationItemHint">#88414141</color>
 </resources>

@@ -3,6 +3,7 @@ package com.example.luckychuan.courseselect.ui;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
@@ -145,7 +146,8 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     @Override
     public void onResponse() {
         hideProgressbar();
-        // TODO: 2017/11/29 登陆成功 
+        // TODO: 2017/11/29 登陆成功
+        startActivity(new Intent(this,MainActivity.class));
     }
 
     public void doLogin(String account, String password) {
