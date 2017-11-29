@@ -155,7 +155,7 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
     }
 
     @Override
-    public void toastErrorMsg(String errorMsg) {
+    public void onError(String errorMsg) {
 
 //        Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_SHORT).show();
         Log.d(TAG, "toastErrorMsg: " + errorMsg);

@@ -37,7 +37,7 @@ public class SelectCoursePresenter extends BasePresenter {
             @Override
             public void onFail(String errorMsg) {
                 mView.hideProgressbar();
-                mView.toastErrorMsg(errorMsg);
+                mView.onError(errorMsg);
             }
         });
     }

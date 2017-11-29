@@ -8,6 +8,6 @@ public interface BaseView {
 
     void showProgressbar();
     void hideProgressbar();
-    void toastErrorMsg(String errorMsg);
+    void onError(String errorMsg);
 
 }
