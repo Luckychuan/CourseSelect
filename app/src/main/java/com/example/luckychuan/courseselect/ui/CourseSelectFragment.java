@@ -171,14 +171,14 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
         mFilterItems.clear();
         mJsonCourses.clear();
         mRecyclerItems.clear();
-        if (mCampus.equals("长安校区")) {
-            mPresenter.requestData(new int[]{1, 3}, mCampus);
-        } else if (mCampus.equals("太白校区")) {
-            mPresenter.requestData(new int[]{2, 3}, mCampus);
-        }
 
-//        //// TODO: 2017/11/26
-//        mPresenter.requestData(Constant.LEVELS, mCampus);
+//        if (mCampus.equals("长安校区")) {
+//            mPresenter.requestData(new int[]{1, 3}, mCampus);
+//        } else if (mCampus.equals("太白校区")) {
+//            mPresenter.requestData(new int[]{2, 3}, mCampus);
+//        }
+
+        mPresenter.requestData(Constant.LEVELS, mCampus);
     }
 
     @Override
@@ -242,16 +242,16 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
 
                 weeks[i].setSize(weeks[i].getSize() + 1);
             }
-            mFilterItems.addAll(mRecyclerItems);
-            mAdapter.notifyDataSetChanged();
 
-//        //打印结果
-//        for (SelectCourseRecyclerAdapter.RecyclerItem ri : mRecyclerItems) {
-//            if (ri.type == SelectCourseRecyclerAdapter.WEEK) {
-//                Log.d("mRecyclerItems", ((WeekRecycler) ri.bean).toString());
+            //打印结果
+//            for (SelectCourseRecyclerAdapter.RecyclerItem ri : mRecyclerItems) {
+//                if (ri.type == SelectCourseRecyclerAdapter.WEEK) {
+//                    Log.d("mRecyclerItems", ((WeekRecycler) ri.bean).toString());
+//                }
 //            }
         }
-
+        mFilterItems.addAll(mRecyclerItems);
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -261,7 +261,6 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
             mPresenter.detach();
         }
     }
-
 
 
     /**
@@ -286,7 +285,7 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
                 weekRecycler.setWeek(((WeekRecycler) item.bean).getWeek());
                 weekRecycler.setSize(0);
                 SelectCourseRecyclerAdapter.RecyclerItem weekItem =
-                        new SelectCourseRecyclerAdapter.RecyclerItem(SelectCourseRecyclerAdapter.WEEK,weekRecycler);
+                        new SelectCourseRecyclerAdapter.RecyclerItem(SelectCourseRecyclerAdapter.WEEK, weekRecycler);
                 mFilterItems.add(weekItem);
             } else {
                 if (((CourseRecycler) item.bean).getLevel() == level) {
@@ -304,6 +303,7 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
 
     /**
      * 搜索筛选
+     *
      * @param
      */
     public void filterByString(String string) {
@@ -322,7 +322,7 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
                 weekRecycler.setWeek(((WeekRecycler) item.bean).getWeek());
                 weekRecycler.setSize(0);
                 SelectCourseRecyclerAdapter.RecyclerItem weekItem =
-                        new SelectCourseRecyclerAdapter.RecyclerItem(SelectCourseRecyclerAdapter.WEEK,weekRecycler);
+                        new SelectCourseRecyclerAdapter.RecyclerItem(SelectCourseRecyclerAdapter.WEEK, weekRecycler);
                 mFilterItems.add(weekItem);
             } else {
                 CourseRecycler courseRecycler = (CourseRecycler) item.bean;
