@@ -80,7 +80,7 @@ public class SelectCourseRecyclerAdapter extends RecyclerView.Adapter<CourseBase
     public String getWeekString(int position) {
         for (int i = position; i >= 0; i--) {
             if (mList.get(i).type == WEEK) {
-                return Constant.WEEK[((WeekRecycler) mList.get(i).bean).getWeek() - 1];
+                return Constant.WEEKS[((WeekRecycler) mList.get(i).bean).getWeek() - 1];
             }
         }
         return null;

@@ -24,7 +24,7 @@ public class WeekViewHolder extends CourseBaseViewHolder<WeekRecycler> {
 
     @Override
     public void bindViewHolder(WeekRecycler data) {
-        mWeek.setText(Constant.WEEK[data.getWeek() - 1]);
+        mWeek.setText(Constant.WEEKS[data.getWeek() - 1]);
         mSize.setText(data.getSize() + "门课程");
 
 

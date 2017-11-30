@@ -8,7 +8,6 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -17,9 +16,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.luckychuan.courseselect.R;
-import com.example.luckychuan.courseselect.adapter.CampusPagerAdapter;
-import com.example.luckychuan.courseselect.adapter.SelectCourseRecyclerAdapter;
-import com.example.luckychuan.courseselect.bean.WeekRecycler;
+import com.example.luckychuan.courseselect.adapter.TabPagerAdapter;
 import com.example.luckychuan.courseselect.util.Constant;
 
 import java.util.ArrayList;
@@ -67,7 +64,7 @@ public class CourseSelectActivity extends AppCompatActivity implements CourseSel
         fragments.add(mFragment2);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.course_viewPager);
-        CampusPagerAdapter adapter = new CampusPagerAdapter(getSupportFragmentManager(), fragments, Constant.CAMPUSES);
+        TabPagerAdapter adapter = new TabPagerAdapter(getSupportFragmentManager(), fragments, Constant.CAMPUSES);
         viewPager.setAdapter(adapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.campus_tabLayout);

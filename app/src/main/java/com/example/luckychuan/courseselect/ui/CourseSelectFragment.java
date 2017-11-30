@@ -113,7 +113,7 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setSingleChoiceItems(Constant.WEEK, 0, new DialogInterface.OnClickListener() {
+                builder.setSingleChoiceItems(Constant.WEEKS, 0, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //找到当前星期在list中的position
