@@ -35,7 +35,6 @@
             android:layout_height="56dp"
             android:hint="@string/hint_account"
             android:inputType="number"
-            android:text="3170911001"
             android:maxLength="10"/>
     </android.support.design.widget.TextInputLayout>
 

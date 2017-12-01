@@ -1,6 +1,7 @@
 package com.example.luckychuan.courseselect.model;
 
 import com.example.luckychuan.courseselect.bean.StudentJson;
+import com.example.luckychuan.courseselect.bean.TeacherJson;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -31,6 +32,30 @@ public class UserModelImpl implements UserModel {
                     @Override
                     public void onNext(StudentJson studentJson) {
                         callback.onNext(studentJson);
+                    }
+                });
+    }
+
+    @Override
+    public void requestTeacher(String account, String password, final Callback<TeacherJson> callback) {
+        CustomRetrofit.getService()
+                .getTeacher(account,password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<TeacherJson>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callback.onFail(e.toString());
+                    }
+
+                    @Override
+                    public void onNext(TeacherJson teacherJson) {
+                        callback.onNext(teacherJson);
                     }
                 });
     }

@@ -1,10 +1,10 @@
 package com.example.luckychuan.courseselect.presenter;
 
 import com.example.luckychuan.courseselect.bean.StudentJson;
+import com.example.luckychuan.courseselect.bean.TeacherJson;
 import com.example.luckychuan.courseselect.model.Callback;
 import com.example.luckychuan.courseselect.model.UserModel;
 import com.example.luckychuan.courseselect.model.UserModelImpl;
-import com.example.luckychuan.courseselect.ui.BaseActivity;
 import com.example.luckychuan.courseselect.view.LoginView;
 
 /**
@@ -42,6 +42,29 @@ public class UserPresenter extends BasePresenter {
                     mView.onError(errorMsg);
                 }
             });
+    }
+
+    public void requestTeacher(String account,String password){
+        mView.showProgressbar();
+
+        mModel.requestTeacher(account, password, new Callback<TeacherJson>() {
+            @Override
+            public void onNext(TeacherJson bean) {
+                mView.hideProgressbar();
+                mView.onResponse(bean);
+            }
+
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onFail(String errorMsg) {
+                mView.hideProgressbar();
+                mView.onError(errorMsg);
+            }
+        });
     }
 
 }

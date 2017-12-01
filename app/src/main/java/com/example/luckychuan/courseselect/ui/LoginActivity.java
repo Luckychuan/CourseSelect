@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.luckychuan.courseselect.R;
 import com.example.luckychuan.courseselect.bean.StudentJson;
+import com.example.luckychuan.courseselect.bean.TeacherJson;
 import com.example.luckychuan.courseselect.presenter.UserPresenter;
 import com.example.luckychuan.courseselect.view.LoginView;
 
@@ -158,13 +159,12 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
             mPresenter = new UserPresenter(this);
         }
         mPresenter.attach(this);
-        mPresenter.requestStudent(account, password);
+        mPresenter.requestTeacher(account, password);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d("destroy","destroy");
         if (mPresenter != null) {
             mPresenter.detach();
         }
@@ -184,8 +184,19 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         finish();
     }
 
+    @Override
+    public void onResponse(TeacherJson teacher) {
+        if (!teacher.isSuccess()) {
+            showFailDialog();
+            return;
+        }
 
-
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("teacher", (Serializable) teacher.getData());
+        Log.d(TAG, "onResponse: "+teacher.toString());
+        startActivity(intent);
+        finish();
+    }
 
 
 }
