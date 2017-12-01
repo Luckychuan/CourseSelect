@@ -12,13 +12,16 @@ import android.util.Log;
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.example.luckychuan.courseselect.R;
+import com.example.luckychuan.courseselect.bean.StudentJson;
+import com.example.luckychuan.courseselect.bean.TeacherJson;
 
 /**
  * Created by Luckychuan on 2017/11/29.
  */
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MeFragment.OnLogoutListener {
 
+    private static final String TAG = "MainActivity";
     private MyCourseFragment mMyCourseFragment;
     private NotificationFragment mNotificationFragment;
     private MeFragment mMeFragment;
@@ -32,14 +35,13 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setTitle("课程列表");
         setSupportActionBar(toolbar);
 
-        showMyCourseFragment();
-
         BottomNavigationBar bottomNavigationBar = (BottomNavigationBar) findViewById(R.id.bottom_navigation_bar);
         bottomNavigationBar
                 .addItem(new BottomNavigationItem(R.drawable.ic_course, "课程"))
                 .addItem(new BottomNavigationItem(R.drawable.ic_notification, "通知"))
                 .addItem(new BottomNavigationItem(R.drawable.ic_me, "我的"))
                 .initialise();
+        //// TODO: 2017/12/1
         bottomNavigationBar.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener() {//这里也可以使用SimpleOnTabSelectedListener
             @Override
             public void onTabSelected(int position) {//未选中 -> 选中
@@ -65,8 +67,11 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTabReselected(int position) {//选中 -> 选中
+
             }
         });
+        bottomNavigationBar.selectTab(2);
+
     }
 
     private void showNotificationFragment() {
@@ -101,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (mMeFragment == null) {
             mMeFragment = new MeFragment();
+            ((MeFragment)mMeFragment).setOnLogoutListener(this);
             transaction.add(R.id.main_fragment_layout, mMeFragment);
         } else {
             transaction.show(mMeFragment);
@@ -141,4 +147,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onLogout() {
+        Intent intent = new Intent(this,LoginActivity.class);
+        intent.putExtra("logout",true);
+        startActivity(intent);
+        finish();
+    }
 }

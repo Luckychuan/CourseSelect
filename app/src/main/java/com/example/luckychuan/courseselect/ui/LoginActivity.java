@@ -4,6 +4,7 @@ package com.example.luckychuan.courseselect.ui;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.luckychuan.courseselect.R;
@@ -32,6 +34,16 @@ import java.io.Serializable;
 public class LoginActivity extends AppCompatActivity implements LoginView {
 
     private static final String TAG = "LoginActivity";
+
+    //标识用户是教师还是学生
+    private static int mUser;
+    public static final int NULL = 0;
+    public static final int STUDENT = 1;
+    public static final int TEACHER = 2;
+    private static StudentJson.Data mStudent;
+    private static TeacherJson.Data mTeacher;
+
+
     private UserPresenter mPresenter;
     private ProgressDialog mProgressDialog;
 
@@ -39,9 +51,39 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //当用户退出账号重新登陆时
+        Intent intent = getIntent();
+        if(intent != null){
+            if(intent.getBooleanExtra("logout",false)){
+                mUser = NULL;
+                saveUser();
+                initView();
+                return;
+            }
+        }
+
+        //判断是否要登陆
+        SharedPreferences sp = getSharedPreferences("user_sp", MODE_PRIVATE);
+        mUser = sp.getInt("user", NULL);
+        Log.d("user", "user" + mUser);
+        if (mUser == NULL) {
+            //第一次打开时，显示登陆界面
+            initView();
+        }else if(mUser == STUDENT){
+            initStudent();
+            startActivity(new Intent(this,MainActivity.class));
+            finish();
+        }else if(mUser == TEACHER){
+            initTeacher();
+            startActivity(new Intent(this,MainActivity.class));
+            finish();
+        }
+    }
+
+
+    private void initView() {
         setContentView(R.layout.activity_login);
-
-
 
         final TextInputLayout account = (TextInputLayout) findViewById(R.id.editLayout_account);
         final TextInputLayout password = (TextInputLayout) findViewById(R.id.editLayout_password);
@@ -159,7 +201,15 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
             mPresenter = new UserPresenter(this);
         }
         mPresenter.attach(this);
-        mPresenter.requestTeacher(account, password);
+
+        RadioGroup radioGroup = (RadioGroup) findViewById(R.id.user_radioGroup);
+        int id = radioGroup.getCheckedRadioButtonId();
+        if (id == R.id.teacher) {
+            mPresenter.requestTeacher(account, password);
+        } else {
+            mPresenter.requestStudent(account, password);
+        }
+
     }
 
     @Override
@@ -177,10 +227,11 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
             return;
         }
 
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("student", (Serializable) student.getData());
-        Log.d(TAG, "onResponse: "+student.toString());
-        startActivity(intent);
+        mUser = STUDENT;
+        saveUser();
+        mStudent = student.getData();
+        saveStudent();
+        startActivity(new Intent(this, MainActivity.class));
         finish();
     }
 
@@ -191,12 +242,87 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
             return;
         }
 
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("teacher", (Serializable) teacher.getData());
-        Log.d(TAG, "onResponse: "+teacher.toString());
-        startActivity(intent);
+        mUser = TEACHER;
+        saveUser();
+        mTeacher = teacher.getData();
+        saveTeacher();
+        startActivity(new Intent(this, MainActivity.class));
         finish();
     }
 
+    private void initStudent(){
+        SharedPreferences ssp = getSharedPreferences("student_sp",MODE_PRIVATE);
+        mStudent = new StudentJson.Data();
+        mStudent.setUserKey(ssp.getString("userKey",""));
+        mStudent.setId(ssp.getString("id",""));
+        mStudent.setName(ssp.getString("name",""));
+        mStudent.setAcademy(ssp.getString("academy",""));
+        mStudent.setMajor(ssp.getString("major",""));
+        mStudent.setGrade(ssp.getString("grade",""));
+        mStudent.setStudentClass(ssp.getString("student_class",""));
+        mStudent.setPassword(ssp.getString("password",""));
+    }
 
+    private void initTeacher(){
+        SharedPreferences tsp = getSharedPreferences("teacher_sp",MODE_PRIVATE);
+        mTeacher = new TeacherJson.Data();
+        mTeacher.setUserKey(tsp.getString("userKey",""));
+        mTeacher.setId(tsp.getString("id",""));
+        mTeacher.setName(tsp.getString("name",""));
+        mTeacher.setXingBie(tsp.getString("xingBie",""));
+        mTeacher.setChuShengRiQi(tsp.getString("chuShengRiQi",""));
+        mTeacher.setBuMen(tsp.getString("buMen",""));
+        mTeacher.setKeShi(tsp.getString("keShi",""));
+        mTeacher.setZhiCheng(tsp.getString("zhiCheng",""));
+        mTeacher.setXueLi(tsp.getString("xueLi",""));
+        mTeacher.setPassword(tsp.getString("password",""));
+        mTeacher.setJianLi(tsp.getString("jianLi",""));
+    }
+
+    private void saveTeacher() {
+        SharedPreferences.Editor sp = getSharedPreferences("teacher_sp", MODE_PRIVATE).edit();
+        sp.putString("userKey", mTeacher.getUserKey());
+        sp.putString("id", mTeacher.getId());
+        sp.putString("name",mTeacher.getName());
+        sp.putString("xingBie", mTeacher.getXingBie());
+        sp.putString("chuShengRiQi", mTeacher.getChuShengRiQi());
+        sp.putString("buMen", mTeacher.getBuMen());
+        sp.putString("keShi", mTeacher.getKeShi());
+        sp.putString("zhiCheng", mTeacher.getZhiCheng());
+        sp.putString("xueLi", mTeacher.getXueLi());
+        sp.putString("password", mTeacher.getPassword());
+        sp.putString("jianLi", mTeacher.getJianLi());
+        sp.apply();
+    }
+
+    private void saveStudent() {
+        SharedPreferences.Editor sp = getSharedPreferences("student_sp", MODE_PRIVATE).edit();
+        sp.putString("userKey", mStudent.getUserKey());
+        sp.putString("id", mStudent.getId());
+        sp.putString("name", mStudent.getName());
+        sp.putString("academy", mStudent.getAcademy());
+        sp.putString("major", mStudent.getMajor());
+        sp.putString("grade", mStudent.getGrade());
+        sp.putString("student_class", mStudent.getStudentClass());
+        sp.putString("password", mStudent.getPassword());
+        sp.apply();
+    }
+
+    private void saveUser() {
+        SharedPreferences.Editor sp = getSharedPreferences("user_sp", MODE_PRIVATE).edit();
+        sp.putInt("user", mUser);
+        sp.apply();
+    }
+
+    public static StudentJson.Data getStudent() {
+        return mStudent;
+    }
+
+    public static TeacherJson.Data getTeacher() {
+        return mTeacher;
+    }
+
+    public static int getUser() {
+        return mUser;
+    }
 }

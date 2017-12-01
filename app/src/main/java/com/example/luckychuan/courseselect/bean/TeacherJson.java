@@ -48,7 +48,7 @@ public class TeacherJson {
                 '}';
     }
 
-    public class Data implements Serializable{
+    public static class Data implements Serializable{
         @SerializedName("lingPai")
         private String userKey;
         @SerializedName("zhiGongHao")

@@ -55,6 +55,30 @@
             android:inputType="textPassword"/>
     </android.support.design.widget.TextInputLayout>
 
+    <RadioGroup
+        android:id="@+id/user_radioGroup"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="left"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/student"
+            android:checked="true"
+            android:text="学生"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <RadioButton
+            android:layout_marginLeft="16dp"
+            android:id="@+id/teacher"
+            android:text="教师"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RadioGroup>
+
     <Button
         android:id="@+id/login_button"
         android:text="登陆"

@@ -13,7 +13,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity android:name=".ui.CourseSelectActivity">
-
         </activity>
         <activity android:name=".ui.LoginActivity">
             <intent-filter>
@@ -24,7 +23,6 @@
         </activity>
         <activity android:name=".ui.MainActivity">
         </activity>
-        <activity android:name=".ui.BaseActivity"></activity>
         <activity android:name=".ui.CourseActivity">
 
         </activity>
