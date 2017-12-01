@@ -1,11 +1,12 @@
 package com.example.luckychuan.courseselect.view;
 
+import com.example.luckychuan.courseselect.bean.StudentJson;
+
 /**
  * Created by Luckychuan on 2017/11/29.
  */
 
 public interface LoginView extends BaseView {
-        //// TODO: 2017/11/29 加参数
-    void onResponse();
+    void onResponse(StudentJson student);
 
 }

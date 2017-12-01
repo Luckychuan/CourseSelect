@@ -2,7 +2,6 @@ package com.example.luckychuan.courseselect.model;
 
 import android.util.Log;
 
-import com.example.luckychuan.courseselect.retrofit.CustomRetrofit;
 import com.example.luckychuan.courseselect.bean.CourseJson;
 
 import rx.Observable;

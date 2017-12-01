@@ -15,16 +15,23 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.luckychuan.courseselect.R;
+import com.example.luckychuan.courseselect.bean.StudentJson;
+import com.example.luckychuan.courseselect.presenter.UserPresenter;
 import com.example.luckychuan.courseselect.view.LoginView;
+
+import java.io.Serializable;
 
 /**
  * Created by Luckychuan on 2017/11/29.
  */
 
 public class LoginActivity extends AppCompatActivity implements LoginView {
-    
+
+    private static final String TAG = "LoginActivity";
+    private UserPresenter mPresenter;
     private ProgressDialog mProgressDialog;
 
 
@@ -33,7 +40,9 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        final TextInputLayout account  = (TextInputLayout) findViewById(R.id.editLayout_account);
+
+
+        final TextInputLayout account = (TextInputLayout) findViewById(R.id.editLayout_account);
         final TextInputLayout password = (TextInputLayout) findViewById(R.id.editLayout_password);
         EditText ea = (EditText) findViewById(R.id.edit_account);
         EditText ep = (EditText) findViewById(R.id.edit_password);
@@ -73,22 +82,21 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         });
 
 
-
-        Button  button = (Button) findViewById(R.id.login_button);
+        Button button = (Button) findViewById(R.id.login_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String accountString = account.getEditText().getText().toString();
                 String passwordString = password.getEditText().getText().toString();
 
-                if(!validateAccount(accountString)){
-                    account.setError("输入的学号不正确");
-                }else if(!validatePassword(passwordString)){
+                if (!validateAccount(accountString)) {
+                    account.setError("学号不能为空");
+                } else if (!validatePassword(passwordString)) {
                     password.setError("密码不能为空");
-                }else {
+                } else {
                     account.setErrorEnabled(false);
                     password.setErrorEnabled(false);
-                    doLogin(accountString,passwordString);
+                    doLogin(accountString, passwordString);
                 }
             }
         });
@@ -96,20 +104,17 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     }
 
 
-
-
-
-    public boolean validateAccount(String account){
-        if(account.length() != 10){
+    public boolean validateAccount(String account) {
+        if (account.length() == 0) {
             return false;
         }
 
         return true;
     }
 
-    public boolean validatePassword(String password){
-        if(password.length() == 0){
-            return  false;
+    public boolean validatePassword(String password) {
+        if (password.length() == 0) {
+            return false;
         }
 
         return true;
@@ -117,22 +122,26 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
     @Override
     public void showProgressbar() {
-        mProgressDialog = ProgressDialog.show(this,"提示","登陆中");
+        mProgressDialog = ProgressDialog.show(this, "提示", "登陆中");
     }
 
     @Override
     public void hideProgressbar() {
-        if(mProgressDialog != null){
-            mProgressDialog.show();
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
         }
     }
 
     @Override
     public void onError(String errorMsg) {
-        hideProgressbar();
+        Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
+
+    }
+
+    public void showFailDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("登陆失败");
-        builder.setMessage(errorMsg);
+        builder.setMessage("用户名或密码错误");
         builder.setCancelable(true);
         builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
@@ -143,18 +152,40 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         builder.create().show();
     }
 
-    @Override
-    public void onResponse() {
-        hideProgressbar();
-        // TODO: 2017/11/29 登陆成功
-        startActivity(new Intent(this,MainActivity.class));
-    }
 
     public void doLogin(String account, String password) {
-        //// TODO: 2017/11/29
-        showProgressbar();
-
+        if (mPresenter == null) {
+            mPresenter = new UserPresenter(this);
+        }
+        mPresenter.attach(this);
+        mPresenter.requestStudent(account, password);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("destroy","destroy");
+        if (mPresenter != null) {
+            mPresenter.detach();
+        }
+    }
+
+    @Override
+    public void onResponse(StudentJson student) {
+        if (!student.isSuccess()) {
+            showFailDialog();
+            return;
+        }
+
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("student", (Serializable) student.getData());
+        Log.d(TAG, "onResponse: "+student.toString());
+        startActivity(intent);
+        finish();
+    }
+
+
+
 
 
 }

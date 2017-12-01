@@ -1,5 +1,6 @@
 package com.example.luckychuan.courseselect.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
@@ -128,6 +129,15 @@ public class MainActivity extends AppCompatActivity {
 
         transaction.commit();
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        //返回桌面
+        Intent home = new Intent(Intent.ACTION_MAIN);
+        home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        home.addCategory(Intent.CATEGORY_HOME);
+        startActivity(home);
     }
 
 
