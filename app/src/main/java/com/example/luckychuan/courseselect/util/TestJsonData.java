@@ -1,6 +1,7 @@
-package com.example.luckychuan.courseselect.test;
+package com.example.luckychuan.courseselect.util;
 
 import com.example.luckychuan.courseselect.bean.CourseJson;
+import com.example.luckychuan.courseselect.bean.TeacherJson;
 
 import java.util.ArrayList;
 
@@ -32,6 +33,27 @@ public class TestJsonData {
             courseList.add(courseJson);
         }
         return courseList;
+    }
+
+    //假的教师数据
+    public static TeacherJson getTestTeacherData(){
+        TeacherJson.Data data = new TeacherJson.Data();
+        data.setUserKey("1000011_111.19.43.229_20171201160102");
+        data.setId("1000011");
+        data.setName("我是老师");
+        data.setXingBie("性别1");
+        data.setChuShengRiQi("出生日期1");
+        data.setBuMen("部门1");
+        data.setKeShi("科室1");
+        data.setZhiCheng("职称1");
+        data.setXueLi("学历1");
+        data.setJianLi("建立1");
+
+        TeacherJson teacherJson = new TeacherJson();
+        teacherJson.setSuccess(true);
+        teacherJson.setMsgCode(0);
+        teacherJson.setData(data);
+        return  teacherJson;
     }
 
 }

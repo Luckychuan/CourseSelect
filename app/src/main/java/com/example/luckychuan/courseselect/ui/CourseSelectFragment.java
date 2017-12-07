@@ -3,7 +3,6 @@ package com.example.luckychuan.courseselect.ui;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -14,8 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import com.example.luckychuan.courseselect.R;
 import com.example.luckychuan.courseselect.adapter.SelectCourseRecyclerAdapter;
@@ -23,14 +20,11 @@ import com.example.luckychuan.courseselect.bean.CourseJson;
 import com.example.luckychuan.courseselect.bean.CourseRecycler;
 import com.example.luckychuan.courseselect.bean.WeekRecycler;
 import com.example.luckychuan.courseselect.presenter.SelectCoursePresenter;
-import com.example.luckychuan.courseselect.test.TestJsonData;
 import com.example.luckychuan.courseselect.util.Constant;
-import com.example.luckychuan.courseselect.util.FormatUtil;
 import com.example.luckychuan.courseselect.view.SelectCourseView;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 

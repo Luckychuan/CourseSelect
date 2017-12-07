@@ -23,9 +23,8 @@ import com.example.luckychuan.courseselect.R;
 import com.example.luckychuan.courseselect.bean.StudentJson;
 import com.example.luckychuan.courseselect.bean.TeacherJson;
 import com.example.luckychuan.courseselect.presenter.UserPresenter;
+import com.example.luckychuan.courseselect.util.TestJsonData;
 import com.example.luckychuan.courseselect.view.LoginView;
-
-import java.io.Serializable;
 
 /**
  * Created by Luckychuan on 2017/11/29.
@@ -237,6 +236,8 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
     @Override
     public void onResponse(TeacherJson teacher) {
+       //// TODO: 2017/12/7 假数据
+        teacher = TestJsonData.getTestTeacherData();
         if (!teacher.isSuccess()) {
             showFailDialog();
             return;
@@ -256,6 +257,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         mStudent.setUserKey(ssp.getString("userKey",""));
         mStudent.setId(ssp.getString("id",""));
         mStudent.setName(ssp.getString("name",""));
+        mStudent.setSex(ssp.getString("sex",""));
         mStudent.setAcademy(ssp.getString("academy",""));
         mStudent.setMajor(ssp.getString("major",""));
         mStudent.setGrade(ssp.getString("grade",""));
@@ -300,6 +302,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         sp.putString("userKey", mStudent.getUserKey());
         sp.putString("id", mStudent.getId());
         sp.putString("name", mStudent.getName());
+        sp.putString("sex",mStudent.getSex());
         sp.putString("academy", mStudent.getAcademy());
         sp.putString("major", mStudent.getMajor());
         sp.putString("grade", mStudent.getGrade());
