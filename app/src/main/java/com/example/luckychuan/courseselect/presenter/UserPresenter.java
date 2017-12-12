@@ -28,7 +28,13 @@ public class UserPresenter extends BasePresenter {
                 @Override
                 public void onNext(StudentJson bean) {
                     mView.hideProgressbar();
-                    mView.onResponse(bean);
+                    if(bean.isSuccess()){
+                        mView.onResponse(bean.getData());
+                    }else{
+                        mView.onLoginFail(bean.getError());
+                    }
+
+
                 }
 
                 @Override
@@ -51,7 +57,11 @@ public class UserPresenter extends BasePresenter {
             @Override
             public void onNext(TeacherJson bean) {
                 mView.hideProgressbar();
-                mView.onResponse(bean);
+                if(bean.isSuccess()){
+                    mView.onResponse(bean.getData());
+                }else{
+                    mView.onLoginFail(bean.getError());
+                }
             }
 
             @Override

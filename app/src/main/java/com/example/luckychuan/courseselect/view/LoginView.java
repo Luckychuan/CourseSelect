@@ -8,8 +8,10 @@ import com.example.luckychuan.courseselect.bean.TeacherJson;
  */
 
 public interface LoginView extends BaseView {
-    void onResponse(StudentJson student);
+    void onResponse(StudentJson.Data student);
 
-    void onResponse(TeacherJson teacher);
+    void onResponse(TeacherJson.Data teacher);
+
+    void onLoginFail(String failMsg);
 
 }

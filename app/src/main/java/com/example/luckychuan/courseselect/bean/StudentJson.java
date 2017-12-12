@@ -13,7 +13,16 @@ public class StudentJson{
     private boolean isSuccess;
     @SerializedName("msgcode")
     private int msgCode ;
+    private String error;
     private Data data;
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
 
     public Data getData() {
         return data;

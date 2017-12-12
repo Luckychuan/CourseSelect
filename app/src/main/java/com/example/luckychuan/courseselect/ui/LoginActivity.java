@@ -42,7 +42,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     private static StudentJson.Data mStudent;
     private static TeacherJson.Data mTeacher;
 
-
     private UserPresenter mPresenter;
     private ProgressDialog mProgressDialog;
 
@@ -180,21 +179,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
     }
 
-    public void showFailDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("登陆失败");
-        builder.setMessage("用户名或密码错误");
-        builder.setCancelable(true);
-        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-        builder.create().show();
-    }
-
-
     public void doLogin(String account, String password) {
         if (mPresenter == null) {
             mPresenter = new UserPresenter(this);
@@ -220,35 +204,39 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     }
 
     @Override
-    public void onResponse(StudentJson student) {
-        if (!student.isSuccess()) {
-            showFailDialog();
-            return;
-        }
+    public void onResponse(StudentJson.Data student) {
         Log.d("student", "onResponse: "+student.toString());
         mUser = STUDENT;
         saveUser();
-        mStudent = student.getData();
+        mStudent = student;
         saveStudent();
         startActivity(new Intent(this, MainActivity.class));
         finish();
     }
 
     @Override
-    public void onResponse(TeacherJson teacher) {
-       //// TODO: 2017/12/7 假数据
-        teacher = TestJsonData.getTestTeacherData();
-        if (!teacher.isSuccess()) {
-            showFailDialog();
-            return;
-        }
-
+    public void onResponse(TeacherJson.Data teacher) {
         mUser = TEACHER;
         saveUser();
-        mTeacher = teacher.getData();
+        mTeacher = teacher;
         saveTeacher();
         startActivity(new Intent(this, MainActivity.class));
         finish();
+    }
+
+    @Override
+    public void onLoginFail(String failMsg) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("登陆失败");
+        builder.setMessage(failMsg);
+        builder.setCancelable(true);
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.create().show();
     }
 
     private void initStudent(){

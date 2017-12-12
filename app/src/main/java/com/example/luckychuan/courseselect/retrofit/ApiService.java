@@ -16,12 +16,5 @@ import rx.Observable;
 
 public interface ApiService {
 
-    /**
-     * 获取可选课程列表
-     *
-     * @param level
-     * @param userKey
-     * @param campus
-     * @return
-     */
 
+}

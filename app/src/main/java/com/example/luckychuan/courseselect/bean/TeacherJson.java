@@ -13,6 +13,7 @@ public class TeacherJson {
     private boolean isSuccess;
     @SerializedName("msgcode")
     private int msgCode;
+    private String error;
     private Data data;
 
     public Data getData() {
@@ -37,6 +38,14 @@ public class TeacherJson {
 
     public void setMsgCode(int msgCode) {
         this.msgCode = msgCode;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
     }
 
     @Override
