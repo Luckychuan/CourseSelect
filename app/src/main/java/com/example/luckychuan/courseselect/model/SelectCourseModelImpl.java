@@ -2,7 +2,11 @@ package com.example.luckychuan.courseselect.model;
 
 import android.util.Log;
 
+import com.example.luckychuan.courseselect.bean.CourseInfoJson;
 import com.example.luckychuan.courseselect.bean.CourseJson;
+import com.example.luckychuan.courseselect.bean.SelectCourseJson;
+import com.example.luckychuan.courseselect.bean.StudentJson;
+import com.example.luckychuan.courseselect.retrofit.CustomRetrofit;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -17,7 +21,7 @@ import rx.schedulers.Schedulers;
 public class SelectCourseModelImpl implements SelectCourseModel {
 
     @Override
-    public void requestData(int[] levels, final String campus, final Callback<CourseJson[]> callback) {
+    public void requestData(int[] levels, final String userKey , final String campus, final Callback<CourseJson[]> callback) {
         //将int[]转成Integer[]
         Integer[] integers = new Integer[levels.length];
         for (int i = 0; i < levels.length; i++) {
@@ -26,16 +30,16 @@ public class SelectCourseModelImpl implements SelectCourseModel {
 
         //循环4个level请求http
         Observable.from(integers)
-                .flatMap(new Func1<Integer, Observable<CourseJson[]>>() {
+                .flatMap(new Func1<Integer, Observable<SelectCourseJson>>() {
                     @Override
-                    public Observable<CourseJson[]> call(Integer integer) {
+                    public Observable<SelectCourseJson> call(Integer integer) {
                         Log.d("rx_json", "level:"+integer+" campus:"+campus);
-                        return CustomRetrofit.getService().getSelectCourse(integer, campus);
+                        return CustomRetrofit.getService().getSelectCourse(integer,userKey ,campus);
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<CourseJson[]>() {
+                .subscribe(new Subscriber<SelectCourseJson>() {
                     @Override
                     public void onCompleted() {
                         Log.d("rx_json", "onCompleted: ");
@@ -48,11 +52,37 @@ public class SelectCourseModelImpl implements SelectCourseModel {
                     }
 
                     @Override
-                    public void onNext(CourseJson[] courseJson) {
-                        Log.d("rx_json", "onNext: ");
-                        callback.onNext(courseJson);
+                    public void onNext(SelectCourseJson json) {
+                        if(json.isSuccess()){
+                            callback.onNext(json.getData());
+                        }
                     }
                 });
 
+    }
+
+    @Override
+    public void requestCourseInfo(String userKey, String id, final Callback<CourseInfoJson> callback) {
+        CustomRetrofit.getService()
+                .getCourseInfo(userKey, id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<CourseInfoJson>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d("CourseInfo", "onError: "+e.toString());
+                        callback.onFail(e.toString());
+                    }
+
+                    @Override
+                    public void onNext(CourseInfoJson courseInfoJson) {
+                        callback.onNext(courseInfoJson);
+                    }
+                });
     }
 }

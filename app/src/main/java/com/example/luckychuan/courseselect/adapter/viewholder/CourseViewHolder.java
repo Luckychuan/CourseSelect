@@ -1,7 +1,7 @@
 package com.example.luckychuan.courseselect.adapter.viewholder;
 
-import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.luckychuan.courseselect.R;
@@ -20,14 +20,23 @@ public class CourseViewHolder extends CourseBaseViewHolder<CourseRecycler> {
     private TextView mName;
     private TextView mStudentLeft;
 
-    public CourseViewHolder(View itemView) {
+    public CourseViewHolder(View itemView, final OnItemClickListener listener) {
         super(itemView);
-
         mLevel = (TextView) itemView.findViewById(R.id.tv_level);
         mTime = (TextView) itemView.findViewById(R.id.tv_classTime);
         mTeacher = (TextView) itemView.findViewById(R.id.tv_teacher);
         mName = (TextView) itemView.findViewById(R.id.tv_course_name);
         mStudentLeft = (TextView) itemView.findViewById(R.id.tv_studentLeft);
+
+        LinearLayout itemLayout= (LinearLayout) itemView.findViewById(R.id.item_layout);
+        itemLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(listener != null){
+                    listener.OnItemClick(getLayoutPosition());
+                }
+            }
+        });
 
     }
 
@@ -40,4 +49,9 @@ public class CourseViewHolder extends CourseBaseViewHolder<CourseRecycler> {
         mName.setText(data.getName());
         mStudentLeft.setText(data.getStudentLeft());
     }
+
+    public interface OnItemClickListener{
+        void OnItemClick(int position);
+    }
+
 }

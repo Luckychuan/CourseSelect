@@ -1,5 +1,8 @@
 package com.example.luckychuan.courseselect.presenter;
 
+import android.util.Log;
+
+import com.example.luckychuan.courseselect.bean.CourseInfoJson;
 import com.example.luckychuan.courseselect.bean.CourseJson;
 import com.example.luckychuan.courseselect.model.Callback;
 import com.example.luckychuan.courseselect.model.SelectCourseModel;
@@ -20,9 +23,9 @@ public class SelectCoursePresenter extends BasePresenter {
         mModel = new SelectCourseModelImpl();
     }
 
-    public void requestData(int[] levels, String campus) {
+    public void requestData(int[] levels, String userKey, String campus) {
         mView.showProgressbar();
-        mModel.requestData(levels, campus, new Callback<CourseJson[]>() {
+        mModel.requestData(levels, userKey, campus, new Callback<CourseJson[]>() {
             @Override
             public void onNext(CourseJson[] bean) {
                 mView.addData(bean);
@@ -32,6 +35,29 @@ public class SelectCoursePresenter extends BasePresenter {
             public void onCompleted() {
                 mView.hideProgressbar();
                 mView.loadSelectCourseUI();
+            }
+
+            @Override
+            public void onFail(String errorMsg) {
+                mView.hideProgressbar();
+                mView.onError(errorMsg);
+            }
+        });
+    }
+
+    public void requestCourseInfo(String userKey, String id) {
+        mView.showProgressbar();
+        mModel.requestCourseInfo(userKey, id, new Callback<CourseInfoJson>() {
+
+            @Override
+            public void onNext(CourseInfoJson bean) {
+                mView.showCourseInfo(bean);
+                mView.hideProgressbar();
+            }
+
+            @Override
+            public void onCompleted() {
+
             }
 
             @Override

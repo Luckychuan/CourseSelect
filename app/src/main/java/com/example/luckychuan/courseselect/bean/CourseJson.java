@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Arrays;
 
 /**
- * Created by Luckychuan on 2017/11/21.
+ * 可选课程
  */
 
 public class CourseJson {
@@ -67,7 +67,7 @@ public class CourseJson {
                 ", level=" + level +
                 ", section=" + section +
                 ", week=" + week +
-//                ", courses=" + Arrays.toString(courses) +
+                ", courses=" + Arrays.toString(courses) +
                 '}';
     }
 

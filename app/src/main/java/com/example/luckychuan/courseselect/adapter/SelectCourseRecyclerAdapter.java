@@ -23,11 +23,12 @@ public class SelectCourseRecyclerAdapter extends RecyclerView.Adapter<CourseBase
 
     public static final int WEEK = 1;
     public static final int COURSE = 2;
-
+    private CourseViewHolder.OnItemClickListener mListener;
     private ArrayList<RecyclerItem> mList;
 
-    public SelectCourseRecyclerAdapter(ArrayList<RecyclerItem> list) {
+    public SelectCourseRecyclerAdapter(ArrayList<RecyclerItem> list,CourseViewHolder.OnItemClickListener listener) {
         mList = list;
+        mListener = listener;
     }
 
     @Override
@@ -39,7 +40,7 @@ public class SelectCourseRecyclerAdapter extends RecyclerView.Adapter<CourseBase
             holder = new WeekViewHolder(view);
         } else if (viewType == COURSE) {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_course, parent, false);
-            holder = new CourseViewHolder(view);
+            holder = new CourseViewHolder(view,mListener);
         }
 
         return holder;

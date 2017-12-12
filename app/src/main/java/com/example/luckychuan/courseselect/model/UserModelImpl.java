@@ -2,6 +2,7 @@ package com.example.luckychuan.courseselect.model;
 
 import com.example.luckychuan.courseselect.bean.StudentJson;
 import com.example.luckychuan.courseselect.bean.TeacherJson;
+import com.example.luckychuan.courseselect.retrofit.CustomRetrofit;
 
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;

@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity implements MeFragment.OnLogo
                 .addItem(new BottomNavigationItem(R.drawable.ic_notification, "通知"))
                 .addItem(new BottomNavigationItem(R.drawable.ic_me, "我的"))
                 .initialise();
-        //// TODO: 2017/12/1
         bottomNavigationBar.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener() {//这里也可以使用SimpleOnTabSelectedListener
             @Override
             public void onTabSelected(int position) {//未选中 -> 选中
@@ -70,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements MeFragment.OnLogo
 
             }
         });
-        bottomNavigationBar.selectTab(2);
+        bottomNavigationBar.selectTab(0);
 
     }
 

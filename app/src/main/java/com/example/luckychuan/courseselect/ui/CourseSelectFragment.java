@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 
 import com.example.luckychuan.courseselect.R;
 import com.example.luckychuan.courseselect.adapter.SelectCourseRecyclerAdapter;
+import com.example.luckychuan.courseselect.adapter.viewholder.CourseViewHolder;
+import com.example.luckychuan.courseselect.bean.CourseInfoJson;
 import com.example.luckychuan.courseselect.bean.CourseJson;
 import com.example.luckychuan.courseselect.bean.CourseRecycler;
 import com.example.luckychuan.courseselect.bean.WeekRecycler;
@@ -32,7 +34,7 @@ import java.util.Comparator;
  * Created by Luckychuan on 2017/11/20.
  */
 
-public class CourseSelectFragment extends Fragment implements SelectCourseView {
+public class CourseSelectFragment extends Fragment implements SelectCourseView, CourseViewHolder.OnItemClickListener {
 
     private static final String TAG = "CourseSelectFragment";
 
@@ -72,7 +74,7 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
         mFilterItems = new ArrayList<>();
         final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_course);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mAdapter = new SelectCourseRecyclerAdapter(mFilterItems);
+        mAdapter = new SelectCourseRecyclerAdapter(mFilterItems, this);
         recyclerView.setAdapter(mAdapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -160,19 +162,13 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
 //        }
     }
 
-    @Override
+
     public void requestSelectCourse() {
         mFilterItems.clear();
         mJsonCourses.clear();
         mRecyclerItems.clear();
 
-//        if (mCampus.equals("长安校区")) {
-//            mPresenter.requestData(new int[]{1, 3}, mCampus);
-//        } else if (mCampus.equals("太白校区")) {
-//            mPresenter.requestData(new int[]{2, 3}, mCampus);
-//        }
-
-        mPresenter.requestData(Constant.LEVELS, mCampus);
+        mPresenter.requestData(Constant.LEVELS, LoginActivity.getStudent().getUserKey(), mCampus);
     }
 
     @Override
@@ -206,7 +202,7 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
 //        }
 
         //为RecyclerView添加item
-        WeekRecycler[] weeks = new WeekRecycler[6];
+        WeekRecycler[] weeks = new WeekRecycler[Constant.WEEKS.length];
         for (CourseJson cj : mJsonCourses) {
             //添加Week
             int w = cj.getWeek();
@@ -236,16 +232,24 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
 
                 weeks[i].setSize(weeks[i].getSize() + 1);
             }
-
-            //打印结果
-//            for (SelectCourseRecyclerAdapter.RecyclerItem ri : mRecyclerItems) {
-//                if (ri.type == SelectCourseRecyclerAdapter.WEEK) {
-//                    Log.d("mRecyclerItems", ((WeekRecycler) ri.bean).toString());
-//                }
-//            }
         }
+        //如果返回的json没有星期六的课程，手动添加星期六的日期
+        if (weeks[5] == null) {
+            weeks[5] = new WeekRecycler();
+            weeks[5].setWeek(6);
+            weeks[5].setSize(0);
+            SelectCourseRecyclerAdapter.RecyclerItem<WeekRecycler> weekItem =
+                    new SelectCourseRecyclerAdapter.RecyclerItem<>(SelectCourseRecyclerAdapter.WEEK, weeks[5]);
+            mRecyclerItems.add(weekItem);
+        }
+
         mFilterItems.addAll(mRecyclerItems);
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showCourseInfo(CourseInfoJson courseInfoJson) {
+        Log.d("CourseInfo", "showCourseInfo: "+courseInfoJson.toString());
     }
 
     @Override
@@ -334,6 +338,14 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView {
 
     public void setTitleChangeListener(OnTitleChangeListener listener) {
         mListener = listener;
+    }
+
+    @Override
+    public void OnItemClick(int position) {
+        CourseRecycler course = (CourseRecycler) mFilterItems.get(position).bean;
+//        Log.d("CourseInfo", "OnItemClick:  userKey:" + LoginActivity.getStudent().getUserKey()+" id:"+course.getId());
+//        Log.d("CourseInfo", "OnItemClick: " + course.toString());
+        mPresenter.requestCourseInfo(LoginActivity.getStudent().getUserKey(),course.getId());
     }
 
     /**

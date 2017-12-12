@@ -225,7 +225,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
             showFailDialog();
             return;
         }
-
+        Log.d("student", "onResponse: "+student.toString());
         mUser = STUDENT;
         saveUser();
         mStudent = student.getData();
@@ -328,4 +328,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     public static int getUser() {
         return mUser;
     }
+
+
 }
