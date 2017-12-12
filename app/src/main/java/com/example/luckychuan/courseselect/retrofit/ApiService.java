@@ -2,6 +2,7 @@ package com.example.luckychuan.courseselect.retrofit;
 
 import com.example.luckychuan.courseselect.bean.CourseInfoJson;
 import com.example.luckychuan.courseselect.bean.CourseJson;
+import com.example.luckychuan.courseselect.bean.LogoutJson;
 import com.example.luckychuan.courseselect.bean.SelectCourseJson;
 import com.example.luckychuan.courseselect.bean.StudentJson;
 import com.example.luckychuan.courseselect.bean.TeacherJson;

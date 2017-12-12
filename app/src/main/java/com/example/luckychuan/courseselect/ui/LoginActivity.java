@@ -23,7 +23,6 @@ import com.example.luckychuan.courseselect.R;
 import com.example.luckychuan.courseselect.bean.StudentJson;
 import com.example.luckychuan.courseselect.bean.TeacherJson;
 import com.example.luckychuan.courseselect.presenter.UserPresenter;
-import com.example.luckychuan.courseselect.util.TestJsonData;
 import com.example.luckychuan.courseselect.view.LoginView;
 
 /**

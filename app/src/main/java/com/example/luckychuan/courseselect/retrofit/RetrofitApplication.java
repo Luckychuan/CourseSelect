@@ -10,7 +10,6 @@ public class RetrofitApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        // TODO: 2017/11/29
         CustomRetrofit.getInstance().init(getApplicationContext());
     }
 }
