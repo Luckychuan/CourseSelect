@@ -1,6 +1,6 @@
 package com.example.luckychuan.courseselect.model;
 
-import com.example.luckychuan.courseselect.bean.LogoutJson;
+import com.example.luckychuan.courseselect.bean.MyCourseJson;
 import com.example.luckychuan.courseselect.retrofit.CustomRetrofit;
 
 import rx.Subscriber;
@@ -8,17 +8,17 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by Luckychuan on 2017/12/12.
+ * Created by Luckychuan on 2017/12/13.
  */
 
-public class LogoutModelImpl implements LogoutModel {
+public class MyCourseModelImpl implements MyCourseModel {
     @Override
-    public void requestLogout(String userKey, final Callback<LogoutJson> callback) {
+    public void requestMyCourse(String userKey, final Callback<MyCourseJson> callback) {
         CustomRetrofit.getService()
-                .getLogout(userKey)
+                .getMyCourse(userKey)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<LogoutJson>() {
+                .subscribe(new Subscriber<MyCourseJson>() {
                     @Override
                     public void onCompleted() {
 
@@ -30,7 +30,7 @@ public class LogoutModelImpl implements LogoutModel {
                     }
 
                     @Override
-                    public void onNext(LogoutJson json) {
+                    public void onNext(MyCourseJson json) {
                         callback.onNext(json);
                     }
                 });

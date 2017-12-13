@@ -121,11 +121,24 @@ public class MeFragment extends Fragment implements LogoutView {
     }
 
     @Override
+    public void onFail(String failMsg) {
+
+    }
+
+    @Override
     public void onResponse(LogoutJson json) {
         if (json.isSuccess()) {
             if (mListener != null) {
                 mListener.onLogout();
             }
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(mPresenter != null){
+            mPresenter.detach();
         }
     }
 

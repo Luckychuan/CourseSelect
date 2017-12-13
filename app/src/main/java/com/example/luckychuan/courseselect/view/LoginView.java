@@ -12,6 +12,4 @@ public interface LoginView extends BaseView {
 
     void onResponse(TeacherJson.Data teacher);
 
-    void onLoginFail(String failMsg);
-
 }

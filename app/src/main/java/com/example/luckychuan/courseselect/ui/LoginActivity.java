@@ -178,6 +178,21 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
     }
 
+    @Override
+    public void onFail(String failMsg) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("登陆失败");
+        builder.setMessage(failMsg);
+        builder.setCancelable(true);
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.create().show();
+    }
+
     public void doLogin(String account, String password) {
         if (mPresenter == null) {
             mPresenter = new UserPresenter(this);
@@ -223,20 +238,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         finish();
     }
 
-    @Override
-    public void onLoginFail(String failMsg) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("登陆失败");
-        builder.setMessage(failMsg);
-        builder.setCancelable(true);
-        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-        builder.create().show();
-    }
 
     private void initStudent(){
         SharedPreferences ssp = getSharedPreferences("student_sp",MODE_PRIVATE);

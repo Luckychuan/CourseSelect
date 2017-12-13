@@ -31,7 +31,7 @@ public class UserPresenter extends BasePresenter {
                     if(bean.isSuccess()){
                         mView.onResponse(bean.getData());
                     }else{
-                        mView.onLoginFail(bean.getError());
+                        mView.onFail(bean.getError());
                     }
 
 
@@ -60,7 +60,7 @@ public class UserPresenter extends BasePresenter {
                 if(bean.isSuccess()){
                     mView.onResponse(bean.getData());
                 }else{
-                    mView.onLoginFail(bean.getError());
+                    mView.onFail(bean.getError());
                 }
             }
 

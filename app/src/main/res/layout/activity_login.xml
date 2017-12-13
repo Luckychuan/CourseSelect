@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:hint="@string/hint_account"
-            android:text="3170911001"
+            android:text="2013116001"
             android:inputType="number"
             android:maxLength="10"/>
     </android.support.design.widget.TextInputLayout>

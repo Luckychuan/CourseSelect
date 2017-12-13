@@ -162,6 +162,11 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView, 
 //        }
     }
 
+    @Override
+    public void onFail(String failMsg) {
+
+    }
+
 
     public void requestSelectCourse() {
         mFilterItems.clear();
