@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements MeFragment.OnLogo
 
         final TextView title = (TextView) findViewById(R.id.tv_title);
         title.setText("课程列表");
-        Button button = (Button) findViewById(R.id.select_course_button);
+        final Button button = (Button) findViewById(R.id.select_course_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,13 +58,16 @@ public class MainActivity extends AppCompatActivity implements MeFragment.OnLogo
                     case 0:
                         title.setText("课程列表");
                         showMyCourseFragment();
+                        button.setVisibility(View.VISIBLE);
                         break;
                     case 1:
                         title.setText("通知公告");
                         showNotificationFragment();
+                        button.setVisibility(View.INVISIBLE);
                         break;
                     case 2:
                         title.setText("个人信息");
+                        button.setVisibility(View.INVISIBLE);
                         showMeFragment();
                         break;
                 }

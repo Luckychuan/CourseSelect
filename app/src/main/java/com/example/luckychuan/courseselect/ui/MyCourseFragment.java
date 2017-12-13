@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +14,13 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.luckychuan.courseselect.R;
+import com.example.luckychuan.courseselect.adapter.MyCourseRecyclerAdapter;
 import com.example.luckychuan.courseselect.bean.MyCourseJson;
 import com.example.luckychuan.courseselect.presenter.MyCoursePresenter;
 import com.example.luckychuan.courseselect.view.MyCourseView;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by Luckychuan on 2017/11/29.
@@ -24,6 +30,8 @@ public class MyCourseFragment extends Fragment implements MyCourseView {
 
     private static final String TAG = "MyCourseFragment";
     private MyCoursePresenter mPresenter;
+    private MyCourseRecyclerAdapter mAdapter;
+    private ArrayList<MyCourseJson.Data> mList;
 
     @Nullable
     @Override
@@ -42,6 +50,12 @@ public class MyCourseFragment extends Fragment implements MyCourseView {
         }else if(LoginActivity.getUser() == LoginActivity.TEACHER){
             mPresenter.requestMyCourse(LoginActivity.getTeacher().getUserKey());
         }
+
+        mList = new ArrayList<>();
+        mAdapter = new MyCourseRecyclerAdapter(mList);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_my_course);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(mAdapter);
 
 
     }
@@ -68,7 +82,11 @@ public class MyCourseFragment extends Fragment implements MyCourseView {
 
     @Override
     public void onSuccess(MyCourseJson.Data[] data) {
-        Log.d(TAG, "onSuccess: "+data[0].toString());
+        mList.clear();
+        Collections.addAll(mList, data);
+
+        mAdapter.notifyDataSetChanged();
+
     }
 
     @Override
