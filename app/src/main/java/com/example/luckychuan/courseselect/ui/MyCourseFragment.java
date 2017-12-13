@@ -43,13 +43,7 @@ public class MyCourseFragment extends Fragment implements MyCourseView {
             mPresenter.requestMyCourse(LoginActivity.getTeacher().getUserKey());
         }
 
-        Button button = (Button) view.findViewById(R.id.test_button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getActivity(),CourseSelectActivity.class));
-            }
-        });
+
     }
 
     @Override

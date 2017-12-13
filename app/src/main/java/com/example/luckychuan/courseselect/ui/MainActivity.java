@@ -7,6 +7,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
@@ -31,9 +34,16 @@ public class MainActivity extends AppCompatActivity implements MeFragment.OnLogo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
-        toolbar.setTitle("课程列表");
-        setSupportActionBar(toolbar);
+        final TextView title = (TextView) findViewById(R.id.tv_title);
+        title.setText("课程列表");
+        Button button = (Button) findViewById(R.id.select_course_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this,CourseSelectActivity.class));
+            }
+        });
+
 
         BottomNavigationBar bottomNavigationBar = (BottomNavigationBar) findViewById(R.id.bottom_navigation_bar);
         bottomNavigationBar
@@ -46,15 +56,15 @@ public class MainActivity extends AppCompatActivity implements MeFragment.OnLogo
             public void onTabSelected(int position) {//未选中 -> 选中
                 switch (position) {
                     case 0:
-                        toolbar.setTitle("课程列表");
+                        title.setText("课程列表");
                         showMyCourseFragment();
                         break;
                     case 1:
-                        toolbar.setTitle("通知公告");
+                        title.setText("通知公告");
                         showNotificationFragment();
                         break;
                     case 2:
-                        toolbar.setTitle("个人信息");
+                        title.setText("个人信息");
                         showMeFragment();
                         break;
                 }
