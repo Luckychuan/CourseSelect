@@ -86,9 +86,9 @@ public class MeFragment extends Fragment implements LogoutView {
             public void onClick(View view) {
                 mPresenter = new LogoutPresenter(MeFragment.this);
                 mPresenter.attach(MeFragment.this);
-                if(LoginActivity.getUser() == LoginActivity.TEACHER){
+                if (LoginActivity.getUser() == LoginActivity.TEACHER) {
                     mPresenter.requestLogout(LoginActivity.getTeacher().getUserKey());
-                }else if(LoginActivity.getUser() == LoginActivity.STUDENT){
+                } else if (LoginActivity.getUser() == LoginActivity.STUDENT) {
                     mPresenter.requestLogout(LoginActivity.getStudent().getUserKey());
                 }
             }
@@ -118,26 +118,30 @@ public class MeFragment extends Fragment implements LogoutView {
     @Override
     public void onError(String errorMsg) {
         Toast.makeText(getContext(), errorMsg, Toast.LENGTH_SHORT).show();
+        if (mListener != null) {
+            mListener.onLogout();
+        }
     }
 
     @Override
     public void onFail(String failMsg) {
-
+        if (mListener != null) {
+            mListener.onLogout();
+        }
     }
 
     @Override
     public void onResponse(LogoutJson json) {
-        if (json.isSuccess()) {
-            if (mListener != null) {
-                mListener.onLogout();
-            }
+        if (mListener != null) {
+            mListener.onLogout();
         }
+
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(mPresenter != null){
+        if (mPresenter != null) {
             mPresenter.detach();
         }
     }

@@ -82,6 +82,7 @@ public class MyCourseFragment extends Fragment implements MyCourseView {
 
     @Override
     public void onSuccess(MyCourseJson.Data[] data) {
+        Log.d(TAG, "onSuccess: "+data[0].toString());
         mList.clear();
         Collections.addAll(mList, data);
 

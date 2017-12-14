@@ -62,6 +62,20 @@ public class MyCourseJson {
         private int time  ;
         @SerializedName("XQ")
         private String campus ;
+        @SerializedName("CJ")
+        private int score;
+        @SerializedName("TP")
+        private int rate;         //评教
+        @SerializedName("ZT")
+        private String commit;
+
+        public String getCommit() {
+            return commit;
+        }
+
+        public void setCommit(String commit) {
+            this.commit = commit;
+        }
 
         public String getName() {
             return name;
@@ -111,6 +125,22 @@ public class MyCourseJson {
             this.campus = campus;
         }
 
+        public int getScore() {
+            return score;
+        }
+
+        public void setScore(int score) {
+            this.score = score;
+        }
+
+        public int getRate() {
+            return rate;
+        }
+
+        public void setRate(int rate) {
+            this.rate = rate;
+        }
+
         @Override
         public String toString() {
             return "Data{" +
@@ -120,6 +150,9 @@ public class MyCourseJson {
                     ", week=" + week +
                     ", time=" + time +
                     ", campus='" + campus + '\'' +
+                    ", score=" + score +
+                    ", rate=" + rate +
+                    ", commit='" + commit + '\'' +
                     '}';
         }
     }

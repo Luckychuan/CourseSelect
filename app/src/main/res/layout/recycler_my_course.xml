@@ -27,47 +27,48 @@
                 android:textColor="@color/black"
                 android:text="健美操02"/>
 
-            <LinearLayout
-                android:layout_marginTop="8dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+
 
                 <TextView
                     android:id="@+id/teacher"
+                    android:layout_marginTop="4dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="陈燕燕"/>
 
                 <TextView
                     android:id="@+id/duration"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="4dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="2-16周"/>
 
-                <TextView
-                    android:id="@+id/week"
-                    android:layout_marginLeft="16dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="星期二"/>
+
 
                 <TextView
                     android:id="@+id/time"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="4dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="第5节"/>
 
                 <TextView
                     android:id="@+id/campus"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="4dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="太白校区"/>
 
-            </LinearLayout>
+            <TextView
+                android:id="@+id/score"
+                android:layout_marginTop="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="分数："/>
+
+
+
+
             
         </LinearLayout>
     </android.support.v7.widget.CardView>
