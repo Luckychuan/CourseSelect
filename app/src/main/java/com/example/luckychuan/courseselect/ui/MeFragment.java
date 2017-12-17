@@ -44,6 +44,26 @@ public class MeFragment extends Fragment implements LogoutView {
         } else if (LoginActivity.getUser() == LoginActivity.TEACHER) {
             initTeacherView(LoginActivity.getTeacher());
         }
+
+        addButtonView("修改密码", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        addButtonView("退出登录", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPresenter = new LogoutPresenter(MeFragment.this);
+                mPresenter.attach(MeFragment.this);
+                if (LoginActivity.getUser() == LoginActivity.TEACHER) {
+                    mPresenter.requestLogout(LoginActivity.getTeacher().getUserKey());
+                } else if (LoginActivity.getUser() == LoginActivity.STUDENT) {
+                    mPresenter.requestLogout(LoginActivity.getStudent().getUserKey());
+                }
+            }
+        });
     }
 
     private void initStudentView(StudentJson.Data student) {
@@ -56,7 +76,7 @@ public class MeFragment extends Fragment implements LogoutView {
             infoTextView.setText(infoArray[i]);
             mItemLayout.addView(view);
         }
-        addButtonView();
+
     }
 
     private void initTeacherView(TeacherJson.Data teacher) {
@@ -70,29 +90,17 @@ public class MeFragment extends Fragment implements LogoutView {
             infoTextView.setText(infoArray[i]);
             mItemLayout.addView(view);
         }
-        addButtonView();
     }
 
-    private void addButtonView() {
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dpToPx(56));
+    private void addButtonView(String text,View.OnClickListener listener) {
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dpToPx(48));
         layoutParams.setMargins(dpToPx(8), dpToPx(16), dpToPx(8), 0);
         Button button = new Button(getContext());
-        button.setText("注销");
+        button.setText(text);
         button.setBackgroundResource(R.drawable.radius_button);
         button.setTextColor(Color.WHITE);
         button.setLayoutParams(layoutParams);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mPresenter = new LogoutPresenter(MeFragment.this);
-                mPresenter.attach(MeFragment.this);
-                if (LoginActivity.getUser() == LoginActivity.TEACHER) {
-                    mPresenter.requestLogout(LoginActivity.getTeacher().getUserKey());
-                } else if (LoginActivity.getUser() == LoginActivity.STUDENT) {
-                    mPresenter.requestLogout(LoginActivity.getStudent().getUserKey());
-                }
-            }
-        });
+        button.setOnClickListener(listener);
         mItemLayout.addView(button);
     }
 
