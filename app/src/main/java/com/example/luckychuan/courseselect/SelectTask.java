@@ -2,6 +2,8 @@ package com.example.luckychuan.courseselect;
 
 import android.util.Log;
 
+import com.example.luckychuan.courseselect.view.SelectTaskView;
+
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
@@ -15,53 +17,88 @@ import rx.schedulers.Schedulers;
 
 public class SelectTask {
 
+    private SelectTaskView mView;
+    private static final String TAG = "SelectTask";
+
+    private boolean isStart;
+
     private int mIntervalTime;
     private int[] mIds;
     private int mPosition;
-    private static final String TAG = "SelectTask";
+
+    private Subscriber<Long> mSubscriber;
 
     //模拟
     private int count = 0;
 
 
+
     public SelectTask(int intervalTime, int[] ids) {
+        isStart = false;
         this.mIntervalTime = intervalTime;
         this.mIds = ids;
     }
 
+    public void bindView(SelectTaskView view) {
+        mView = view;
+    }
+
+    public void unbindView() {
+        mView = null;
+    }
+
     public void start() {
+        isStart = true;
         mPosition = 0;
         request(mIds[mPosition]);
     }
 
+    public boolean isStart(){
+        return isStart;
+    }
+
+    public void stop() {
+        isStart = false;
+        if (mSubscriber != null) {
+            mSubscriber.unsubscribe();
+            //// TODO: 2017/12/17  停止更新UI
+        }
+    }
+
     private void countDown(final int id) {
+        mSubscriber = new Subscriber<Long>() {
+            @Override
+            public void onCompleted() {
+                SelectTask.this.request(id);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(Long aLong) {
+                if (mView != null) {
+                    mView.showCountDown((int) (mIntervalTime - aLong));
+                }
+            }
+        };
+
         Observable.interval(0, 1, TimeUnit.SECONDS)
                 .take(mIntervalTime + 1)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Long>() {
-                    @Override
-                    public void onCompleted() {
-                        SelectTask.this.request(id);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(Long aLong) {
-                        Log.d(TAG, "倒计时：" + (mIntervalTime - aLong));
-                    }
-                });
+                .subscribe(mSubscriber);
     }
 
 
     //模拟
 
     private void request(int id) {
-        Log.d(TAG, "开始请求 课程：" + id);
+        if (mView != null) {
+            mView.showRequestMsg("正在请求课程："+id);
+        }
         count++;
         try {
             Thread.sleep(3000);
@@ -74,10 +111,10 @@ public class SelectTask {
             return;
         }
 
-        if (mPosition == 1 && count == 3) {
-            onSuccess();
-            return;
-        }
+//        if (mPosition == 1 && count == 3) {
+//            onSuccess();
+//            return;
+//        }
 
         count = 0;
         onFail();
@@ -86,27 +123,37 @@ public class SelectTask {
     }
 
     private void onError() {
-        Log.d(TAG, "服务器error");
+        if (mView != null) {
+            mView.showErrorMsg("无法连接至服务器");
+        }
         countDown(mIds[mPosition]);
     }
 
     private void onFail() {
-        Log.d(TAG, "课程:" + mIds[mPosition] + "已被选满");
+        if (mView != null) {
+            mView.showFailMsg("课程:" + mIds[mPosition] + "已被选满");
+        }
         mPosition++;
 
         //任务结束
         if (mPosition == mIds.length) {
-            Log.d(TAG, "任务结束，您没有选上课程");
+            if (mView != null) {
+                mView.showTaskEndMsg("任务结束，您没有选上课程");
+            }
             return;
         }
 
         //选下一门课程
-        Log.d(TAG, "即将开始选" + mIds[mPosition]);
+        if (mView != null) {
+            mView.showNextMsg("即将开始选" + mIds[mPosition]);
+        }
         countDown(mIds[mPosition]);
     }
 
     private void onSuccess() {
-        Log.d(TAG, "任务结束：恭喜您选上了课程：" + mIds[mPosition]);
+        if (mView != null) {
+            mView.onSuccess("任务结束：恭喜您选上了课程：" + mIds[mPosition]);
+        }
     }
 
 
