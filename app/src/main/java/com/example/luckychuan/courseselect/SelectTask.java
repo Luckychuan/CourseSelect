@@ -61,9 +61,9 @@ public class SelectTask {
         isStart = false;
         if (mSubscriber != null) {
             mSubscriber.unsubscribe();
-            //// TODO: 2017/12/17  停止更新UI
         }
     }
+
 
     private void countDown(final int id) {
         mSubscriber = new Subscriber<Long>() {
@@ -111,10 +111,10 @@ public class SelectTask {
             return;
         }
 
-//        if (mPosition == 1 && count == 3) {
-//            onSuccess();
-//            return;
-//        }
+        if (mPosition == 1 && count == 3) {
+            onSuccess();
+            return;
+        }
 
         count = 0;
         onFail();
@@ -131,7 +131,7 @@ public class SelectTask {
 
     private void onFail() {
         if (mView != null) {
-            mView.showFailMsg("课程:" + mIds[mPosition] + "已被选满");
+            mView.onFail("课程:" + mIds[mPosition] + "已被选满");
         }
         mPosition++;
 
@@ -140,6 +140,7 @@ public class SelectTask {
             if (mView != null) {
                 mView.showTaskEndMsg("任务结束，您没有选上课程");
             }
+            isStart = false;
             return;
         }
 
@@ -154,6 +155,7 @@ public class SelectTask {
         if (mView != null) {
             mView.onSuccess("任务结束：恭喜您选上了课程：" + mIds[mPosition]);
         }
+        isStart = false;
     }
 
 

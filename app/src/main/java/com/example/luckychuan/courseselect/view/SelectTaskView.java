@@ -9,7 +9,7 @@ public interface SelectTaskView  {
     void showCountDown(int countDown);
     void showRequestMsg(String requestMsg);
     void showErrorMsg(String errorMsg);
-    void showFailMsg(String failMsg);
+    void onFail(String failMsg);
     void onSuccess(String successMsg);
     void showLog(String log);
     void showTaskEndMsg(String endMsg);

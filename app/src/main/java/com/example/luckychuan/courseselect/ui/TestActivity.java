@@ -32,52 +32,36 @@ import rx.schedulers.Schedulers;
 
 public class TestActivity extends Activity implements SelectTaskView {
     private static final String TAG = "TestActivity";
-    private boolean isServiceStart;
     private SelectService.MyBind mMyBind;
     private MyConn mMyConn;
+
+    private Button mTaskButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
 
+        //启动service
         mMyConn = new MyConn();
         final Intent intent =new Intent(TestActivity.this, SelectService.class);
         intent.putExtra("intervalTime",2);
         intent.putExtra("ids",new int[]{1,2,3});
-
-        isServiceStart = false;
-
-        final Button startButton = (Button)findViewById(R.id.start_task);
-
-        startButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(!isServiceStart){
-                    isServiceStart = true;
-                    Toast.makeText(TestActivity.this, "开始任务", Toast.LENGTH_SHORT).show();
-                    startService(intent);
-                    bindService(intent,mMyConn,BIND_AUTO_CREATE);
-                    startButton.setText("停止");
-                    return;
-                }
-
-                //如果已经启动
-                isServiceStart = false;
-                Toast.makeText(TestActivity.this, "停止任务", Toast.LENGTH_SHORT).show();
-                unbindService(mMyConn);
-                stopService(intent);
-                startButton.setText("开始");
-
-            }
-        });
+        startService(intent);
+        bindService(intent,mMyConn,BIND_AUTO_CREATE);
     }
 
     @Override
     protected void onDestroy() {
+        //如果任务已经完成
+        if(!mMyBind.isTaskRunning()){
+            unbindService(mMyConn);
+            stopService(new Intent(TestActivity.this,SelectService.class));
+        }else{
+            mMyBind.unbindView();
+            unbindService(mMyConn);
+        }
         super.onDestroy();
-        mMyBind.unbindView();
-        unbindService(mMyConn);
     }
 
     @Override
@@ -96,13 +80,15 @@ public class TestActivity extends Activity implements SelectTaskView {
     }
 
     @Override
-    public void showFailMsg(String failMsg) {
+    public void onFail(String failMsg) {
         Log.d(TAG, failMsg);
+        mTaskButton.setText("开始");
     }
 
     @Override
     public void onSuccess(String successMsg) {
         Log.d(TAG, successMsg);
+        mTaskButton.setText("开始");
     }
 
     @Override
@@ -127,6 +113,29 @@ public class TestActivity extends Activity implements SelectTaskView {
             Log.e("bindLog","bind");
             mMyBind= (SelectService.MyBind) service;
             mMyBind.bindView(TestActivity.this);
+
+            //初始化button
+            mTaskButton = (Button)findViewById(R.id.start_task);
+            if(mMyBind.isTaskRunning()){
+                mTaskButton.setText("停止");
+            }else{
+                mTaskButton.setText("开始");
+            }
+            mTaskButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(!mMyBind.isTaskRunning()){
+                        Toast.makeText(TestActivity.this, "开始任务", Toast.LENGTH_SHORT).show();
+                        mMyBind.startTask();
+                        mTaskButton.setText("停止");
+                    }else{
+                        Toast.makeText(TestActivity.this, "停止任务", Toast.LENGTH_SHORT).show();
+                        mMyBind.stopTask();
+                        mTaskButton.setText("开始");
+                    }
+                }
+            });
+
         }
 
         @Override
