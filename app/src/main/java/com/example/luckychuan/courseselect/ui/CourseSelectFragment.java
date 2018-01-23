@@ -156,10 +156,7 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView, 
 //        Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_SHORT).show();
         Log.d(TAG, "toastErrorMsg: " + errorMsg);
 
-//        for (CourseJson c : TestJsonData.getTestCourseData()) {
-////            Log.d(TAG, "e: "+ c.toString());
-//            mOriginCourse.add(c);
-//        }
+
     }
 
     @Override
