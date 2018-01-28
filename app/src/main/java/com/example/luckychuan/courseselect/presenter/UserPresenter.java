@@ -43,7 +43,7 @@ public class UserPresenter extends BasePresenter {
                 }
 
                 @Override
-                public void onFail(String errorMsg) {
+                public void onError(String errorMsg) {
                     mView.hideProgressbar();
                     mView.onError(errorMsg);
                 }
@@ -70,7 +70,7 @@ public class UserPresenter extends BasePresenter {
             }
 
             @Override
-            public void onFail(String errorMsg) {
+            public void onError(String errorMsg) {
                 mView.hideProgressbar();
                 mView.onError(errorMsg);
             }

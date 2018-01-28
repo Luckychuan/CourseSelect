@@ -38,7 +38,7 @@ public class MyCoursePresenter extends BasePresenter {
             }
 
             @Override
-            public void onFail(String errorMsg) {
+            public void onError(String errorMsg) {
                 mView.onError(errorMsg);
             }
         });

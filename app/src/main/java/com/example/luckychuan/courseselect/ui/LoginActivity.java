@@ -25,6 +25,8 @@ import com.example.luckychuan.courseselect.bean.TeacherJson;
 import com.example.luckychuan.courseselect.presenter.UserPresenter;
 import com.example.luckychuan.courseselect.view.LoginView;
 
+import cn.jpush.android.api.JPushInterface;
+
 /**
  * Created by Luckychuan on 2017/11/29.
  */
@@ -40,6 +42,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     public static final int TEACHER = 2;
     private static StudentJson.Data mStudent;
     private static TeacherJson.Data mTeacher;
+    private static String mUserKey;
 
     private UserPresenter mPresenter;
     private ProgressDialog mProgressDialog;
@@ -53,7 +56,17 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         Intent intent = getIntent();
         if(intent != null){
             if(intent.getBooleanExtra("logout",false)){
+                //是否为强制下线
+                if(intent.getStringExtra("forceOfflineMsg") != null){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("强制下线");
+                    builder.setMessage(intent.getStringExtra("forceOfflineMsg"));
+                    builder.setPositiveButton("确定",null);
+                    builder.create().show();
+                }
+
                 mUser = NULL;
+                mUserKey = null;
                 saveUser();
                 initView();
                 return;
@@ -69,10 +82,12 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
             initView();
         }else if(mUser == STUDENT){
             initStudent();
+            mUserKey = mStudent.getUserKey();
             startActivity(new Intent(this,MainActivity.class));
             finish();
         }else if(mUser == TEACHER){
             initTeacher();
+            mUserKey = mTeacher.getUserKey();
             startActivity(new Intent(this,MainActivity.class));
             finish();
         }
@@ -162,7 +177,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
     @Override
     public void showProgressbar() {
-        mProgressDialog = ProgressDialog.show(this, "提示", "登陆中");
+        mProgressDialog = ProgressDialog.show(this, "提示", "登录中");
     }
 
     @Override
@@ -184,12 +199,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         builder.setTitle("登陆失败");
         builder.setMessage(failMsg);
         builder.setCancelable(true);
-        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
+        builder.setPositiveButton("确定", null);
         builder.create().show();
     }
 
@@ -223,8 +233,22 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         mUser = STUDENT;
         saveUser();
         mStudent = student;
+        mUserKey = student.getUserKey();
         saveStudent();
-        startActivity(new Intent(this, MainActivity.class));
+        toMainActivity();
+    }
+
+    private void toMainActivity() {
+        //通过账号和时间组成alias
+        String[] strings = mUserKey.split("_");
+        String alias = strings[0]+"_"+strings[2];
+        Log.d(TAG, "onResponse: "+alias);
+        JPushInterface.setAlias(this,0,alias);
+        Log.d("JPushReceiver",alias);
+
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("isLogin",true);
+        startActivity(intent);
         finish();
     }
 
@@ -233,9 +257,11 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         mUser = TEACHER;
         saveUser();
         mTeacher = teacher;
+        mUserKey = teacher.getUserKey();
         saveTeacher();
-        startActivity(new Intent(this, MainActivity.class));
-        finish();
+
+        toMainActivity();
+
     }
 
 
@@ -311,6 +337,10 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
     public static TeacherJson.Data getTeacher() {
         return mTeacher;
+    }
+
+    public static String getUserKey() {
+        return mUserKey;
     }
 
     public static int getUser() {

@@ -1,30 +1,33 @@
 package com.example.luckychuan.courseselect.ui;
 
+import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.example.luckychuan.courseselect.R;
-import com.example.luckychuan.courseselect.bean.StudentJson;
-import com.example.luckychuan.courseselect.bean.TeacherJson;
+import com.example.luckychuan.courseselect.presenter.ValidatePresenter;
+import com.example.luckychuan.courseselect.view.ValidateView;
 
 /**
  * Created by Luckychuan on 2017/11/29.
  */
 
-public class MainActivity extends AppCompatActivity implements MeFragment.OnLogoutListener {
+public class MainActivity extends CollectorActivity implements MeFragment.OnLogoutListener, ValidateView {
 
     private static final String TAG = "MainActivity";
+    private ProgressBar mProgressBar;
+    private ValidatePresenter mPresenter;
     private MyCourseFragment mMyCourseFragment;
     private NotificationFragment mNotificationFragment;
     private MeFragment mMeFragment;
@@ -34,13 +37,92 @@ public class MainActivity extends AppCompatActivity implements MeFragment.OnLogo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //判断是否由LoginActivity启动
+        if (!getIntent().getBooleanExtra("isLogin", false)) {
+            mPresenter = new ValidatePresenter(this);
+            mPresenter.attach();
+            mPresenter.requestValidate(LoginActivity.getUserKey());
+        }else{
+            initView();
+        }
+
+
+    }
+
+    private void showNotificationFragment() {
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+        if (mMeFragment != null) {
+            transaction.hide(mMeFragment);
+        }
+        if (mMyCourseFragment != null) {
+            transaction.hide(mMyCourseFragment);
+        }
+
+        if (mNotificationFragment == null) {
+            mNotificationFragment = new NotificationFragment();
+            transaction.add(R.id.main_fragment_layout, mNotificationFragment);
+        } else {
+            transaction.show(mNotificationFragment);
+        }
+
+        transaction.commit();
+    }
+
+    private void showMeFragment() {
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+        if (mMyCourseFragment != null) {
+            transaction.hide(mMyCourseFragment);
+        }
+        if (mNotificationFragment != null) {
+            transaction.hide(mNotificationFragment);
+        }
+
+        if (mMeFragment == null) {
+            mMeFragment = new MeFragment();
+            ((MeFragment) mMeFragment).setOnLogoutListener(this);
+            transaction.add(R.id.main_fragment_layout, mMeFragment);
+        } else {
+            transaction.show(mMeFragment);
+        }
+
+        transaction.commit();
+    }
+
+    private void showMyCourseFragment() {
+
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+        if (mMeFragment != null) {
+            transaction.hide(mMeFragment);
+        }
+        if (mNotificationFragment != null) {
+            transaction.hide(mNotificationFragment);
+        }
+
+        if (mMyCourseFragment == null) {
+            mMyCourseFragment = new MyCourseFragment();
+            transaction.add(R.id.main_fragment_layout, mMyCourseFragment);
+        } else {
+            transaction.show(mMyCourseFragment);
+        }
+
+        transaction.commit();
+
+    }
+
+    private void initView() {
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.contentView);
+        linearLayout.setVisibility(View.VISIBLE);
         final TextView title = (TextView) findViewById(R.id.tv_title);
         title.setText("课程列表");
         final Button button = (Button) findViewById(R.id.select_course_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,CourseSelectActivity.class));
+                // TODO: 2018/1/23
+//                startActivity(new Intent(MainActivity.this,CourseSelectActivity.class));
             }
         });
 
@@ -57,12 +139,14 @@ public class MainActivity extends AppCompatActivity implements MeFragment.OnLogo
                 switch (position) {
                     case 0:
                         title.setText("课程列表");
-                        showMyCourseFragment();
+                        // TODO: 2018/1/23
+//                        showMyCourseFragment();
                         button.setVisibility(View.VISIBLE);
                         break;
                     case 1:
                         title.setText("通知公告");
-                        showNotificationFragment();
+                        // TODO: 2018/1/23
+//                        showNotificationFragment();
                         button.setVisibility(View.INVISIBLE);
                         break;
                     case 2:
@@ -86,68 +170,6 @@ public class MainActivity extends AppCompatActivity implements MeFragment.OnLogo
 
     }
 
-    private void showNotificationFragment() {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-        if (mMeFragment != null) {
-            transaction.hide(mMeFragment);
-        }
-        if (mMyCourseFragment != null) {
-            transaction.hide(mMyCourseFragment);
-        }
-
-        if (mNotificationFragment == null) {
-            mNotificationFragment = new NotificationFragment();
-            transaction.add(R.id.main_fragment_layout, mNotificationFragment);
-        } else {
-            transaction.show(mNotificationFragment);
-        }
-
-        transaction.commit();
-    }
-
-    private void showMeFragment() {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-        if (mMyCourseFragment != null) {
-            transaction.hide(mMyCourseFragment);
-        }
-        if (mNotificationFragment != null) {
-            transaction.hide(mNotificationFragment);
-        }
-
-        if (mMeFragment == null) {
-            mMeFragment = new MeFragment();
-            ((MeFragment)mMeFragment).setOnLogoutListener(this);
-            transaction.add(R.id.main_fragment_layout, mMeFragment);
-        } else {
-            transaction.show(mMeFragment);
-        }
-
-        transaction.commit();
-    }
-
-    private void showMyCourseFragment() {
-
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-        if (mMeFragment != null) {
-            transaction.hide(mMeFragment);
-        }
-        if (mNotificationFragment != null) {
-            transaction.hide(mNotificationFragment);
-        }
-
-        if (mMyCourseFragment == null) {
-            mMyCourseFragment = new MyCourseFragment();
-            transaction.add(R.id.main_fragment_layout, mMyCourseFragment);
-        } else {
-            transaction.show(mMyCourseFragment);
-        }
-
-        transaction.commit();
-
-    }
 
     @Override
     public void onBackPressed() {
@@ -161,9 +183,57 @@ public class MainActivity extends AppCompatActivity implements MeFragment.OnLogo
 
     @Override
     public void onLogout() {
-        Intent intent = new Intent(this,LoginActivity.class);
-        intent.putExtra("logout",true);
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.putExtra("logout", true);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void showProgressbar() {
+        if (mProgressBar == null) {
+            mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
+        }
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressbar() {
+        mProgressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onError(String errorMsg) {
+
+    }
+
+    @Override
+    public void onFail(String failMsg) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("强制下线");
+        builder.setMessage(failMsg);
+        builder.setCancelable(false);
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                onLogout();
+            }
+        });
+        builder.create().show();
+    }
+
+    @Override
+    public void onResponse(boolean isTrue) {
+        if(isTrue){
+            initView();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mPresenter != null){
+            mPresenter.detach();
+        }
     }
 }

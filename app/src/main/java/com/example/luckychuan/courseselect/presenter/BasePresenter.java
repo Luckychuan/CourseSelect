@@ -8,8 +8,9 @@ import com.example.luckychuan.courseselect.view.BaseView;
 
 public class BasePresenter {
 
-    public BaseView mView;
+    private BaseView mView;
 
+    //// TODO: 2018/1/24  
     public void attach(BaseView view){
         mView = view;
     }

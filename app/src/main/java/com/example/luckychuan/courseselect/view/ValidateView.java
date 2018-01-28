@@ -6,8 +6,8 @@ import com.example.luckychuan.courseselect.bean.LogoutJson;
  * Created by Luckychuan on 2017/12/12.
  */
 
-public interface LogoutView extends BaseView {
+public interface ValidateView extends BaseView {
 
-    void onResponse(LogoutJson json);
+    void onResponse(boolean isTrue);
 
 }

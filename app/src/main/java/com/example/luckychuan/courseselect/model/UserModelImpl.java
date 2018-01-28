@@ -27,7 +27,7 @@ public class UserModelImpl implements UserModel {
 
                     @Override
                     public void onError(Throwable e) {
-                        callback.onFail("无法连接至服务器");
+                        callback.onError("无法连接至服务器");
                     }
 
                     @Override
@@ -51,7 +51,7 @@ public class UserModelImpl implements UserModel {
 
                     @Override
                     public void onError(Throwable e) {
-                        callback.onFail("无法连接至服务器");
+                        callback.onError("无法连接至服务器");
                     }
 
                     @Override

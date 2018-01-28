@@ -1,30 +1,26 @@
 package com.example.luckychuan.courseselect.ui;
 
+import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.luckychuan.courseselect.R;
-import com.example.luckychuan.courseselect.bean.LogoutJson;
 import com.example.luckychuan.courseselect.bean.StudentJson;
 import com.example.luckychuan.courseselect.bean.TeacherJson;
-import com.example.luckychuan.courseselect.presenter.LogoutPresenter;
+import com.example.luckychuan.courseselect.model.LogoutModelImpl;
 import com.example.luckychuan.courseselect.util.Constant;
-import com.example.luckychuan.courseselect.view.LogoutView;
 
 
-public class MeFragment extends Fragment implements LogoutView {
+public class MeFragment extends Fragment {
 
     private LinearLayout mItemLayout;
-    private LogoutPresenter mPresenter;
 
     private OnLogoutListener mListener;
 
@@ -55,12 +51,9 @@ public class MeFragment extends Fragment implements LogoutView {
         addButtonView("退出登录", new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mPresenter = new LogoutPresenter(MeFragment.this);
-                mPresenter.attach(MeFragment.this);
-                if (LoginActivity.getUser() == LoginActivity.TEACHER) {
-                    mPresenter.requestLogout(LoginActivity.getTeacher().getUserKey());
-                } else if (LoginActivity.getUser() == LoginActivity.STUDENT) {
-                    mPresenter.requestLogout(LoginActivity.getStudent().getUserKey());
+                new LogoutModelImpl().requestLogout(LoginActivity.getUserKey(),null);
+                if (mListener != null) {
+                    mListener.onLogout();
                 }
             }
         });
@@ -111,47 +104,6 @@ public class MeFragment extends Fragment implements LogoutView {
 
     public void setOnLogoutListener(OnLogoutListener listener) {
         mListener = listener;
-    }
-
-    @Override
-    public void showProgressbar() {
-
-    }
-
-    @Override
-    public void hideProgressbar() {
-
-    }
-
-    @Override
-    public void onError(String errorMsg) {
-        Toast.makeText(getContext(), errorMsg, Toast.LENGTH_SHORT).show();
-        if (mListener != null) {
-            mListener.onLogout();
-        }
-    }
-
-    @Override
-    public void onFail(String failMsg) {
-        if (mListener != null) {
-            mListener.onLogout();
-        }
-    }
-
-    @Override
-    public void onResponse(LogoutJson json) {
-        if (mListener != null) {
-            mListener.onLogout();
-        }
-
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (mPresenter != null) {
-            mPresenter.detach();
-        }
     }
 
     interface OnLogoutListener {

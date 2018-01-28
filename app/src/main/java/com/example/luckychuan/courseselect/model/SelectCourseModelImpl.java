@@ -48,7 +48,7 @@ public class SelectCourseModelImpl implements SelectCourseModel {
 
                     @Override
                     public void onError(Throwable e) {
-                        callback.onFail(e.toString());
+                        callback.onError(e.toString());
                     }
 
                     @Override
@@ -76,7 +76,7 @@ public class SelectCourseModelImpl implements SelectCourseModel {
                     @Override
                     public void onError(Throwable e) {
                         Log.d("CourseInfo", "onError: "+e.toString());
-                        callback.onFail(e.toString());
+                        callback.onError(e.toString());
                     }
 
                     @Override

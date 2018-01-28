@@ -1,48 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/custom_toolbar"
+    <LinearLayout
+        android:visibility="invisible"
+        android:id="@+id/contentView"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:elevation="4dp"
-        android:background="@color/colorPrimary">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:layout_marginLeft="16dp"
-            android:layout_centerVertical="true"
-            android:text="@string/test"/>
+        <RelativeLayout
+            android:id="@+id/custom_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:elevation="4dp"
+            android:background="@color/colorPrimary">
 
-        <Button
-            android:id="@+id/select_course_button"
-            android:layout_marginRight="16dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"
-            android:layout_width="48dp"
-            android:background="@drawable/ripple_add"
-            android:layout_height="48dp" />
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:layout_marginLeft="16dp"
+                android:layout_centerVertical="true"
+                android:text="@string/test"/>
 
-    </RelativeLayout>
+            <Button
+                android:id="@+id/select_course_button"
+                android:layout_marginRight="16dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:layout_width="48dp"
+                android:background="@drawable/ripple_add"
+                android:layout_height="48dp" />
 
-    <RelativeLayout
-        android:layout_weight="1"
-        android:id="@+id/main_fragment_layout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"></RelativeLayout>
+        </RelativeLayout>
 
-    <com.ashokvarma.bottomnavigation.BottomNavigationBar
-        android:id="@+id/bottom_navigation_bar"
-        android:layout_width="match_parent"
-        android:theme="@style/NavigationBottom"
-        android:layout_height="wrap_content"/>
+        <RelativeLayout
+            android:layout_weight="1"
+            android:id="@+id/main_fragment_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"></RelativeLayout>
 
-</LinearLayout>
+        <com.ashokvarma.bottomnavigation.BottomNavigationBar
+            android:id="@+id/bottom_navigation_bar"
+            android:layout_width="match_parent"
+            android:theme="@style/NavigationBottom"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <ProgressBar
+        android:visibility="gone"
+        android:id="@+id/progressBar"
+        android:layout_centerInParent="true"
+        android:layout_width="56dp"
+        android:layout_height="56dp" />
+
+
+
+</RelativeLayout>

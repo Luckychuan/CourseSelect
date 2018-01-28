@@ -26,7 +26,7 @@ public class MyCourseModelImpl implements MyCourseModel {
 
                     @Override
                     public void onError(Throwable e) {
-                        callback.onFail("无法连接至服务器");
+                        callback.onError("无法连接至服务器");
                     }
 
                     @Override

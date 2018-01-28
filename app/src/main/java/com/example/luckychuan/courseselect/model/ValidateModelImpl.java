@@ -1,6 +1,6 @@
 package com.example.luckychuan.courseselect.model;
 
-import com.example.luckychuan.courseselect.bean.LogoutJson;
+import com.example.luckychuan.courseselect.bean.BaseBean;
 import com.example.luckychuan.courseselect.retrofit.CustomRetrofit;
 
 import rx.Subscriber;
@@ -8,17 +8,17 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by Luckychuan on 2017/12/12.
+ * Created by Luckychuan on 2018/1/24.
  */
 
-public class LogoutModelImpl implements LogoutModel {
+public class ValidateModelImpl implements ValidateAccountModel {
     @Override
-    public void requestLogout(String userKey, final Callback<LogoutJson> callback) {
+    public void requestValidate(String userKey, final Callback<BaseBean<Boolean>> callback) {
         CustomRetrofit.getService()
-                .getLogout(userKey)
+                .validateAccount(userKey)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<LogoutJson>() {
+                .subscribe(new Subscriber<BaseBean<Boolean>>() {
                     @Override
                     public void onCompleted() {
 
@@ -26,11 +26,12 @@ public class LogoutModelImpl implements LogoutModel {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        callback.onError("无法连接至服务器");
                     }
 
                     @Override
-                    public void onNext(LogoutJson json) {
+                    public void onNext(BaseBean<Boolean> bean) {
+                        callback.onNext(bean);
                     }
                 });
     }

@@ -10,6 +10,6 @@ public interface Callback<T> {
 
     void onCompleted();
 
-    void onFail(String errorMsg);
+    void onError(String errorMsg);
 
 }

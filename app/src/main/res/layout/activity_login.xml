@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:hint="@string/hint_account"
-            android:text="2013116001"
+            android:text="@string/student_account"
             android:inputType="number"
             android:maxLength="10"/>
     </android.support.design.widget.TextInputLayout>
@@ -52,7 +52,7 @@
             android:layout_height="56dp"
             android:hint="@string/hint_password"
             android:maxLines="1"
-            android:text="123456"
+            android:text="@string/password"
             android:inputType="textPassword"/>
     </android.support.design.widget.TextInputLayout>
 
@@ -82,7 +82,7 @@
 
     <Button
         android:id="@+id/login_button"
-        android:text="登陆"
+        android:text="登录"
         android:layout_marginTop="24dp"
         android:background="@drawable/radius_button"
         style="?android:attr/borderlessButtonStyle"
