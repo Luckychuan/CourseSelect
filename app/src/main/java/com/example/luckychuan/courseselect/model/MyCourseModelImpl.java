@@ -13,7 +13,7 @@ import rx.schedulers.Schedulers;
 
 public class MyCourseModelImpl implements MyCourseModel {
     @Override
-    public void requestStuedentMyCourse(String userKey, final Callback<StudentMyCourse> callback) {
+    public void requestStudentMyCourse(String userKey, final Callback<StudentMyCourse> callback) {
         CustomRetrofit.getService()
                 .getMyCourse(userKey)
                 .subscribeOn(Schedulers.io())

@@ -10,9 +10,9 @@ import com.example.luckychuan.courseselect.bean.CourseJson;
 public interface SelectCourseView extends BaseView {
 
 
-    void addData(CourseJson[] courseJson);
-
-    void loadSelectCourseUI();
+//    void addData(CourseJson[] courseJson);
+//
+//    void loadSelectCourseUI();
 
     void showCourseInfo(CourseInfoJson courseInfoJson);
 

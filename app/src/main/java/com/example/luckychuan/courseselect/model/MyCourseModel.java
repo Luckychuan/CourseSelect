@@ -8,6 +8,6 @@ import com.example.luckychuan.courseselect.bean.StudentMyCourse;
 
 public interface MyCourseModel {
 
-    void requestStuedentMyCourse(String userKey,Callback<StudentMyCourse> callback);
+    void requestStudentMyCourse(String userKey,Callback<StudentMyCourse> callback);
 
 }

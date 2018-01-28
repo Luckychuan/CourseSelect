@@ -10,7 +10,7 @@ import com.example.luckychuan.courseselect.bean.CourseJson;
 
 public interface SelectCourseModel {
 
-    void requestData(int[] levels,String userKey ,String campus, Callback<CourseJson[]> callback);
+//    void requestData(int[] levels,String userKey ,String campus, Callback<CourseJson[]> callback);
 
     void requestCourseInfo(String userKey ,String id, Callback<CourseInfoJson> callback);
 

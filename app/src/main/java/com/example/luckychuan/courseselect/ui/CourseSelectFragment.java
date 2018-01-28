@@ -170,84 +170,84 @@ public class CourseSelectFragment extends Fragment implements SelectCourseView, 
         mJsonCourses.clear();
         mRecyclerItems.clear();
 
-        mPresenter.requestData(Constant.LEVELS, LoginActivity.getStudent().getUserKey(), mCampus);
+//        mPresenter.requestData(Constant.LEVELS, LoginActivity.getStudent().getUserKey(), mCampus);
     }
 
-    @Override
-    public void addData(CourseJson[] courseJson) {
-        for (CourseJson c : courseJson) {
-            mJsonCourses.add(c);
-        }
-    }
-
-    @Override
-    public void loadSelectCourseUI() {
-        mRefreshLayout.setRefreshing(false);
-
-        //按星期排序
-        Collections.sort(mJsonCourses, new Comparator<CourseJson>() {
-            @Override
-            public int compare(CourseJson courseJson, CourseJson t1) {
-                if (courseJson.getWeek() > t1.getWeek()) {
-                    return 1;
-                } else if (courseJson.getWeek() < t1.getWeek()) {
-                    return -1;
-                } else {
-                    return 0;
-                }
-            }
-        });
-
-        //打印结果
-//        for(CourseJson cj: mJsonCourses){
-//            Log.d("mJsonCourses", cj.toString());
+//    @Override
+//    public void addData(CourseJson[] courseJson) {
+//        for (CourseJson c : courseJson) {
+//            mJsonCourses.add(c);
 //        }
-
-        //为RecyclerView添加item
-        WeekRecycler[] weeks = new WeekRecycler[Constant.WEEKS.length];
-        for (CourseJson cj : mJsonCourses) {
-            //添加Week
-            int w = cj.getWeek();
-            int i = w - 1;
-            if (weeks[i] == null) {
-                weeks[i] = new WeekRecycler();
-                weeks[i].setWeek(w);
-                weeks[i].setSize(0);
-                SelectCourseRecyclerAdapter.RecyclerItem<WeekRecycler> weekItem =
-                        new SelectCourseRecyclerAdapter.RecyclerItem<>(SelectCourseRecyclerAdapter.WEEK, weeks[i]);
-                mRecyclerItems.add(weekItem);
-            }
-
-            //添加Course
-            String time = "节次" + cj.getSection();
-            int level = cj.getLevel();
-            for (CourseJson.Course course : cj.getCourses()) {
-                String name = course.getName();
-                String teacher = course.getTeacher();
-                String studentLeft = course.getStudentLeft();
-                String teacherId = course.getTeacherId();
-                String id = course.getId();
-                CourseRecycler cr = new CourseRecycler(name, time, teacher, level, studentLeft, teacherId, id);
-                SelectCourseRecyclerAdapter.RecyclerItem<CourseRecycler> item =
-                        new SelectCourseRecyclerAdapter.RecyclerItem<>(SelectCourseRecyclerAdapter.COURSE, cr);
-                mRecyclerItems.add(item);
-
-                weeks[i].setSize(weeks[i].getSize() + 1);
-            }
-        }
-        //如果返回的json没有星期六的课程，手动添加星期六的日期
-        if (weeks[5] == null) {
-            weeks[5] = new WeekRecycler();
-            weeks[5].setWeek(6);
-            weeks[5].setSize(0);
-            SelectCourseRecyclerAdapter.RecyclerItem<WeekRecycler> weekItem =
-                    new SelectCourseRecyclerAdapter.RecyclerItem<>(SelectCourseRecyclerAdapter.WEEK, weeks[5]);
-            mRecyclerItems.add(weekItem);
-        }
-
-        mFilterItems.addAll(mRecyclerItems);
-        mAdapter.notifyDataSetChanged();
-    }
+//    }
+//
+//    @Override
+//    public void loadSelectCourseUI() {
+//        mRefreshLayout.setRefreshing(false);
+//
+//        //按星期排序
+//        Collections.sort(mJsonCourses, new Comparator<CourseJson>() {
+//            @Override
+//            public int compare(CourseJson courseJson, CourseJson t1) {
+//                if (courseJson.getWeek() > t1.getWeek()) {
+//                    return 1;
+//                } else if (courseJson.getWeek() < t1.getWeek()) {
+//                    return -1;
+//                } else {
+//                    return 0;
+//                }
+//            }
+//        });
+//
+//        //打印结果
+////        for(CourseJson cj: mJsonCourses){
+////            Log.d("mJsonCourses", cj.toString());
+////        }
+//
+//        //为RecyclerView添加item
+//        WeekRecycler[] weeks = new WeekRecycler[Constant.WEEKS.length];
+//        for (CourseJson cj : mJsonCourses) {
+//            //添加Week
+//            int w = cj.getWeek();
+//            int i = w - 1;
+//            if (weeks[i] == null) {
+//                weeks[i] = new WeekRecycler();
+//                weeks[i].setWeek(w);
+//                weeks[i].setSize(0);
+//                SelectCourseRecyclerAdapter.RecyclerItem<WeekRecycler> weekItem =
+//                        new SelectCourseRecyclerAdapter.RecyclerItem<>(SelectCourseRecyclerAdapter.WEEK, weeks[i]);
+//                mRecyclerItems.add(weekItem);
+//            }
+//
+//            //添加Course
+//            String time = "节次" + cj.getSection();
+//            int level = cj.getLevel();
+//            for (CourseJson.Course course : cj.getCourses()) {
+//                String name = course.getName();
+//                String teacher = course.getTeacher();
+//                String studentLeft = course.getStudentLeft();
+//                String teacherId = course.getTeacherId();
+//                String id = course.getId();
+//                CourseRecycler cr = new CourseRecycler(name, time, teacher, level, studentLeft, teacherId, id);
+//                SelectCourseRecyclerAdapter.RecyclerItem<CourseRecycler> item =
+//                        new SelectCourseRecyclerAdapter.RecyclerItem<>(SelectCourseRecyclerAdapter.COURSE, cr);
+//                mRecyclerItems.add(item);
+//
+//                weeks[i].setSize(weeks[i].getSize() + 1);
+//            }
+//        }
+//        //如果返回的json没有星期六的课程，手动添加星期六的日期
+//        if (weeks[5] == null) {
+//            weeks[5] = new WeekRecycler();
+//            weeks[5].setWeek(6);
+//            weeks[5].setSize(0);
+//            SelectCourseRecyclerAdapter.RecyclerItem<WeekRecycler> weekItem =
+//                    new SelectCourseRecyclerAdapter.RecyclerItem<>(SelectCourseRecyclerAdapter.WEEK, weeks[5]);
+//            mRecyclerItems.add(weekItem);
+//        }
+//
+//        mFilterItems.addAll(mRecyclerItems);
+//        mAdapter.notifyDataSetChanged();
+//    }
 
     @Override
     public void showCourseInfo(CourseInfoJson courseInfoJson) {

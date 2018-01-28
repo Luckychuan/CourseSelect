@@ -1,10 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="课程信息"/>
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ProgressBar
+                android:visibility="gone"
+                android:id="@+id/progressBar"
+                android:layout_centerInParent="true"
+                android:layout_width="56dp"
+                android:layout_height="56dp" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/keChengBianHao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="课程编号："
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/keChengMingCheng"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/text_margin"
+                    android:text="课程名称：  "
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/xueFen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/text_margin"
+                    android:text="学分："
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/yunDongXiangMu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/text_margin"
+                    android:text="运动项目：  "
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/renKeJiaoShi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/text_margin"
+                    android:text="任课教师：  "
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/zhiGongHao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/text_margin"
+                    android:text="职工号：  "
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/shangKeZhouCi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/text_margin"
+                    android:text="上课周次：  "
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/xingQi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/text_margin"
+                    android:text="星期："
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/jieCi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/text_margin"
+                    android:text="节次：  "
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/xiaoQu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/text_margin"
+                    android:text="校区：  "
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/rongLiang"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/text_margin"
+                    android:text="课程容量："
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/jiBie"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/text_margin"
+                    android:text="级别：  "
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/keChengLeiXing"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/text_margin"
+                    android:text="课程类型：  "
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/xingBie"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/text_margin"
+                    android:text="性别："
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/xueNian"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/text_margin"
+                    android:text="学年：  "
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/xueQi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/text_margin"
+                    android:text="学期：  "
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
 
 </LinearLayout>

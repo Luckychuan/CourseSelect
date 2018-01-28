@@ -21,7 +21,7 @@ public class MyCoursePresenter extends BasePresenter {
     }
 
     public void requestStudentCourse(String userKey){
-        mModel.requestStuedentMyCourse(userKey, new Callback<StudentMyCourse>() {
+        mModel.requestStudentMyCourse(userKey, new Callback<StudentMyCourse>() {
             @Override
             public void onNext(StudentMyCourse bean) {
                 if(bean.isSuccess()){

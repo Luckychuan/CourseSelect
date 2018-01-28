@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
@@ -202,7 +203,7 @@ public class MainActivity extends CollectorActivity implements MeFragment.OnLogo
 
     @Override
     public void onError(String errorMsg) {
-
+        Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
     }
 
     @Override

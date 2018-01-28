@@ -1,5 +1,7 @@
 package com.example.luckychuan.courseselect.adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.luckychuan.courseselect.R;
 import com.example.luckychuan.courseselect.bean.StudentMyCourse;
+import com.example.luckychuan.courseselect.ui.CourseActivity;
 import com.example.luckychuan.courseselect.util.Constant;
 
 import java.util.ArrayList;
@@ -20,6 +23,7 @@ import java.util.ArrayList;
 public class MyCourseRecyclerAdapter extends RecyclerView.Adapter<MyCourseRecyclerAdapter.MyViewHolder> {
 
     private ArrayList<StudentMyCourse.Data> mList;
+    private Context mContext;
 
     public MyCourseRecyclerAdapter(ArrayList<StudentMyCourse.Data> list) {
         mList = list;
@@ -27,6 +31,7 @@ public class MyCourseRecyclerAdapter extends RecyclerView.Adapter<MyCourseRecycl
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        mContext = parent.getContext();
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_my_course, parent, false);
         return new MyViewHolder(v);
     }
@@ -65,7 +70,9 @@ public class MyCourseRecyclerAdapter extends RecyclerView.Adapter<MyCourseRecycl
             item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    Intent intent = new Intent(mContext, CourseActivity.class);
+                    intent.putExtra("course_id",mList.get(getLayoutPosition()).getId());
+                    mContext.startActivity(intent);
                 }
             });
         }

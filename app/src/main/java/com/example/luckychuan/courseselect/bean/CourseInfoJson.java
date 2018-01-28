@@ -67,6 +67,7 @@ public class CourseInfoJson {
         private String sportName;
         @SerializedName("renKeJiaoShi")
         private String teacher;
+        private String zhiGongHao;
         @SerializedName("shangKeZhouCi")
         private String duration;
         @SerializedName("xingQi")
@@ -87,6 +88,14 @@ public class CourseInfoJson {
         private int year;
         @SerializedName("xueQi")
         private int term;
+
+        public String getZhiGongHao() {
+            return zhiGongHao;
+        }
+
+        public void setZhiGongHao(String zhiGongHao) {
+            this.zhiGongHao = zhiGongHao;
+        }
 
         public String getId() {
             return id;

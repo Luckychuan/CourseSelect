@@ -50,6 +50,8 @@ public class StudentMyCourse {
 
 
     public class Data{
+        @SerializedName("KCBH")
+        private String id;
         @SerializedName("KCMC")
         private String  name;
         @SerializedName("RKJS")
@@ -68,6 +70,14 @@ public class StudentMyCourse {
         private int rate;         //评教
         @SerializedName("ZT")
         private String commit;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
 
         public String getCommit() {
             return commit;

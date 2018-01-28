@@ -7,6 +7,7 @@ import com.example.luckychuan.courseselect.bean.CourseJson;
 import com.example.luckychuan.courseselect.model.Callback;
 import com.example.luckychuan.courseselect.model.SelectCourseModel;
 import com.example.luckychuan.courseselect.model.SelectCourseModelImpl;
+import com.example.luckychuan.courseselect.view.BaseView;
 import com.example.luckychuan.courseselect.view.SelectCourseView;
 
 /**
@@ -23,27 +24,27 @@ public class SelectCoursePresenter extends BasePresenter {
         mModel = new SelectCourseModelImpl();
     }
 
-    public void requestData(int[] levels, String userKey, String campus) {
-        mView.showProgressbar();
-        mModel.requestData(levels, userKey, campus, new Callback<CourseJson[]>() {
-            @Override
-            public void onNext(CourseJson[] bean) {
-                mView.addData(bean);
-            }
-
-            @Override
-            public void onCompleted() {
-                mView.hideProgressbar();
-                mView.loadSelectCourseUI();
-            }
-
-            @Override
-            public void onError(String errorMsg) {
-                mView.hideProgressbar();
-                mView.onError(errorMsg);
-            }
-        });
-    }
+//    public void requestData(int[] levels, String userKey, String campus) {
+//        mView.showProgressbar();
+//        mModel.requestData(levels, userKey, campus, new Callback<CourseJson[]>() {
+//            @Override
+//            public void onNext(CourseJson[] bean) {
+//                mView.addData(bean);
+//            }
+//
+//            @Override
+//            public void onCompleted() {
+//                mView.hideProgressbar();
+//                mView.loadSelectCourseUI();
+//            }
+//
+//            @Override
+//            public void onError(String errorMsg) {
+//                mView.hideProgressbar();
+//                mView.onError(errorMsg);
+//            }
+//        });
+//    }
 
     public void requestCourseInfo(String userKey, String id) {
         mView.showProgressbar();
@@ -68,4 +69,8 @@ public class SelectCoursePresenter extends BasePresenter {
         });
     }
 
+
+    public void attach() {
+        super.attach(mView);
+    }
 }
