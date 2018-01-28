@@ -1,6 +1,6 @@
 package com.example.luckychuan.courseselect.model;
 
-import com.example.luckychuan.courseselect.bean.MyCourseJson;
+import com.example.luckychuan.courseselect.bean.StudentMyCourse;
 
 /**
  * Created by Luckychuan on 2017/12/13.
@@ -8,6 +8,6 @@ import com.example.luckychuan.courseselect.bean.MyCourseJson;
 
 public interface MyCourseModel {
 
-    void requestMyCourse(String userKey,Callback<MyCourseJson> callback);
+    void requestStuedentMyCourse(String userKey,Callback<StudentMyCourse> callback);
 
 }

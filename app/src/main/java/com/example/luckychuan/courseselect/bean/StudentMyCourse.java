@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by Luckychuan on 2017/12/13.
  */
 
-public class MyCourseJson {
+public class StudentMyCourse {
 
     @SerializedName("success")
     private boolean isSuccess;

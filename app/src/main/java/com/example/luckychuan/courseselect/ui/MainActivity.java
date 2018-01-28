@@ -139,14 +139,12 @@ public class MainActivity extends CollectorActivity implements MeFragment.OnLogo
                 switch (position) {
                     case 0:
                         title.setText("课程列表");
-                        // TODO: 2018/1/23
-//                        showMyCourseFragment();
+                        showMyCourseFragment();
                         button.setVisibility(View.VISIBLE);
                         break;
                     case 1:
                         title.setText("通知公告");
-                        // TODO: 2018/1/23
-//                        showNotificationFragment();
+                        showNotificationFragment();
                         button.setVisibility(View.INVISIBLE);
                         break;
                     case 2:

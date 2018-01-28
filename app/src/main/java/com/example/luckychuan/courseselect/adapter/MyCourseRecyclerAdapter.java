@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.luckychuan.courseselect.R;
-import com.example.luckychuan.courseselect.bean.MyCourseJson;
+import com.example.luckychuan.courseselect.bean.StudentMyCourse;
 import com.example.luckychuan.courseselect.util.Constant;
 
 import java.util.ArrayList;
@@ -19,9 +19,9 @@ import java.util.ArrayList;
 
 public class MyCourseRecyclerAdapter extends RecyclerView.Adapter<MyCourseRecyclerAdapter.MyViewHolder> {
 
-    private ArrayList<MyCourseJson.Data> mList;
+    private ArrayList<StudentMyCourse.Data> mList;
 
-    public MyCourseRecyclerAdapter(ArrayList<MyCourseJson.Data> list) {
+    public MyCourseRecyclerAdapter(ArrayList<StudentMyCourse.Data> list) {
         mList = list;
     }
 
@@ -70,7 +70,7 @@ public class MyCourseRecyclerAdapter extends RecyclerView.Adapter<MyCourseRecycl
             });
         }
 
-        public void onBind(MyCourseJson.Data data) {
+        public void onBind(StudentMyCourse.Data data) {
             name.setText(data.getName());
             teacher.setText("任课教师：" + data.getTeacher());
             duration.setText("周期：" + data.getDuration()+"周");

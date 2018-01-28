@@ -1,6 +1,6 @@
 package com.example.luckychuan.courseselect.view;
 
-import com.example.luckychuan.courseselect.bean.MyCourseJson;
+import com.example.luckychuan.courseselect.bean.StudentMyCourse;
 
 /**
  * Created by Luckychuan on 2017/12/13.
@@ -8,6 +8,6 @@ import com.example.luckychuan.courseselect.bean.MyCourseJson;
 
 public interface MyCourseView extends BaseView {
 
-    void onSuccess(MyCourseJson.Data[] data);
+    void onSuccess(StudentMyCourse.Data[] data);
 
 }

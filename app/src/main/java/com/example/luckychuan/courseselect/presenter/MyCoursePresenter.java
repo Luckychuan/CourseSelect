@@ -1,6 +1,6 @@
 package com.example.luckychuan.courseselect.presenter;
 
-import com.example.luckychuan.courseselect.bean.MyCourseJson;
+import com.example.luckychuan.courseselect.bean.StudentMyCourse;
 import com.example.luckychuan.courseselect.model.Callback;
 import com.example.luckychuan.courseselect.model.MyCourseModel;
 import com.example.luckychuan.courseselect.model.MyCourseModelImpl;
@@ -20,10 +20,10 @@ public class MyCoursePresenter extends BasePresenter {
         mView = view;
     }
 
-    public void requestMyCourse(String userKey){
-        mModel.requestMyCourse(userKey, new Callback<MyCourseJson>() {
+    public void requestStudentCourse(String userKey){
+        mModel.requestStuedentMyCourse(userKey, new Callback<StudentMyCourse>() {
             @Override
-            public void onNext(MyCourseJson bean) {
+            public void onNext(StudentMyCourse bean) {
                 if(bean.isSuccess()){
                     mView.onSuccess(bean.getData());
                     return;
