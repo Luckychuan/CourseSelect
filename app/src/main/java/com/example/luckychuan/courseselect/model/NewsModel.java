@@ -12,7 +12,7 @@ public interface NewsModel {
 
     void requestNewsTitle(String userKey,int page, Callback<BaseBeanArray<News>> callback);
 
-    void requestNewsContent(String userKey,int id, Callback<BaseBeanArray<NewsContent>> callback);
+    void requestNewsContent(String userKey,String id, Callback<BaseBeanArray<NewsContent>> callback);
 
 
 }

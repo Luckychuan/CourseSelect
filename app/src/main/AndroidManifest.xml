@@ -30,10 +30,11 @@
         <activity android:name=".ui.TestActivity">
 
         </activity>
-        <activity android:name=".ui.CollectorActivity" />
+        <activity android:name=".ui.BaseActivity" />
+        <activity android:name=".ui.NewsContentActivity"/>
 
         <receiver
-            android:name=".ui.CollectorActivity$JPushReceiver"
+            android:name=".ui.BaseActivity$JPushReceiver"
             android:enabled="true">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />

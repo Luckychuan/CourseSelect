@@ -50,7 +50,7 @@ public class NewsPresenter extends BasePresenter {
         });
     }
 
-    public void requestNewsContent(String userKey, int id) {
+    public void requestNewsContent(String userKey, String id) {
         mView.showProgressbar();
         mModel.requestNewsContent(userKey, id, new Callback<BaseBeanArray<NewsContent>>() {
             @Override

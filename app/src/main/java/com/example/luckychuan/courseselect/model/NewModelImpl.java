@@ -42,7 +42,7 @@ public class NewModelImpl implements NewsModel {
     }
 
     @Override
-    public void requestNewsContent(String userKey, int id, final Callback<BaseBeanArray<NewsContent>> callback) {
+    public void requestNewsContent(String userKey, String id, final Callback<BaseBeanArray<NewsContent>> callback) {
         CustomRetrofit.getService()
                 .getNewsContent(id,userKey)
                 .subscribeOn(Schedulers.io())
