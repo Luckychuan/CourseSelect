@@ -9,10 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
@@ -24,10 +21,10 @@ import com.example.luckychuan.courseselect.view.ValidateView;
  * Created by Luckychuan on 2017/11/29.
  */
 
-public class MainActivity extends CollectorActivity implements MeFragment.OnLogoutListener, ValidateView {
+public class MainActivity extends BaseActivity implements MeFragment.OnLogoutListener, ValidateView {
 
     private static final String TAG = "MainActivity";
-    private ProgressBar mProgressBar;
+
     private ValidatePresenter mPresenter;
     private MyCourseFragment mMyCourseFragment;
     private NotificationFragment mNotificationFragment;
@@ -186,24 +183,6 @@ public class MainActivity extends CollectorActivity implements MeFragment.OnLogo
         intent.putExtra("logout", true);
         startActivity(intent);
         finish();
-    }
-
-    @Override
-    public void showProgressbar() {
-        if (mProgressBar == null) {
-            mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
-        }
-        mProgressBar.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hideProgressbar() {
-        mProgressBar.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void onError(String errorMsg) {
-        Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
     }
 
     @Override

@@ -18,7 +18,7 @@ import com.example.luckychuan.courseselect.model.LogoutModelImpl;
 import com.example.luckychuan.courseselect.util.Constant;
 
 
-public class MeFragment extends Fragment {
+public class MeFragment extends BaseFragment {
 
     private LinearLayout mItemLayout;
 

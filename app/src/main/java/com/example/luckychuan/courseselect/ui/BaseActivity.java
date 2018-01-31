@@ -8,6 +8,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
+
+import com.example.luckychuan.courseselect.view.BaseView;
 
 import java.util.ArrayList;
 
@@ -17,8 +22,9 @@ import cn.jpush.android.api.JPushInterface;
  * Created by Luckychuan on 2018/1/23.
  */
 
-public class CollectorActivity extends AppCompatActivity{
+public class BaseActivity extends AppCompatActivity implements BaseView{
 
+    private ProgressBar mProgressBar;
     private static ArrayList<Activity> activities = new ArrayList<Activity>();
 
 
@@ -45,6 +51,30 @@ public class CollectorActivity extends AppCompatActivity{
                 activity.finish();
             }
         }
+    }
+
+    @Override
+    public void showProgressbar() {
+        if(mProgressBar !=null){
+            mProgressBar.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void hideProgressbar() {
+        if(mProgressBar != null){
+            mProgressBar.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onError(String errorMsg) {
+        Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onFail(String failMsg) {
+        Toast.makeText(this, failMsg, Toast.LENGTH_SHORT).show();
     }
 
 

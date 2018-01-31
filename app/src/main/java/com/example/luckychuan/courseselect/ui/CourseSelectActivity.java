@@ -25,7 +25,7 @@ import java.util.ArrayList;
  * Created by Luckychuan on 2017/11/20.
  */
 
-public class CourseSelectActivity extends AppCompatActivity implements CourseSelectFragment.OnTitleChangeListener {
+public class CourseSelectActivity extends BaseActivity implements CourseSelectFragment.OnTitleChangeListener {
 
     private Toolbar mToolbar;
     private CourseSelectFragment mFragment1;

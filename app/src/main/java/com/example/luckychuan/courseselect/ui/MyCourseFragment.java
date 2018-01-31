@@ -25,7 +25,7 @@ import java.util.Collections;
  * Created by Luckychuan on 2017/11/29.
  */
 
-public class MyCourseFragment extends Fragment implements MyCourseView {
+public class MyCourseFragment extends BaseFragment implements MyCourseView {
 
     private static final String TAG = "MyCourseFragment";
     private MyCoursePresenter mPresenter;
@@ -63,25 +63,6 @@ public class MyCourseFragment extends Fragment implements MyCourseView {
 
     }
 
-    @Override
-    public void showProgressbar() {
-
-    }
-
-    @Override
-    public void hideProgressbar() {
-
-    }
-
-    @Override
-    public void onError(String errorMsg) {
-        Toast.makeText(getContext(), errorMsg, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onFail(String failMsg) {
-        Toast.makeText(getContext(), failMsg, Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     public void onSuccess(StudentMyCourse.Data[] data) {

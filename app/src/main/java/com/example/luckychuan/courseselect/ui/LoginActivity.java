@@ -2,7 +2,6 @@ package com.example.luckychuan.courseselect.ui;
 
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -17,12 +16,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import com.example.luckychuan.courseselect.R;
 import com.example.luckychuan.courseselect.bean.StudentJson;
 import com.example.luckychuan.courseselect.bean.TeacherJson;
 import com.example.luckychuan.courseselect.presenter.UserPresenter;
+import com.example.luckychuan.courseselect.view.BaseView;
 import com.example.luckychuan.courseselect.view.LoginView;
 
 import cn.jpush.android.api.JPushInterface;
@@ -31,7 +30,7 @@ import cn.jpush.android.api.JPushInterface;
  * Created by Luckychuan on 2017/11/29.
  */
 
-public class LoginActivity extends AppCompatActivity implements LoginView {
+public class LoginActivity extends BaseActivity implements LoginView {
 
     private static final String TAG = "LoginActivity";
 
@@ -185,12 +184,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         if (mProgressDialog != null) {
             mProgressDialog.dismiss();
         }
-    }
-
-    @Override
-    public void onError(String errorMsg) {
-        Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
-
     }
 
     @Override

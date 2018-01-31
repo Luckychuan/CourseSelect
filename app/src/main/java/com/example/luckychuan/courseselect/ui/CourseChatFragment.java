@@ -13,7 +13,7 @@ import com.example.luckychuan.courseselect.R;
  * Created by Luckychuan on 2017/11/29.
  */
 
-public class CourseChatFragment extends Fragment {
+public class CourseChatFragment extends BaseFragment {
 
     @Nullable
     @Override

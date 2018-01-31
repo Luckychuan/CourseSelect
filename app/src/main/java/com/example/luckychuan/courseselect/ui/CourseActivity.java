@@ -21,7 +21,8 @@ import java.util.List;
  * Created by Luckychuan on 2017/11/29.
  */
 
-public class CourseActivity extends CollectorActivity {
+public class CourseActivity extends BaseActivity {
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

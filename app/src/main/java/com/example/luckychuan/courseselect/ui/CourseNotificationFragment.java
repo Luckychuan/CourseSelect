@@ -13,7 +13,7 @@ import com.example.luckychuan.courseselect.R;
  * Created by Luckychuan on 2017/11/29.
  */
 
-public class CourseNotificationFragment extends Fragment {
+public class CourseNotificationFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

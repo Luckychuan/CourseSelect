@@ -27,12 +27,16 @@ public class BaseFragment extends Fragment implements BaseView {
 
     @Override
     public void showProgressbar() {
-        mProgressBar.setVisibility(View.VISIBLE);
+        if(mProgressBar !=null){
+            mProgressBar.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public void hideProgressbar() {
-        mProgressBar.setVisibility(View.GONE);
+       if(mProgressBar != null){
+           mProgressBar.setVisibility(View.GONE);
+       }
     }
 
     @Override

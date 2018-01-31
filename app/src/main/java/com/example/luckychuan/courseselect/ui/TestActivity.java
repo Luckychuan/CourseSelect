@@ -10,7 +10,7 @@ import com.example.luckychuan.courseselect.R;
  * Created by Luckychuan on 2017/12/10.
  */
 
-public class TestActivity extends Activity {
+public class TestActivity extends BaseActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
