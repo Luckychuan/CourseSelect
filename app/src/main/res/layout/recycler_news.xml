@@ -10,7 +10,8 @@
         android:id="@+id/news_title"
         android:text="关于2011-2012-1学期体育课第二轮选课后停开课程信息"
         android:layout_width="wrap_content"
-        android:textSize="20sp"
+        android:textSize="18sp"
+        android:textColor="@color/black"
         android:layout_height="wrap_content" />
 
     <TextView
@@ -22,6 +23,7 @@
         android:layout_marginLeft="16dp"
         android:textSize="14sp"
         android:gravity="right"
+        android:textColor="@color/hintGray"
         android:text="2011-8-26 20:50:44"/>
 
 

@@ -38,31 +38,46 @@ public class NewsFragment extends BaseFragment implements NewsView {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mLayout = (MoreRecyclerLayout) view.findViewById(R.id.more_layout);
+        mLayout.setOnScrollBottomListener(new MoreRecyclerLayout.OnScrollBottomListener() {
+            @Override
+            public void OnScrollBottom() {
+                mPresenter.requestNewsTitle(LoginActivity.getUserKey(), mPage);
+            }
+        });
 
         mPresenter = new NewsPresenter(this);
         mPresenter.attach(this);
         mPresenter.requestNewsTitle(LoginActivity.getUserKey(), mPage);
 
-        //// TODO: 2018/1/31
-        mPresenter.requestNewsContent(LoginActivity.getUserKey(),46);
 
     }
 
     @Override
     public void onResponse(News[] newsArray) {
         mPage++;
+        Log.d(TAG, "onResponse: "+mPage);
         mLayout.addData(newsArray);
     }
 
     @Override
     public void onResponse(NewsContent[] newsContent) {
-        Log.d(TAG, "onResponse: " + newsContent[0].toString());
     }
 
     @Override
     public void onFail(String failMsg) {
-        // TODO: 2018/1/31
+        mLayout.showNoMoreView();
+        mLayout.setOnScrollBottomListener(null);
     }
+
+    @Override
+    public void onError(String errorMsg) {
+        super.onError(errorMsg);
+        if (mPage > 1) {
+            mLayout.hideLoadingView();
+        }
+    }
+
+
 
     @Override
     public void onDestroy() {

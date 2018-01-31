@@ -1,6 +1,5 @@
 package com.example.luckychuan.courseselect.presenter;
 
-import com.example.luckychuan.courseselect.bean.BaseBean;
 import com.example.luckychuan.courseselect.bean.BaseBeanArray;
 import com.example.luckychuan.courseselect.bean.News;
 import com.example.luckychuan.courseselect.bean.NewsContent;
@@ -18,20 +17,22 @@ public class NewsPresenter extends BasePresenter {
     private NewsModel mModel;
     private NewsView mView;
 
-    public NewsPresenter(NewsView newsView){
+    public NewsPresenter(NewsView newsView) {
         mView = newsView;
         mModel = new NewModelImpl();
     }
 
-    public void requestNewsTitle(String userKey,int page){
-        mView.showProgressbar();
-        mModel.requestNewsTitle(userKey,page, new Callback<BaseBeanArray<News>>() {
+    public void requestNewsTitle(String userKey, int page) {
+        if (page == 1) {
+            mView.showProgressbar();
+        }
+        mModel.requestNewsTitle(userKey, page, new Callback<BaseBeanArray<News>>() {
             @Override
             public void onNext(BaseBeanArray<News> bean) {
                 mView.hideProgressbar();
-                if(bean.isSuccess()){
+                if (bean.isSuccess()) {
                     mView.onResponse(bean.getDatas());
-                }else{
+                } else {
                     mView.onFail(bean.getError());
                 }
             }
@@ -49,15 +50,15 @@ public class NewsPresenter extends BasePresenter {
         });
     }
 
-    public void requestNewsContent(String userKey,int id){
+    public void requestNewsContent(String userKey, int id) {
         mView.showProgressbar();
         mModel.requestNewsContent(userKey, id, new Callback<BaseBeanArray<NewsContent>>() {
             @Override
-            public void onNext(BaseBeanArray<NewsContent>bean) {
+            public void onNext(BaseBeanArray<NewsContent> bean) {
                 mView.hideProgressbar();
-                if(bean.isSuccess()){
+                if (bean.isSuccess()) {
                     mView.onResponse(bean.getDatas());
-                }else{
+                } else {
                     mView.onFail(bean.getError());
                 }
             }

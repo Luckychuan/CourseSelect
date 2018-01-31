@@ -59,8 +59,8 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     }
 
     public static class ItemBean {
-        private int type;
-        private Object bean;
+        public int type;
+        public Object bean;
 
         public ItemBean(int type, Object bean) {
             this.type = type;
