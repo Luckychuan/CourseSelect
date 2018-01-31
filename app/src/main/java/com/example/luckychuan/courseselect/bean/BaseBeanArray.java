@@ -13,6 +13,7 @@ public class BaseBeanArray<T> {
     @SerializedName("msgcode")
     private int msgCode;
     private String error;
+    @SerializedName("data")
     private T[] datas;
 
     public boolean isSuccess() {

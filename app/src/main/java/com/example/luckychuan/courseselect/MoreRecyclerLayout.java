@@ -47,7 +47,7 @@ public class MoreRecyclerLayout extends RelativeLayout {
         super(context, attrs, defStyleAttr);
     }
 
-    public void addData(List<News> list){
+    public void addData(News[] list){
         for(News news : list){
             NewsRecyclerAdapter.ItemBean item = new NewsRecyclerAdapter
                     .ItemBean(NewsRecyclerAdapter.TYPE_NEWS, news);
