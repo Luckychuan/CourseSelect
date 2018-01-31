@@ -1,10 +1,10 @@
 package com.example.luckychuan.courseselect.ui;
 
-import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
@@ -27,7 +27,7 @@ public class MainActivity extends BaseActivity implements MeFragment.OnLogoutLis
 
     private ValidatePresenter mPresenter;
     private MyCourseFragment mMyCourseFragment;
-    private NotificationFragment mNotificationFragment;
+    private NewsFragment mNewsFragment;
     private MeFragment mMeFragment;
 
     @Override
@@ -48,7 +48,7 @@ public class MainActivity extends BaseActivity implements MeFragment.OnLogoutLis
     }
 
     private void showNotificationFragment() {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         if (mMeFragment != null) {
             transaction.hide(mMeFragment);
@@ -57,24 +57,24 @@ public class MainActivity extends BaseActivity implements MeFragment.OnLogoutLis
             transaction.hide(mMyCourseFragment);
         }
 
-        if (mNotificationFragment == null) {
-            mNotificationFragment = new NotificationFragment();
-            transaction.add(R.id.main_fragment_layout, mNotificationFragment);
+        if (mNewsFragment == null) {
+            mNewsFragment = new NewsFragment();
+            transaction.add(R.id.main_fragment_layout, mNewsFragment);
         } else {
-            transaction.show(mNotificationFragment);
+            transaction.show(mNewsFragment);
         }
 
         transaction.commit();
     }
 
     private void showMeFragment() {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         if (mMyCourseFragment != null) {
             transaction.hide(mMyCourseFragment);
         }
-        if (mNotificationFragment != null) {
-            transaction.hide(mNotificationFragment);
+        if (mNewsFragment != null) {
+            transaction.hide(mNewsFragment);
         }
 
         if (mMeFragment == null) {
@@ -90,13 +90,13 @@ public class MainActivity extends BaseActivity implements MeFragment.OnLogoutLis
 
     private void showMyCourseFragment() {
 
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         if (mMeFragment != null) {
             transaction.hide(mMeFragment);
         }
-        if (mNotificationFragment != null) {
-            transaction.hide(mNotificationFragment);
+        if (mNewsFragment != null) {
+            transaction.hide(mNewsFragment);
         }
 
         if (mMyCourseFragment == null) {
@@ -162,7 +162,7 @@ public class MainActivity extends BaseActivity implements MeFragment.OnLogoutLis
 
             }
         });
-        bottomNavigationBar.selectTab(0);
+        bottomNavigationBar.selectTab(1);
 
     }
 
