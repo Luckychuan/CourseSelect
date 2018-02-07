@@ -1,6 +1,7 @@
 package com.example.luckychuan.courseselect.presenter;
 
-import com.example.luckychuan.courseselect.bean.StudentMyCourse;
+import com.example.luckychuan.courseselect.bean.BaseBeanArray;
+import com.example.luckychuan.courseselect.bean.MyCourse;
 import com.example.luckychuan.courseselect.model.Callback;
 import com.example.luckychuan.courseselect.model.MyCourseModel;
 import com.example.luckychuan.courseselect.model.MyCourseModelImpl;
@@ -21,11 +22,11 @@ public class MyCoursePresenter extends BasePresenter {
     }
 
     public void requestStudentCourse(String userKey){
-        mModel.requestStudentMyCourse(userKey, new Callback<StudentMyCourse>() {
+        mModel.requestMyCourse(userKey, new Callback<BaseBeanArray<MyCourse>>() {
             @Override
-            public void onNext(StudentMyCourse bean) {
+            public void onNext(BaseBeanArray<MyCourse> bean) {
                 if(bean.isSuccess()){
-                    mView.onSuccess(bean.getData());
+                    mView.onSuccess(bean.getDatas());
                     return;
                 }
                 mView.onFail(bean.getError());

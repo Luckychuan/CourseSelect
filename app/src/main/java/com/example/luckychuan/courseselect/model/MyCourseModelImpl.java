@@ -1,6 +1,7 @@
 package com.example.luckychuan.courseselect.model;
 
-import com.example.luckychuan.courseselect.bean.StudentMyCourse;
+import com.example.luckychuan.courseselect.bean.BaseBeanArray;
+import com.example.luckychuan.courseselect.bean.MyCourse;
 import com.example.luckychuan.courseselect.retrofit.CustomRetrofit;
 
 import rx.Subscriber;
@@ -13,12 +14,12 @@ import rx.schedulers.Schedulers;
 
 public class MyCourseModelImpl implements MyCourseModel {
     @Override
-    public void requestStudentMyCourse(String userKey, final Callback<StudentMyCourse> callback) {
+    public void requestMyCourse(String userKey, final Callback<BaseBeanArray<MyCourse>> callback) {
         CustomRetrofit.getService()
                 .getMyCourse(userKey)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<StudentMyCourse>() {
+                .subscribe(new Subscriber<BaseBeanArray<MyCourse>>() {
                     @Override
                     public void onCompleted() {
 
@@ -30,9 +31,10 @@ public class MyCourseModelImpl implements MyCourseModel {
                     }
 
                     @Override
-                    public void onNext(StudentMyCourse json) {
+                    public void onNext(BaseBeanArray<MyCourse> json) {
                         callback.onNext(json);
                     }
                 });
     }
+
 }

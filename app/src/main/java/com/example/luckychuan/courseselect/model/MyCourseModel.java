@@ -1,6 +1,7 @@
 package com.example.luckychuan.courseselect.model;
 
-import com.example.luckychuan.courseselect.bean.StudentMyCourse;
+import com.example.luckychuan.courseselect.bean.BaseBeanArray;
+import com.example.luckychuan.courseselect.bean.MyCourse;
 
 /**
  * Created by Luckychuan on 2017/12/13.
@@ -8,6 +9,6 @@ import com.example.luckychuan.courseselect.bean.StudentMyCourse;
 
 public interface MyCourseModel {
 
-    void requestStudentMyCourse(String userKey,Callback<StudentMyCourse> callback);
+    void requestMyCourse(String userKey,Callback<BaseBeanArray<MyCourse>> callback);
 
 }

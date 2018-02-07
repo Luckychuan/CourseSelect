@@ -54,8 +54,16 @@ public class NewsFragment extends BaseFragment implements NewsView {
 
     @Override
     public void onResponse(News[] newsArray) {
+        //没有数据的时候
+        if (newsArray == null || newsArray.length == 0) {
+            mLayout.showNoMoreView();
+            mLayout.setOnScrollBottomListener(null);
+            return;
+        }
+
+        //有数据时
         mPage++;
-        Log.d(TAG, "onResponse: "+mPage);
+        Log.d(TAG, "onResponse: " + mPage);
         mLayout.addData(newsArray);
     }
 
@@ -64,19 +72,13 @@ public class NewsFragment extends BaseFragment implements NewsView {
     }
 
     @Override
-    public void onFail(String failMsg) {
-        mLayout.showNoMoreView();
-        mLayout.setOnScrollBottomListener(null);
-    }
-
-    @Override
     public void onError(String errorMsg) {
         super.onError(errorMsg);
         if (mPage > 1) {
             mLayout.hideLoadingView();
         }
+        mLayout.setOnScrollBottomListener(null);
     }
-
 
 
     @Override

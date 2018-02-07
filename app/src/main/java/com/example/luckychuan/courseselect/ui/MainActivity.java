@@ -162,7 +162,7 @@ public class MainActivity extends BaseActivity implements MeFragment.OnLogoutLis
 
             }
         });
-        bottomNavigationBar.selectTab(1);
+        bottomNavigationBar.selectTab(0);
 
     }
 

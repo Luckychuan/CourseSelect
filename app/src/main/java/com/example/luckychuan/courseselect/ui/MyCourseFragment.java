@@ -1,20 +1,17 @@
 package com.example.luckychuan.courseselect.ui;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.luckychuan.courseselect.R;
 import com.example.luckychuan.courseselect.adapter.MyCourseRecyclerAdapter;
-import com.example.luckychuan.courseselect.bean.StudentMyCourse;
+import com.example.luckychuan.courseselect.bean.MyCourse;
 import com.example.luckychuan.courseselect.presenter.MyCoursePresenter;
 import com.example.luckychuan.courseselect.view.MyCourseView;
 
@@ -30,7 +27,7 @@ public class MyCourseFragment extends BaseFragment implements MyCourseView {
     private static final String TAG = "MyCourseFragment";
     private MyCoursePresenter mPresenter;
     private MyCourseRecyclerAdapter mAdapter;
-    private ArrayList<StudentMyCourse.Data> mList;
+    private ArrayList<MyCourse> mList;
 
     private TextView mNoCourse;
 
@@ -48,11 +45,7 @@ public class MyCourseFragment extends BaseFragment implements MyCourseView {
 
         mPresenter = new MyCoursePresenter(this);
         mPresenter.attach(this);
-        if (LoginActivity.getUser() == LoginActivity.STUDENT) {
-            mPresenter.requestStudentCourse(LoginActivity.getUserKey());
-        } else if (LoginActivity.getUser() == LoginActivity.TEACHER) {
-            //// TODO: 2018/1/28
-        }
+        mPresenter.requestStudentCourse(LoginActivity.getUserKey());
 
         mList = new ArrayList<>();
         mAdapter = new MyCourseRecyclerAdapter(mList);
@@ -65,13 +58,12 @@ public class MyCourseFragment extends BaseFragment implements MyCourseView {
 
 
     @Override
-    public void onSuccess(StudentMyCourse.Data[] data) {
-        Log.d(TAG, "onSuccess: " + data[0].toString());
+    public void onSuccess(MyCourse[] myCourses) {
         mList.clear();
-        Collections.addAll(mList, data);
+        Collections.addAll(mList, myCourses);
         if (mList.size() == 0) {
             mNoCourse.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             mAdapter.notifyDataSetChanged();
         }
 
