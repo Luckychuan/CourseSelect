@@ -8,7 +8,7 @@
     <string name="tv_teacher">teacher</string>
     <string name="tv_studentLeft">7</string>
     <string name="tv_course_name">tv_course_name</string>
-    <string name="hint_account">学号</string>
+    <string name="hint_account">账号</string>
     <string name="hint_password">密码</string>
     <string name="test">测试字符串</string>
     <string name="student_account">3151611079</string>

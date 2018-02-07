@@ -1,36 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:id="@+id/item_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="vertical">
 
     <TextView
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
         android:id="@+id/news_title"
-        android:text="关于2011-2012-1学期体育课第二轮选课后停开课程信息"
         android:layout_width="wrap_content"
-        android:textSize="18sp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:text="关于2011-2012-1学期体育课第二轮选课后停开课程信息"
         android:textColor="@color/black"
-        android:layout_height="wrap_content" />
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="16dp"
         android:layout_marginLeft="16dp"
-        android:textSize="14sp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
         android:gravity="right"
+        android:text="2011-8-26 20:50:44"
         android:textColor="@color/hintGray"
-        android:text="2011-8-26 20:50:44"/>
+        android:textSize="14sp" />
 
 
     <ImageView
-        android:layout_marginTop="15dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_marginTop="15dp"
         android:background="#0c000000" />
 
 </LinearLayout>

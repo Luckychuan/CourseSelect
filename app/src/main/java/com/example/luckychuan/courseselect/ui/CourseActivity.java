@@ -5,9 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 
 import com.example.luckychuan.courseselect.R;
@@ -15,7 +13,6 @@ import com.example.luckychuan.courseselect.adapter.TabPagerAdapter;
 import com.example.luckychuan.courseselect.util.Constant;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Luckychuan on 2017/11/29.
@@ -46,7 +43,7 @@ public class CourseActivity extends BaseActivity {
         Bundle bundle = new Bundle();
         bundle.putString("course_id",getIntent().getStringExtra("course_id"));
         fragment1.setArguments(bundle);
-        Fragment fragment2 =  new CourseNotificationFragment();
+        Fragment fragment2 =  new NotificationFragment();
         Fragment fragment4 =  new CourseRateFragment();
         list.add(fragment2);
         list.add(fragment1);
