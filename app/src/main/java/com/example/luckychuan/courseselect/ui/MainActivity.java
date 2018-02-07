@@ -121,6 +121,9 @@ public class MainActivity extends BaseActivity implements MeFragment.OnLogoutLis
             public void onClick(View view) {
                 // TODO: 2018/1/23
 //                startActivity(new Intent(MainActivity.this,CourseSelectActivity.class));
+                Intent intent = new Intent(MainActivity.this,WriteActivity.class);
+                intent.putExtra("type",WriteActivity.TYPE_NOTIFICATION);
+                startActivity(intent);
             }
         });
 

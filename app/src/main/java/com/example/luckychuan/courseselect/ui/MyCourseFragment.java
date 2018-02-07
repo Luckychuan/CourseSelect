@@ -17,6 +17,10 @@ import com.example.luckychuan.courseselect.view.MyCourseView;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * Created by Luckychuan on 2017/11/29.
@@ -63,9 +67,19 @@ public class MyCourseFragment extends BaseFragment implements MyCourseView {
         Collections.addAll(mList, myCourses);
         if (mList.size() == 0) {
             mNoCourse.setVisibility(View.VISIBLE);
-        } else {
-            mAdapter.notifyDataSetChanged();
+            return;
         }
+        mAdapter.notifyDataSetChanged();
+
+        //若是学生，注册推送通知Tag
+        if(LoginActivity.getUser() == LoginActivity.STUDENT){
+            Set<String> tags = new HashSet<>();
+            for(MyCourse myCourse: mList){
+                tags.add(myCourse.getId());
+            }
+            JPushInterface.setTags(getContext(),0,tags);
+        }
+
 
     }
 

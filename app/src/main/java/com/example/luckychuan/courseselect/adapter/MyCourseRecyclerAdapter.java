@@ -81,7 +81,7 @@ public class MyCourseRecyclerAdapter extends RecyclerView.Adapter<MyCourseRecycl
             name.setText(data.getName());
             teacher.setText("任课教师：" + data.getTeacher());
             duration.setText("周期：" + data.getDuration()+"周");
-            time.setText("上课时间：" + Constant.WEEKS[data.getWeek()] + "，第" + data.getTime() + "、" + (data.getTime() + 1) + "节");
+            time.setText("上课时间：" + Constant.WEEKS[data.getWeek()-1] + "，第" + data.getTime() + "、" + (data.getTime() + 1) + "节");
             campus.setText("校区："+data.getCampus());
 
 //            if(data.getCommit().equals("已提交")){
