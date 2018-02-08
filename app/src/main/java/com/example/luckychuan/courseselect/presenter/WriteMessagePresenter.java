@@ -41,6 +41,7 @@ public class WriteMessagePresenter extends BasePresenter {
             @Override
             public void onError(String errorMsg) {
                 mView.hideProgressbar();
+                mView.onError(errorMsg);
             }
         });
     }

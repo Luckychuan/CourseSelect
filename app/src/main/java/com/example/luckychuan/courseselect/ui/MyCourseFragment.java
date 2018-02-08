@@ -49,7 +49,7 @@ public class MyCourseFragment extends BaseFragment implements MyCourseView {
 
         mPresenter = new MyCoursePresenter(this);
         mPresenter.attach(this);
-        mPresenter.requestStudentCourse(LoginActivity.getUserKey());
+        mPresenter.requestCourse(LoginActivity.getUserKey());
 
         mList = new ArrayList<>();
         mAdapter = new MyCourseRecyclerAdapter(mList);
@@ -79,8 +79,6 @@ public class MyCourseFragment extends BaseFragment implements MyCourseView {
             }
             JPushInterface.setTags(getContext(),0,tags);
         }
-
-
     }
 
     @Override

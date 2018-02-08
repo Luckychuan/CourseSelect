@@ -2,8 +2,8 @@ package com.example.luckychuan.courseselect.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Message;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.example.luckychuan.courseselect.R;
 import com.example.luckychuan.courseselect.adapter.viewholder.BaseViewHolder;
 import com.example.luckychuan.courseselect.bean.ItemBean;
+import com.example.luckychuan.courseselect.bean.Message;
 import com.example.luckychuan.courseselect.ui.WriteActivity;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>
     private List<ItemBean> mList;
     private int mFunctionType;
 
-    public MessageRecyclerAdapter(List<ItemBean> list,int type) {
+    public MessageRecyclerAdapter(List<ItemBean> list, int type) {
         mList = list;
         mFunctionType = type;
     }
@@ -38,7 +39,7 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_HEADER) {
             return new HeaderViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_new_message, parent, false));
-        }else if(viewType == TYPE_CONTENT){
+        } else if (viewType == TYPE_CONTENT) {
             return new MessageViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_message, parent, false));
         }
         return null;
@@ -73,9 +74,9 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Context context= itemView.getContext();
+                    Context context = itemView.getContext();
                     Intent intent = new Intent(context, WriteActivity.class);
-                    intent.putExtra("type",mFunctionType);
+                    intent.putExtra("type", mFunctionType);
                     context.startActivity(intent);
                 }
             });
@@ -101,32 +102,45 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>
 
         MessageViewHolder(final View itemView) {
             super(itemView);
-//            title = (TextView) itemView.findViewById(R.id.news_title);
-//            time = (TextView) itemView.findViewById(R.id.time);
-//            itemLayout = (LinearLayout) itemView.findViewById(R.id.item_layout);
+            title = (TextView) itemView.findViewById(R.id.title);
+            time = (TextView) itemView.findViewById(R.id.time);
+            itemLayout = (LinearLayout) itemView.findViewById(R.id.item_layout);
+            name = (TextView) itemView.findViewById(R.id.name);
+            account = (TextView) itemView.findViewById(R.id.account);
+            content = (TextView) itemView.findViewById(R.id.content);
+            size = (TextView) itemView.findViewById(R.id.comment_size);
 
-//            itemLayout.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
+            itemLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 //                    ItemBean lastItem = (ItemBean) mList
 //                            .get(getLayoutPosition());
 //
-//                    if (lastItem.type == NewsRecyclerAdapter.TYPE_NEWS) {
-//                        News news = (News) lastItem.bean;
+//                    if (lastItem.type == TYPE_CONTENT) {
+//                        Notification news = (Notification) lastItem.bean;
 //                        Intent intent = new Intent(itemView.getContext(), NewsContentActivity.class);
 //                        intent.putExtra("id", news.getId());
 //                        itemView.getContext().startActivity(intent);
 //                    }
-//                }
-//            });
+                }
+            });
 
         }
 
         @Override
         public void bindViewHolder(Message message) {
-//            title.setText(news.getTitle());
-//            time.setText(news.getTime());
-
+            time.setText(message.getTime());
+            account.setText(message.getAccount());
+            name.setText(message.getUserName());
+            size.setText("" + message.getCommentSize());
+            content.setText(message.getContent());
+            if (message.getTitle() != null && !message.getTitle().equals("")) {
+                title.setText(message.getTitle());
+                Log.d("title", "title: " + message.getTitle());
+            } else {
+                title.setVisibility(View.GONE);
+                Log.d("title", "gone: " + message.getTitle());
+            }
 
         }
     }

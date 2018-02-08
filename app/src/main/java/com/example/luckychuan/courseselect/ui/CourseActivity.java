@@ -48,6 +48,7 @@ public class CourseActivity extends BaseActivity {
         //通知
         Fragment fragment2 =  new MessageFragment();
         Bundle bundle2 = new Bundle();
+        bundle2.putString("course_id",getIntent().getStringExtra("course_id"));
         bundle2.putInt("function",MessageFragment.TYPE_NOTIFICATION);
         fragment2.setArguments(bundle2);
 
@@ -55,6 +56,7 @@ public class CourseActivity extends BaseActivity {
         Fragment fragment3 =  new MessageFragment();
         Bundle bundle3 = new Bundle();
         bundle3.putInt("function",MessageFragment.TYPE_DEBATE);
+        bundle3.putString("course_id",getIntent().getStringExtra("course_id"));
         fragment3.setArguments(bundle3);
 
         Fragment fragment4 =  new CourseRateFragment();

@@ -13,7 +13,7 @@ public class Message {
     @SerializedName("USERID")
     private String account ;
     @SerializedName("TITLE")
-    private String titile ;
+    private String title ;
     @SerializedName("CONTENT")
     private String content ;
     @SerializedName("count")
@@ -39,12 +39,12 @@ public class Message {
         this.account = account;
     }
 
-    public String getTitile() {
-        return titile;
+    public String getTitle() {
+        return title;
     }
 
     public void setTitile(String titile) {
-        this.titile = titile;
+        this.title = titile;
     }
 
     public String getContent() {

@@ -1,31 +1,33 @@
 package com.example.luckychuan.courseselect.presenter;
 
+import android.app.Notification;
+
 import com.example.luckychuan.courseselect.bean.BaseBeanArray;
-import com.example.luckychuan.courseselect.bean.MyCourse;
+import com.example.luckychuan.courseselect.bean.Message;
 import com.example.luckychuan.courseselect.model.Callback;
-import com.example.luckychuan.courseselect.model.MyCourseModel;
-import com.example.luckychuan.courseselect.model.MyCourseModelImpl;
-import com.example.luckychuan.courseselect.view.MyCourseView;
+import com.example.luckychuan.courseselect.model.MessageModel;
+import com.example.luckychuan.courseselect.model.MessageModelImpl;
+import com.example.luckychuan.courseselect.view.MessageView;
 
 /**
- * Created by Luckychuan on 2017/12/13.
+ * Created by Luckychuan on 2018/2/8.
  */
 
-public class MyCoursePresenter extends BasePresenter {
+public class MessagePresenter extends BasePresenter {
 
-    private MyCourseModel mModel;
-    private MyCourseView mView;
+    private MessageView mView;
+    private MessageModel mModel;
 
-    public MyCoursePresenter(MyCourseView view){
-        mModel = new MyCourseModelImpl();
+    public MessagePresenter (MessageView view){
         mView = view;
+        mModel = new MessageModelImpl();
     }
 
-    public void requestCourse(String userKey){
+    public void getNotification(String userKey, String courseId){
         mView.showProgressbar();
-        mModel.requestMyCourse(userKey, new Callback<BaseBeanArray<MyCourse>>() {
+        mModel.getNotification(userKey, courseId, new Callback<BaseBeanArray<Message>>() {
             @Override
-            public void onNext(BaseBeanArray<MyCourse> bean) {
+            public void onNext(BaseBeanArray<Message> bean) {
                 mView.hideProgressbar();
                 if(bean.isSuccess()){
                     mView.onSuccess(bean.getDatas());
@@ -47,5 +49,6 @@ public class MyCoursePresenter extends BasePresenter {
             }
         });
     }
+
 
 }
