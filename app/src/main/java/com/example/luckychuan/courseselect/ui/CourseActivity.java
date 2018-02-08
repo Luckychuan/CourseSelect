@@ -38,12 +38,25 @@ public class CourseActivity extends BaseActivity {
         });
 
         ArrayList<Fragment> list = new ArrayList<>();
-        Fragment fragment3 =  new CourseChatFragment();
+
+        //课程列表
         Fragment fragment1=  new CourseInfoFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("course_id",getIntent().getStringExtra("course_id"));
-        fragment1.setArguments(bundle);
-        Fragment fragment2 =  new NotificationFragment();
+        Bundle bundle1 = new Bundle();
+        bundle1.putString("course_id",getIntent().getStringExtra("course_id"));
+        fragment1.setArguments(bundle1);
+
+        //通知
+        Fragment fragment2 =  new MessageFragment();
+        Bundle bundle2 = new Bundle();
+        bundle2.putInt("function",MessageFragment.TYPE_NOTIFICATION);
+        fragment2.setArguments(bundle2);
+
+        //讨论
+        Fragment fragment3 =  new MessageFragment();
+        Bundle bundle3 = new Bundle();
+        bundle3.putInt("function",MessageFragment.TYPE_DEBATE);
+        fragment3.setArguments(bundle3);
+
         Fragment fragment4 =  new CourseRateFragment();
         list.add(fragment2);
         list.add(fragment1);
@@ -53,7 +66,7 @@ public class CourseActivity extends BaseActivity {
         ViewPager viewPager = (ViewPager) findViewById(R.id.function_viewPager);
         TabPagerAdapter adapter = new TabPagerAdapter(getSupportFragmentManager(),list, Constant.FUNCTIONS);
         viewPager.setAdapter(adapter);
-        viewPager.setCurrentItem(1);
+        viewPager.setCurrentItem(0);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.function_tabLayout);
         tabLayout.setupWithViewPager(viewPager);
         for (int i = 0; i < Constant.FUNCTION_DRAWABLE_IDS.length; i++) {

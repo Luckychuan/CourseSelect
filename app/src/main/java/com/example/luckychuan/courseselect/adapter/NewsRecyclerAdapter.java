@@ -1,6 +1,5 @@
 package com.example.luckychuan.courseselect.adapter;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.luckychuan.courseselect.R;
 import com.example.luckychuan.courseselect.adapter.viewholder.BaseViewHolder;
+import com.example.luckychuan.courseselect.bean.ItemBean;
 import com.example.luckychuan.courseselect.bean.News;
 import com.example.luckychuan.courseselect.ui.NewsContentActivity;
 
@@ -62,15 +62,6 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         return mList.size();
     }
 
-    public static class ItemBean {
-        public int type;
-        public Object bean;
-
-        public ItemBean(int type, Object bean) {
-            this.type = type;
-            this.bean = bean;
-        }
-    }
 
     private class FooterViewHolder extends BaseViewHolder {
         FooterViewHolder(View itemView) {
@@ -98,7 +89,7 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    NewsRecyclerAdapter.ItemBean lastItem = (NewsRecyclerAdapter.ItemBean) mList
+                    ItemBean lastItem = (ItemBean) mList
                             .get(getLayoutPosition());
 
                     if (lastItem.type == NewsRecyclerAdapter.TYPE_NEWS) {

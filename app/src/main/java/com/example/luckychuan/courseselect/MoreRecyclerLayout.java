@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.example.luckychuan.courseselect.adapter.NewsRecyclerAdapter;
+import com.example.luckychuan.courseselect.bean.ItemBean;
 import com.example.luckychuan.courseselect.bean.News;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class MoreRecyclerLayout extends RelativeLayout {
     private static final String TAG = "MoreRecyclerLayout";
 
     private NewsRecyclerAdapter mAdapter;
-    private List<NewsRecyclerAdapter.ItemBean> mList;
+    private List<ItemBean> mList;
     private OnScrollBottomListener mListener;
 
     public MoreRecyclerLayout(Context context) {
@@ -69,14 +70,12 @@ public class MoreRecyclerLayout extends RelativeLayout {
 
         //添加新数据
         for (News news : list) {
-            NewsRecyclerAdapter.ItemBean item = new NewsRecyclerAdapter
-                    .ItemBean(NewsRecyclerAdapter.TYPE_NEWS, news);
+            ItemBean item = new ItemBean(NewsRecyclerAdapter.TYPE_NEWS, news);
             mList.add(item);
         }
 
         //在最底部添加loadingView
-        NewsRecyclerAdapter.ItemBean item = new NewsRecyclerAdapter
-                .ItemBean(NewsRecyclerAdapter.TYPE_LOADING, null);
+        ItemBean item = new ItemBean(NewsRecyclerAdapter.TYPE_LOADING, null);
         mList.add(item);
 
         mAdapter.notifyDataSetChanged();
@@ -85,7 +84,7 @@ public class MoreRecyclerLayout extends RelativeLayout {
     private boolean removeLoading(){
         boolean isRemove = false;
         if (mList.size() > 0) {
-            NewsRecyclerAdapter.ItemBean lastItem = (NewsRecyclerAdapter.ItemBean) mList.get(mList.size() - 1);
+            ItemBean lastItem = (ItemBean) mList.get(mList.size() - 1);
             if (lastItem.type == NewsRecyclerAdapter.TYPE_LOADING) {
                 mList.remove(lastItem);
                 isRemove = true;
@@ -108,8 +107,7 @@ public class MoreRecyclerLayout extends RelativeLayout {
     public void showNoMoreView(){
         removeLoading();
 
-        NewsRecyclerAdapter.ItemBean item = new NewsRecyclerAdapter
-                .ItemBean(NewsRecyclerAdapter.TYPE_NO_MORE, null);
+        ItemBean item = new ItemBean(NewsRecyclerAdapter.TYPE_NO_MORE, null);
         mList.add(item);
 
         mAdapter.notifyDataSetChanged();

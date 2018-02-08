@@ -21,8 +21,6 @@ import com.example.luckychuan.courseselect.view.BooleanView;
 
 public class WriteActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener, BooleanView {
 
-    public static int TYPE_NOTIFICATION = 1;
-    public static int TYPE_DEBATE = 2;
     private int mType;
 
     private EditText mTitle;
@@ -54,7 +52,7 @@ public class WriteActivity extends BaseActivity implements Toolbar.OnMenuItemCli
         mContent = (EditText) findViewById(R.id.edit_content);
 
         mType = getIntent().getIntExtra("type",1);
-        if (mType == TYPE_DEBATE) {
+        if (mType == MessageFragment.TYPE_DEBATE) {
             toolbar.setTitle("编写新的消息");
             TextInputLayout titleLayout = (TextInputLayout) findViewById(R.id.title_layout);
             titleLayout.setVisibility(View.GONE);
@@ -97,9 +95,9 @@ public class WriteActivity extends BaseActivity implements Toolbar.OnMenuItemCli
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         if (item.getItemId() == R.id.done) {
-            if (mType == TYPE_NOTIFICATION) {
+            if (mType == MessageFragment.TYPE_NOTIFICATION) {
                 uploadNotification();
-            } else if (mType == TYPE_DEBATE) {
+            } else if (mType == MessageFragment.TYPE_DEBATE) {
                 uploadDebate();
             }
         }
