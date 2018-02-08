@@ -20,41 +20,25 @@ import java.util.List;
  * Created by Luckychuan on 2018/1/31.
  */
 
-public class NewsRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
+public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapter.NewsViewHolder> {
 
-    public static final int TYPE_NEWS = 0;
-    public static final int TYPE_LOADING = 1;
-    public static final int TYPE_NO_MORE = 2;
-    private List<ItemBean> mList;
+    private List<News> mList;
 
-    public NewsRecyclerAdapter(List<ItemBean> list) {
+    public NewsRecyclerAdapter(List<News> list) {
         mList = list;
     }
 
     @Override
-    public BaseViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
-        BaseViewHolder viewHolder = null;
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        if (viewType == TYPE_NEWS) {
-            viewHolder = new NewsViewHolder(inflater.inflate(R.layout.recycler_news, parent, false));
-        } else if (viewType == TYPE_LOADING) {
-            viewHolder = new FooterViewHolder(inflater.inflate(R.layout.recycler_loading, parent, false));
-        } else if (viewType == TYPE_NO_MORE) {
-            viewHolder = new FooterViewHolder(inflater.inflate(R.layout.recycler_no_more, parent, false));
-        }
-        return viewHolder;
+    public NewsViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
+           LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        return new NewsViewHolder(inflater.inflate(R.layout.recycler_news, parent, false));
+
     }
 
     @Override
-    public void onBindViewHolder(BaseViewHolder holder, int position) {
-        if (mList.get(position).type == TYPE_NEWS) {
-            ((NewsViewHolder) holder).bindViewHolder((News) (mList.get(position).bean));
-        }
-    }
+    public void onBindViewHolder(NewsViewHolder holder, int position) {
+        holder.bindViewHolder((News) mList.get(position));
 
-    @Override
-    public int getItemViewType(int position) {
-        return mList.get(position).type;
     }
 
     @Override
@@ -62,20 +46,7 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         return mList.size();
     }
 
-
-    private class FooterViewHolder extends BaseViewHolder {
-        FooterViewHolder(View itemView) {
-            super(itemView);
-        }
-
-        @Override
-        public void bindViewHolder(Object bean) {
-
-        }
-    }
-
-
-    private class NewsViewHolder extends BaseViewHolder<News> {
+     class NewsViewHolder extends BaseViewHolder<News> {
 
         private TextView title;
         private TextView time;
@@ -84,20 +55,15 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.news_title);
             time = (TextView) itemView.findViewById(R.id.time);
-            LinearLayout item = (LinearLayout)itemView.findViewById(R.id.item_layout);
+            LinearLayout item = (LinearLayout) itemView.findViewById(R.id.item_layout);
 
             item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ItemBean lastItem = (ItemBean) mList
-                            .get(getLayoutPosition());
-
-                    if (lastItem.type == NewsRecyclerAdapter.TYPE_NEWS) {
-                        News news = (News) lastItem.bean;
-                        Intent intent = new Intent(itemView.getContext(), NewsContentActivity.class);
-                        intent.putExtra("id",news.getId());
-                        itemView.getContext().startActivity(intent);
-                    }
+                    News news = (News) mList.get(getLayoutPosition());
+                    Intent intent = new Intent(itemView.getContext(), NewsContentActivity.class);
+                    intent.putExtra("id", news.getId());
+                    itemView.getContext().startActivity(intent);
                 }
             });
 
