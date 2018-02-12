@@ -38,4 +38,28 @@ public class MessageModelImpl implements MessageModel {
                     }
                 });
     }
+
+    @Override
+    public void getDebate(String userKey, String courseId, int page, final Callback<BaseBeanArray<Message>> callback) {
+        CustomRetrofit.getService()
+                .getDebate(userKey, courseId, page)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<BaseBeanArray<Message>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callback.onError("无法连接至服务器");
+                    }
+
+                    @Override
+                    public void onNext(BaseBeanArray<Message> bean) {
+                        callback.onNext(bean);
+                    }
+                });
+    }
 }

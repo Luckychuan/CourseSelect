@@ -9,6 +9,8 @@ import com.example.luckychuan.courseselect.bean.Message;
 
 public interface MessageView extends BaseView {
 
-   void onSuccess(Message[] messages);
+   void onNotificationSuccess(Message[] messages);
+
+   void onDebateSuccess(Message[] messages);
 
 }

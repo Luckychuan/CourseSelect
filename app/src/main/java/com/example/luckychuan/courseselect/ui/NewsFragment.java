@@ -32,6 +32,7 @@ public class NewsFragment extends BaseFragment implements NewsView {
     private ShowMoreAdapter mAdapter;
     private NewsPresenter mPresenter;
     private int mPage = 1;
+    private RecyclerView mRecyclerView;
 
     @Nullable
     @Override
@@ -45,31 +46,17 @@ public class NewsFragment extends BaseFragment implements NewsView {
 
         mPresenter = new NewsPresenter(this);
         mPresenter.attach(this);
-        mPresenter.requestNewsTitle(LoginActivity.getUserKey(), mPage);
+        mPresenter.requestNewsTitle(LoginActivity.getUserKey(), mPage++);
 
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView = view.findViewById(R.id.recycler_view);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mAdapter = new ShowMoreAdapter(new NewsRecyclerAdapter(mList));
-        recyclerView.setAdapter(mAdapter);
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                //判断RecyclerView是否滑动到最底端
-                //滑动过的距离=偏移量+当前view显示的区域
-                int total = recyclerView.computeVerticalScrollOffset() + recyclerView.computeVerticalScrollExtent();
-                if (total >= recyclerView.computeVerticalScrollRange()) {
-                    //滑动到最底端
-                    if (mPage != -1) {
-                        mPresenter.requestNewsTitle(LoginActivity.getUserKey(), mPage);
-                    }
-                }
-            }
-        });
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
     public void onResponse(News[] newsArray) {
+
         //没有数据的时候
         if (newsArray == null || newsArray.length == 0) {
             mAdapter.addFooterView(R.layout.recycler_no_more);
@@ -78,11 +65,10 @@ public class NewsFragment extends BaseFragment implements NewsView {
         }
 
         //有数据时
-        mPage++;
         Collections.addAll(mList, newsArray);
-        mAdapter.addFooterView(R.layout.recycler_loading);
         mAdapter.notifyDataSetChanged();
-
+        //监听RecyclerView滑动到最底端
+        mRecyclerView.addOnScrollListener(mListener);
 
     }
 
@@ -90,11 +76,6 @@ public class NewsFragment extends BaseFragment implements NewsView {
     public void onResponse(NewsContent[] newsContent) {
     }
 
-    @Override
-    public void onError(String errorMsg) {
-        super.onError(errorMsg);
-        mPage = -1;
-    }
 
 
     @Override
@@ -104,4 +85,31 @@ public class NewsFragment extends BaseFragment implements NewsView {
             mPresenter.detach();
         }
     }
+
+    private RecyclerView.OnScrollListener mListener = new RecyclerView.OnScrollListener() {
+        //判断正在加载的View是否已经显示
+        private boolean isFooterViewExist = false;
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+            //判断是否已经滑动过
+            if (recyclerView.computeVerticalScrollOffset() > 0) {
+                //显示正在加载界面到最底端
+                if (!isFooterViewExist) {
+                    mAdapter.addFooterView(R.layout.recycler_loading);
+                    isFooterViewExist = true;
+                    mAdapter.notifyDataSetChanged();
+                }
+                //判断是否在最底部
+                if (!recyclerView.canScrollVertically(1)) {
+                    //滑动到最底端
+                    mPresenter.requestNewsTitle(LoginActivity.getUserKey(), mPage++);
+                    mRecyclerView.removeOnScrollListener(mListener);
+                    isFooterViewExist = false;
+                }
+            }
+
+        }
+    };
 }
