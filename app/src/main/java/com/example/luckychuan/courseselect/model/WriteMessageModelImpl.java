@@ -35,4 +35,28 @@ public class WriteMessageModelImpl implements WriteMessageModel {
                     }
                 });
     }
+
+    @Override
+    public void uploadDebate(String userKey, String courseId, String content, final Callback<BaseBean<Integer>> callback) {
+        CustomRetrofit.getService()
+                .uploadDebate(userKey,courseId,content)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<BaseBean<Integer>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callback.onError("无法连接至服务器");
+                    }
+
+                    @Override
+                    public void onNext(BaseBean<Integer> bean) {
+                        callback.onNext(bean);
+                    }
+                });
+    }
 }

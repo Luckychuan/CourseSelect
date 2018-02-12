@@ -46,4 +46,30 @@ public class WriteMessagePresenter extends BasePresenter {
         });
     }
 
+    public void uploadDebate(String userKey, String courseId, String content){
+        mView.showProgressbar();
+        mModel.uploadDebate(userKey, courseId, content, new Callback<BaseBean<Integer>>() {
+            @Override
+            public void onNext(BaseBean<Integer> bean) {
+                mView.hideProgressbar();
+                if(bean.isSuccess()){
+                    mView.onSuccess(true);
+                }else{
+                    mView.onFail(bean.getError());
+                }
+            }
+
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(String errorMsg) {
+                mView.hideProgressbar();
+                mView.onError(errorMsg);
+            }
+        });
+    }
+
 }

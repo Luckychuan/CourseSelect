@@ -11,6 +11,9 @@ public interface WriteMessageModel {
     void uploadNotification(String userKey, String courseId, String title, String content,
                             Callback<BaseBean<Integer>> callback);
 
+    void uploadDebate(String userKey, String courseId, String content,
+                            Callback<BaseBean<Integer>> callback);
+
 
 
 }

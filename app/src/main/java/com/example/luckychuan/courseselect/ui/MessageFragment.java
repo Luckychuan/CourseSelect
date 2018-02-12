@@ -54,7 +54,7 @@ public class MessageFragment extends BaseFragment implements MessageView {
 
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mAdapter = new ShowMoreAdapter(new MessageRecyclerAdapter(mList, mType));
+        mAdapter = new ShowMoreAdapter(new MessageRecyclerAdapter(mList, mType, getArguments().getString("course_id")));
         mRecyclerView.setAdapter(mAdapter);
         if (mType == TYPE_DEBATE) {
 

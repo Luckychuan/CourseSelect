@@ -62,7 +62,7 @@ public class WriteActivity extends BaseActivity implements Toolbar.OnMenuItemCli
     }
 
     private void uploadNotification() {
-        String title = mTitle.getText().toString();
+        String title = mTitle.getText().toString().trim();
         String content = mContent.getText().toString();
         if (title.length() == 0) {
             Toast.makeText(this, "标题不能为空！", Toast.LENGTH_SHORT).show();
@@ -76,8 +76,7 @@ public class WriteActivity extends BaseActivity implements Toolbar.OnMenuItemCli
             mPresenter = new WriteMessagePresenter(this);
             mPresenter.attach(this);
         }
-        //// TODO: 2018/2/7  课程编号
-        mPresenter.uploadNotification(LoginActivity.getUserKey(), "201720081", title, content);
+        mPresenter.uploadNotification(LoginActivity.getUserKey(), getIntent().getStringExtra("course_id"), title, content);
     }
 
     private void uploadDebate() {
@@ -86,9 +85,11 @@ public class WriteActivity extends BaseActivity implements Toolbar.OnMenuItemCli
             Toast.makeText(this, "正文不能为空！", Toast.LENGTH_SHORT).show();
             return;
         }
-        //// TODO: 2018/2/7 上传到服务器
-        Toast.makeText(this, "上传", Toast.LENGTH_SHORT).show();
-
+        if (mPresenter == null) {
+            mPresenter = new WriteMessagePresenter(this);
+            mPresenter.attach(this);
+        }
+        mPresenter.uploadDebate(LoginActivity.getUserKey(), getIntent().getStringExtra("course_id"), content);
     }
 
 
@@ -121,8 +122,17 @@ public class WriteActivity extends BaseActivity implements Toolbar.OnMenuItemCli
     @Override
     public void onSuccess(boolean isUploadSuccess) {
         Toast.makeText(this, "上传成功！", Toast.LENGTH_SHORT).show();
-        //// TODO: 2018/2/7 result
         finish();
+    }
+
+    @Override
+    public void onError(String errorMsg) {
+        Toast.makeText(this, "上传失败", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onFail(String failMsg) {
+        Toast.makeText(this, "上传失败", Toast.LENGTH_SHORT).show();
     }
 
     @Override

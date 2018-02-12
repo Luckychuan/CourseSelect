@@ -28,10 +28,12 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>
     public static final int TYPE_CONTENT = 1;
     private List<ItemBean> mList;
     private int mFunctionType;
+    private String mCousreId;
 
-    public MessageRecyclerAdapter(List<ItemBean> list, int type) {
+    public MessageRecyclerAdapter(List<ItemBean> list, int type,String courseId) {
         mList = list;
         mFunctionType = type;
+        mCousreId = courseId;
     }
 
 
@@ -77,6 +79,7 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>
                     Context context = itemView.getContext();
                     Intent intent = new Intent(context, WriteActivity.class);
                     intent.putExtra("type", mFunctionType);
+                    intent.putExtra("course_id",mCousreId);
                     context.startActivity(intent);
                 }
             });
