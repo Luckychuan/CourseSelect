@@ -2,11 +2,13 @@ package com.example.luckychuan.courseselect.bean;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by Luckychuan on 2018/2/8.
  */
 
-public class Message {
+public class Message implements Serializable {
 
     @SerializedName("ID")
     private int id  ;

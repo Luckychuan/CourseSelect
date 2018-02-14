@@ -37,6 +37,11 @@
         <activity android:name=".ui.WriteActivity">
 
         </activity>
+        <activity
+            android:name=".ui.MessageActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+
+        </activity>
 
         <receiver
             android:name=".ui.BaseActivity$JPushReceiver"

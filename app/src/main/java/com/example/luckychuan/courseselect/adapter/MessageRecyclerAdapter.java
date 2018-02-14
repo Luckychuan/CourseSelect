@@ -2,6 +2,7 @@ package com.example.luckychuan.courseselect.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,8 +15,10 @@ import com.example.luckychuan.courseselect.R;
 import com.example.luckychuan.courseselect.adapter.viewholder.BaseViewHolder;
 import com.example.luckychuan.courseselect.bean.ItemBean;
 import com.example.luckychuan.courseselect.bean.Message;
+import com.example.luckychuan.courseselect.ui.MessageActivity;
 import com.example.luckychuan.courseselect.ui.WriteActivity;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -28,12 +31,12 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>
     public static final int TYPE_CONTENT = 1;
     private List<ItemBean> mList;
     private int mFunctionType;
-    private String mCousreId;
+    private String mCourseId;
 
     public MessageRecyclerAdapter(List<ItemBean> list, int type,String courseId) {
         mList = list;
         mFunctionType = type;
-        mCousreId = courseId;
+        mCourseId = courseId;
     }
 
 
@@ -79,7 +82,7 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>
                     Context context = itemView.getContext();
                     Intent intent = new Intent(context, WriteActivity.class);
                     intent.putExtra("type", mFunctionType);
-                    intent.putExtra("course_id",mCousreId);
+                    intent.putExtra("course_id",mCourseId);
                     context.startActivity(intent);
                 }
             });
@@ -116,15 +119,15 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>
             itemLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    ItemBean lastItem = (ItemBean) mList
-//                            .get(getLayoutPosition());
-//
-//                    if (lastItem.type == TYPE_CONTENT) {
-//                        Notification news = (Notification) lastItem.bean;
-//                        Intent intent = new Intent(itemView.getContext(), NewsContentActivity.class);
-//                        intent.putExtra("id", news.getId());
-//                        itemView.getContext().startActivity(intent);
-//                    }
+                    ItemBean lastItem = (ItemBean) mList
+                            .get(getLayoutPosition());
+
+                    if (lastItem.type == TYPE_CONTENT) {
+                        Message message = (Message) lastItem.bean;
+                        Intent intent = new Intent(itemView.getContext(), MessageActivity.class);
+                        intent.putExtra("message", (Serializable) message);
+                        itemView.getContext().startActivity(intent);
+                    }
                 }
             });
 

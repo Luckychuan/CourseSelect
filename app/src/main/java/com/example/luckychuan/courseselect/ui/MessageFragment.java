@@ -10,8 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.luckychuan.courseselect.R;
+import com.example.luckychuan.courseselect.adapter.AdapterWrapper;
 import com.example.luckychuan.courseselect.adapter.MessageRecyclerAdapter;
-import com.example.luckychuan.courseselect.adapter.ShowMoreAdapter;
 import com.example.luckychuan.courseselect.bean.ItemBean;
 import com.example.luckychuan.courseselect.bean.Message;
 import com.example.luckychuan.courseselect.presenter.MessagePresenter;
@@ -32,7 +32,7 @@ public class MessageFragment extends BaseFragment implements MessageView {
     private int mType;
 
     private List<ItemBean> mList;
-    private ShowMoreAdapter mAdapter;
+    private AdapterWrapper mAdapter;
     private MessagePresenter mPresenter;
     private int mPage;
     private RecyclerView mRecyclerView;
@@ -54,7 +54,7 @@ public class MessageFragment extends BaseFragment implements MessageView {
 
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mAdapter = new ShowMoreAdapter(new MessageRecyclerAdapter(mList, mType, getArguments().getString("course_id")));
+        mAdapter = new AdapterWrapper(new MessageRecyclerAdapter(mList, mType, getArguments().getString("course_id")));
         mRecyclerView.setAdapter(mAdapter);
         if (mType == TYPE_DEBATE) {
 
@@ -77,7 +77,7 @@ public class MessageFragment extends BaseFragment implements MessageView {
 
         //没有数据的时候
         if (messages == null || messages.length == 0) {
-            mAdapter.addFooterView(R.layout.recycler_no_more);
+//            mAdapter.addFooterView(R.layout.recycler_no_more);
             mAdapter.notifyDataSetChanged();
             return;
         }
@@ -135,7 +135,7 @@ public class MessageFragment extends BaseFragment implements MessageView {
 
                 //显示正在加载界面到最底端
                 if (!isFooterViewExist) {
-                    mAdapter.addFooterView(R.layout.recycler_loading);
+//                    mAdapter.addFooterView(R.layout.recycler_loading);
                     isFooterViewExist = true;
                     mAdapter.notifyDataSetChanged();
                 }

@@ -10,4 +10,5 @@
     <color name="hintWhite">#90ffffff</color>
     <color name="ripple_material_dark">#44000000</color>
     <color name="colorNavigationItemHint">#88414141</color>
+    <color name="light_gray">#55e0e0e0</color>
 </resources>

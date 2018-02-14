@@ -4,14 +4,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.luckychuan.courseselect.R;
+import com.example.luckychuan.courseselect.adapter.AdapterWrapper;
 import com.example.luckychuan.courseselect.adapter.NewsRecyclerAdapter;
-import com.example.luckychuan.courseselect.adapter.ShowMoreAdapter;
 import com.example.luckychuan.courseselect.bean.News;
 import com.example.luckychuan.courseselect.bean.NewsContent;
 import com.example.luckychuan.courseselect.presenter.NewsPresenter;
@@ -29,7 +28,7 @@ public class NewsFragment extends BaseFragment implements NewsView {
 
     private static final String TAG = "NewsFragment";
     private List<News> mList = new ArrayList<>();
-    private ShowMoreAdapter mAdapter;
+    private AdapterWrapper mAdapter;
     private NewsPresenter mPresenter;
     private int mPage = 1;
     private RecyclerView mRecyclerView;
@@ -50,7 +49,7 @@ public class NewsFragment extends BaseFragment implements NewsView {
 
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mAdapter = new ShowMoreAdapter(new NewsRecyclerAdapter(mList));
+        mAdapter = new AdapterWrapper(new NewsRecyclerAdapter(mList));
         mRecyclerView.setAdapter(mAdapter);
     }
 
