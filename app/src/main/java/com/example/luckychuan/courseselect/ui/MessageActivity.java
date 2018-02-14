@@ -8,28 +8,39 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.luckychuan.courseselect.R;
 import com.example.luckychuan.courseselect.adapter.AdapterWrapper;
-import com.example.luckychuan.courseselect.adapter.viewholder.ReplyRecyclerAdapter;
+import com.example.luckychuan.courseselect.adapter.ReplyRecyclerAdapter;
+import com.example.luckychuan.courseselect.bean.Message;
 import com.example.luckychuan.courseselect.bean.Reply;
+import com.example.luckychuan.courseselect.presenter.ReplyPresenter;
+import com.example.luckychuan.courseselect.view.ReplyView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by Luckychuan on 2018/2/12.
  */
 
-public class MessageActivity extends BaseActivity {
+public class MessageActivity extends BaseActivity implements ReplyView {
 
-    private List<Reply> mList;
+    private ReplyPresenter mPresenter;
+    private List<Reply> mList = new ArrayList<>();
     private AdapterWrapper mAdapter;
+    private RecyclerView mRecyclerView;
+    private LinearLayout mHolderLayout;
+    private View mMessageView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_content);
+
+        Message message = (Message) getIntent().getSerializableExtra("message");
 
         //初始化toolbar
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -42,25 +53,76 @@ public class MessageActivity extends BaseActivity {
             }
         });
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-
-        // TODO: 2018/2/14
-        //message的内容
-        LinearLayout holderLayout = (LinearLayout) findViewById(R.id.holder_layout);
-        View messageView = LayoutInflater.from(this).inflate(R.layout.message_content_main,holderLayout,false);
-//        holderLayout.addView(messageView);
-//        recyclerView.setVisibility(View.GONE);
-
-        mList = new ArrayList<>();
-        for (int i = 0; i < 1; i++) {
-            mList.add(new Reply());
+        mHolderLayout = (LinearLayout) findViewById(R.id.holder_layout);
+        mMessageView = LayoutInflater.from(this).inflate(R.layout.message_content_main, mHolderLayout, false);
+        TextView name = (TextView) mMessageView.findViewById(R.id.name);
+        TextView account = (TextView) mMessageView.findViewById(R.id.account);
+        TextView title = (TextView) mMessageView.findViewById(R.id.title);
+        TextView content = (TextView) mMessageView.findViewById(R.id.content);
+        TextView time = (TextView) mMessageView.findViewById(R.id.time);
+        name.setText(message.getUserName());
+        account.setText(message.getAccount());
+        if(message.getTitle() != null){
+            title.setText(message.getTitle());
+        }else{
+            title.setVisibility(View.GONE);
         }
-        mAdapter = new AdapterWrapper(new ReplyRecyclerAdapter(mList));
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        LinearLayout noReplyLayout = (LinearLayout) findViewById(R.id.no_reply);
-        noReplyLayout.setVisibility(View.GONE);
-        mAdapter.addHeaderView(R.layout.activity_message_content,messageView);
-        recyclerView.setAdapter(mAdapter);
+        content.setText(message.getContent());
+        time.setText(message.getTime());
+
+
+        mPresenter = new ReplyPresenter(this);
+        mPresenter.attach(this);
+        mPresenter.getReplies(LoginActivity.getUserKey(),message.getId());
+
+
+    }
+
+    @Override
+    public void onSuccess(Reply[] replies) {
+        if (replies.length == 0) {
+            showNoReplyView();
+            return;
+        }
+
+        if (mAdapter == null) {
+            mAdapter = new AdapterWrapper(new ReplyRecyclerAdapter(mList));
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+            LinearLayout noReplyLayout = (LinearLayout) findViewById(R.id.no_reply);
+            noReplyLayout.setVisibility(View.GONE);
+            mAdapter.addHeaderView(R.layout.activity_message_content, mMessageView);
+            mRecyclerView.setAdapter(mAdapter);
+        }
+        Collections.addAll(mList, replies);
+        mAdapter.notifyDataSetChanged();
+
+
+    }
+
+    private void showNoReplyView() {
+        mHolderLayout.addView(mMessageView);
+        mRecyclerView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onError(String errorMsg) {
+        super.onError(errorMsg);
+        showNoReplyView();
+    }
+
+    @Override
+    public void onFail(String failMsg) {
+        super.onFail(failMsg);
+        showNoReplyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mPresenter != null) {
+            mPresenter.detach();
+        }
     }
 }

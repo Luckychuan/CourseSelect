@@ -45,7 +45,7 @@ public class AdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (getItemViewType(position) != mFooterViewType && getItemViewType(position) != mHeaderViewType) {
-            mInnerAdapter.bindViewHolder(holder, position);
+            mInnerAdapter.onBindViewHolder(holder,getContentPosition(position));
         }
     }
 
@@ -73,10 +73,7 @@ public class AdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
 
         //返回内部View的类型
-        if (mHeaderViewType != -1) {
-            position--;
-        }
-        return mInnerAdapter.getItemViewType(position);
+        return mInnerAdapter.getItemViewType(getContentPosition(position));
     }
 
 
@@ -85,6 +82,13 @@ public class AdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHolder
             return 0;
         }
         return -1;
+    }
+
+    private int getContentPosition(int position){
+        if(mHeaderViewType != -1){
+           return position -1;
+        }
+        return position;
     }
 
     private int getFooterViewPosition() {
