@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.luckychuan.courseselect.R;
@@ -19,9 +20,11 @@ import java.util.List;
 public class ReplyRecyclerAdapter extends RecyclerView.Adapter<ReplyRecyclerAdapter.ReplyViewHolder> {
 
     private List<Reply> mList;
+    private OnItemClickListener mListener;
 
-    public ReplyRecyclerAdapter(List<Reply> list){
+    public ReplyRecyclerAdapter(List<Reply> list,OnItemClickListener listener){
         mList = list;
+        mListener = listener;
     }
 
     @Override
@@ -47,6 +50,7 @@ public class ReplyRecyclerAdapter extends RecyclerView.Adapter<ReplyRecyclerAdap
         private TextView reply_to_name;
         private TextView content;
         private TextView time;
+        private Button button;
 
 
         ReplyViewHolder(View itemView) {
@@ -57,6 +61,14 @@ public class ReplyRecyclerAdapter extends RecyclerView.Adapter<ReplyRecyclerAdap
             reply_to_id = itemView.findViewById(R.id.reply_to_user_account);
             content = itemView.findViewById(R.id.content);
             time = itemView.findViewById(R.id.time);
+            button = itemView.findViewById(R.id.reply_button);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mListener.onItemClick(getLayoutPosition());
+                }
+            });
+
         }
 
 
@@ -68,7 +80,10 @@ public class ReplyRecyclerAdapter extends RecyclerView.Adapter<ReplyRecyclerAdap
             content.setText(reply.getContent());
             time.setText(reply.getTime());
         }
+    }
 
+    public interface OnItemClickListener{
+        void onItemClick(int position);
     }
 
 }

@@ -4,7 +4,7 @@ import com.example.luckychuan.courseselect.bean.BaseBean;
 import com.example.luckychuan.courseselect.model.Callback;
 import com.example.luckychuan.courseselect.model.ValidateAccountModel;
 import com.example.luckychuan.courseselect.model.ValidateModelImpl;
-import com.example.luckychuan.courseselect.view.ValidateView;
+import com.example.luckychuan.courseselect.view.BooleanView;
 
 /**
  * Created by Luckychuan on 2018/1/24.
@@ -12,10 +12,10 @@ import com.example.luckychuan.courseselect.view.ValidateView;
 
 public class ValidatePresenter extends BasePresenter{
 
-    private ValidateView mView;
+    private BooleanView mView;
     private ValidateAccountModel mModel;
 
-    public  ValidatePresenter (ValidateView v){
+    public  ValidatePresenter (BooleanView v){
         mView = v;
         mModel = new ValidateModelImpl();
     }
@@ -27,7 +27,7 @@ public class ValidatePresenter extends BasePresenter{
             public void onNext(BaseBean<Boolean> bean) {
                 mView.hideProgressbar();
                 if(bean.getData()){
-                    mView.onResponse(true);
+                    mView.onSuccess();
                 }else{
                     mView.onFail(bean.getError());
                 }

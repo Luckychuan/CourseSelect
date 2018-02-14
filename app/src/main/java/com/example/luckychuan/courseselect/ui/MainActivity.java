@@ -15,13 +15,13 @@ import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.example.luckychuan.courseselect.R;
 import com.example.luckychuan.courseselect.presenter.ValidatePresenter;
-import com.example.luckychuan.courseselect.view.ValidateView;
+import com.example.luckychuan.courseselect.view.BooleanView;
 
 /**
  * Created by Luckychuan on 2017/11/29.
  */
 
-public class MainActivity extends BaseActivity implements MeFragment.OnLogoutListener, ValidateView {
+public class MainActivity extends BaseActivity implements MeFragment.OnLogoutListener, BooleanView {
 
     private static final String TAG = "MainActivity";
 
@@ -40,7 +40,7 @@ public class MainActivity extends BaseActivity implements MeFragment.OnLogoutLis
             mPresenter = new ValidatePresenter(this);
             mPresenter.attach();
             mPresenter.requestValidate(LoginActivity.getUserKey());
-        }else{
+        } else {
             initView();
         }
 
@@ -201,16 +201,14 @@ public class MainActivity extends BaseActivity implements MeFragment.OnLogoutLis
     }
 
     @Override
-    public void onResponse(boolean isTrue) {
-        if(isTrue){
-            initView();
-        }
+    public void onSuccess() {
+        initView();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mPresenter != null){
+        if (mPresenter != null) {
             mPresenter.detach();
         }
     }

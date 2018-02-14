@@ -29,7 +29,7 @@ public class ReplyModelImpl implements ReplyModel {
 
                     @Override
                     public void onError(Throwable e) {
-                        callback.onError("无法连接至服务器");
+                        callback.onError("无法连接至服务器"+e.toString());
                         Log.d("rx_java", "onError: "+e.toString());
                     }
 

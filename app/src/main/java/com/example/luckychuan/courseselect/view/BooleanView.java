@@ -6,6 +6,6 @@ package com.example.luckychuan.courseselect.view;
 
 public interface BooleanView extends BaseView{
 
-    void onSuccess(boolean isSuccess);
+    void onSuccess();
 
 }

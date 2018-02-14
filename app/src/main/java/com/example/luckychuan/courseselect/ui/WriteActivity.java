@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.luckychuan.courseselect.R;
-import com.example.luckychuan.courseselect.presenter.WriteMessagePresenter;
+import com.example.luckychuan.courseselect.presenter.UploadPresenter;
 import com.example.luckychuan.courseselect.view.BooleanView;
 
 /**
@@ -27,7 +27,7 @@ public class WriteActivity extends BaseActivity implements Toolbar.OnMenuItemCli
     private EditText mContent;
 
     private ProgressDialog mProgressDialog;
-    private WriteMessagePresenter mPresenter;
+    private UploadPresenter mPresenter;
 
 
     @Override
@@ -73,7 +73,7 @@ public class WriteActivity extends BaseActivity implements Toolbar.OnMenuItemCli
             return;
         }
         if (mPresenter == null) {
-            mPresenter = new WriteMessagePresenter(this);
+            mPresenter = new UploadPresenter(this);
             mPresenter.attach(this);
         }
         mPresenter.uploadNotification(LoginActivity.getUserKey(), getIntent().getStringExtra("course_id"), title, content);
@@ -86,7 +86,7 @@ public class WriteActivity extends BaseActivity implements Toolbar.OnMenuItemCli
             return;
         }
         if (mPresenter == null) {
-            mPresenter = new WriteMessagePresenter(this);
+            mPresenter = new UploadPresenter(this);
             mPresenter.attach(this);
         }
         mPresenter.uploadDebate(LoginActivity.getUserKey(), getIntent().getStringExtra("course_id"), content);
@@ -120,7 +120,7 @@ public class WriteActivity extends BaseActivity implements Toolbar.OnMenuItemCli
     }
 
     @Override
-    public void onSuccess(boolean isUploadSuccess) {
+    public void onSuccess() {
         Toast.makeText(this, "上传成功！", Toast.LENGTH_SHORT).show();
         finish();
     }
