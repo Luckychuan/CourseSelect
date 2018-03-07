@@ -43,6 +43,17 @@
 
         </activity>
 
+        <receiver android:name=".ui.BaseActivity$MyJPushMessageReceiver"
+            android:enabled="true">
+            <intent-filter>
+
+            <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE"/>
+
+            <category android:name="com.example.luckychuan.courseselect"/>
+
+        </intent-filter>
+        </receiver>
+
         <receiver
             android:name=".ui.BaseActivity$JPushReceiver"
             android:enabled="true">

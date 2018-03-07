@@ -110,4 +110,36 @@ public class UploadPresenter extends BasePresenter {
         });
     }
 
+    public void uploadDebateReply(String userKey, int replyId, String content) {
+        mView.showProgressbar();
+        mModel.uploadDebateReply(userKey, replyId, content, new Callback<BaseBean<Integer>>() {
+            @Override
+            public void onNext(BaseBean<Integer> bean) {
+                mView.hideProgressbar();
+                if (bean.isSuccess()) {
+                    if (bean.getData() > 0) {
+                        mView.onSuccess();
+                    }else{
+                        mView.onFail(bean.getError());
+                    }
+                } else {
+                    mView.onFail(bean.getError());
+                }
+            }
+
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(String errorMsg) {
+                mView.hideProgressbar();
+                mView.onError(errorMsg);
+            }
+        });
+    }
+
+
+
 }

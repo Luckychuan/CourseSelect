@@ -17,6 +17,8 @@ import com.example.luckychuan.courseselect.R;
 import com.example.luckychuan.courseselect.presenter.ValidatePresenter;
 import com.example.luckychuan.courseselect.view.BooleanView;
 
+import cn.jpush.android.api.JPushInterface;
+
 /**
  * Created by Luckychuan on 2017/11/29.
  */
@@ -181,6 +183,8 @@ public class MainActivity extends BaseActivity implements MeFragment.OnLogoutLis
     public void onLogout() {
         Intent intent = new Intent(this, LoginActivity.class);
         intent.putExtra("logout", true);
+        JPushInterface.deleteAlias(this,LOGIN_ALIAS);
+        JPushInterface.deleteTags(this,COURSE_TAG,MyCourseFragment.getTags());
         startActivity(intent);
         finish();
     }

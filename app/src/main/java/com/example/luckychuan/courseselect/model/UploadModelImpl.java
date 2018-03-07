@@ -83,4 +83,28 @@ public class UploadModelImpl implements UploadModel {
                     }
                 });
     }
+
+    @Override
+    public void uploadDebateReply(String userKey, int replyId, String content, final Callback<BaseBean<Integer>> callback) {
+        CustomRetrofit.getService()
+                .uploadDebateReply(userKey,replyId,content)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<BaseBean<Integer>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        callback.onError(e.toString());
+                    }
+
+                    @Override
+                    public void onNext(BaseBean<Integer> bean) {
+                        callback.onNext(bean);
+                    }
+                });
+    }
 }

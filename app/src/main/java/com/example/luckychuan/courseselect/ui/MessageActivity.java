@@ -3,12 +3,12 @@ package com.example.luckychuan.courseselect.ui;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -46,6 +46,9 @@ public class MessageActivity extends BaseActivity implements ReplyView, BooleanV
     private RecyclerView mRecyclerView;
     private LinearLayout mHolderLayout;
     private View mMessageView;
+
+    private int mType;
+
     //要回复的内容的id
     private int mSendId;
     private int mMessageId;
@@ -53,13 +56,16 @@ public class MessageActivity extends BaseActivity implements ReplyView, BooleanV
     private EditText mEditText;
     private Button mSendButton;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_content);
 
         final Message message = (Message) getIntent().getSerializableExtra("message");
+        mType = getIntent().getIntExtra("type",-1);
         mMessageId = message.getId();
+        mSendId = mMessageId;
 
         //初始化toolbar
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -94,18 +100,11 @@ public class MessageActivity extends BaseActivity implements ReplyView, BooleanV
 
         mPresenter = new ReplyPresenter(this);
         mPresenter.attach(this);
-        mPresenter.getReplies(LoginActivity.getUserKey(), mMessageId);
-
-        //// TODO: 2018/2/14
-//        Reply[] replies = new Reply[1];
-//        replies[0] = new Reply();
-//        replies[0].setAuthorId("1111");
-//        replies[0].setAuthorName("11111");
-//        replies[0].setContent("1111");
-//        replies[0].setReplyToId("1111");
-//        replies[0].setReplyToName("1111");
-//        replies[0].setTime("11111");
-//        onSuccess(null);
+        if(mType == MessageFragment.TYPE_NOTIFICATION){
+            mPresenter.getReplies(LoginActivity.getUserKey(), mMessageId);
+        }else if(mType == MessageFragment.TYPE_DEBATE){
+            mPresenter.getDebateReplies(LoginActivity.getUserKey(), mMessageId);
+        }
 
         //edit初始化
         mEditText = (EditText) findViewById(R.id.reply_message_edit);
@@ -141,9 +140,12 @@ public class MessageActivity extends BaseActivity implements ReplyView, BooleanV
                 if (content.trim().equals("")) {
                     Toast.makeText(MessageActivity.this, "不能输入纯空格号", Toast.LENGTH_SHORT).show();
                 } else {
-                    // TODO: 2018/2/14
-                    mUploadPresenter.uploadNotificationReply(LoginActivity.getUserKey(), mSendId, content);
-//                    onSuccess();
+                    mSendButton.setEnabled(false);
+                    if(mType == MessageFragment.TYPE_NOTIFICATION){
+                        mUploadPresenter.uploadNotificationReply(LoginActivity.getUserKey(), mSendId, content);
+                    }else if(mType == MessageFragment.TYPE_DEBATE){
+                        mUploadPresenter.uploadDebateReply(LoginActivity.getUserKey(), mSendId, content);
+                    }
                 }
             }
         });
@@ -152,13 +154,12 @@ public class MessageActivity extends BaseActivity implements ReplyView, BooleanV
         replyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                doEdit(mMessageId,message.getUserName());
+                doEdit(mMessageId, message.getUserName());
             }
         });
 
 
     }
-
 
 
     @Override
@@ -169,13 +170,17 @@ public class MessageActivity extends BaseActivity implements ReplyView, BooleanV
         }
 
         if (mAdapter == null) {
-            mAdapter = new AdapterWrapper(new ReplyRecyclerAdapter(mList,this));
+            mAdapter = new AdapterWrapper(new ReplyRecyclerAdapter(mList, this));
             mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+            mRecyclerView.setItemAnimator(new DefaultItemAnimator());
             LinearLayout noReplyLayout = (LinearLayout) findViewById(R.id.no_reply);
             noReplyLayout.setVisibility(View.GONE);
             mAdapter.addHeaderView(R.layout.activity_message_content, mMessageView);
             mRecyclerView.setAdapter(mAdapter);
         }
+        mRecyclerView.setVisibility(View.VISIBLE);
+        mHolderLayout.removeView(mMessageView);
+        mHolderLayout.setVisibility(View.GONE);
         Collections.addAll(mList, replies);
         mAdapter.notifyDataSetChanged();
 
@@ -197,7 +202,18 @@ public class MessageActivity extends BaseActivity implements ReplyView, BooleanV
         if (mUploadPresenter != null) {
             mUploadPresenter.detach();
         }
+    }
 
+    @Override
+    public void onError(String errorMsg) {
+        super.onError(errorMsg);
+        mSendButton.setEnabled(true);
+    }
+
+    @Override
+    public void onFail(String failMsg) {
+        super.onFail(failMsg);
+        mSendButton.setEnabled(true);
     }
 
     @Override
@@ -207,44 +223,25 @@ public class MessageActivity extends BaseActivity implements ReplyView, BooleanV
         mEditText.setHint("我也来说一句...");
         //收起键盘
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(mEditText.getWindowToken(), 0) ;
+        imm.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
 
-        //重新设置RecyclerView
-        mRecyclerView.setVisibility(View.VISIBLE);
-        mHolderLayout.removeView(mMessageView);
-        mHolderLayout.setVisibility(View.GONE);
         mList.clear();
-
-//        //// TODO: 2018/2/14
-//        Reply[] replies = new Reply[1];
-//        replies[0] = new Reply();
-//        replies[0].setAuthorId("1111");
-//        replies[0].setAuthorName("11111");
-//        replies[0].setContent("1111");
-//        replies[0].setReplyToId("1111");
-//        replies[0].setReplyToName("1111");
-//        replies[0].setTime("11111");
-//        replies[1] = new Reply();
-//        replies[1].setAuthorId("22222");
-//        replies[1].setAuthorName("2222");
-//        replies[1].setContent("22222");
-//        replies[1].setReplyToId("2222");
-//        replies[1].setReplyToName("dfdsfsd");
-//        replies[1].setTime("dsdfdsf");
-//        onSuccess(replies);
-
-        mPresenter.getReplies(LoginActivity.getUserKey(), mMessageId);
+        if(mType == MessageFragment.TYPE_NOTIFICATION){
+            mPresenter.getReplies(LoginActivity.getUserKey(), mMessageId);
+        }else if(mType == MessageFragment.TYPE_DEBATE){
+            mPresenter.getDebateReplies(LoginActivity.getUserKey(), mMessageId);
+        }
     }
 
     @Override
     public void onItemClick(int position) {
         //因为加了headerView，position要减1
-        Reply reply = mList.get(position -1);
-        doEdit(reply.getId(),reply.getAuthorName());
+        Reply reply = mList.get(position - 1);
+        doEdit(reply.getId(), reply.getAuthorName());
 
     }
 
-    private void doEdit(int replyId,String replyName){
+    private void doEdit(int replyId, String replyName) {
         mSendId = replyId;
 
         //让编辑框弹出来，并显示对谁进行评论
@@ -252,9 +249,9 @@ public class MessageActivity extends BaseActivity implements ReplyView, BooleanV
         mEditText.setFocusableInTouchMode(true);
         mEditText.requestFocus();
         //打开软键盘
-        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-        mEditText.setHint("回复："+replyName);
+        mEditText.setHint("回复：" + replyName);
     }
 
 }

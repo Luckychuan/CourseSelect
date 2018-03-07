@@ -52,7 +52,7 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:gravity="center_horizontal"
-              android:text="还没有哦，赶快抢占沙发吧"
+              android:text="还没有回复哦，赶快抢占沙发吧"
               android:textSize="14sp"/>
 
       </LinearLayout>

@@ -47,5 +47,31 @@ public class ReplyPresenter extends BasePresenter {
         });
     }
 
+    public void getDebateReplies(String userKey, int replyId){
+        mView.showProgressbar();
+        mModel.getDebateReplies(userKey, replyId, new Callback<BaseBeanArray<Reply>>() {
+            @Override
+            public void onNext(BaseBeanArray<Reply> bean) {
+                mView.hideProgressbar();
+                if(bean.isSuccess()){
+                    mView.onSuccess(bean.getDatas());
+                }else{
+                    mView.onFail(bean.getError());
+                }
+            }
+
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(String errorMsg) {
+                mView.hideProgressbar();
+                mView.onError(errorMsg);
+            }
+        });
+    }
+
 
 }

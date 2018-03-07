@@ -17,6 +17,9 @@ public interface UploadModel {
     void uploadNotificationReply(String userKey, int replyId, String content,
                                  Callback<BaseBean<Integer>> callback);
 
+    void uploadDebateReply(String userKey, int replyId, String content,
+                                 Callback<BaseBean<Integer>> callback);
+
 
 
 }

@@ -60,8 +60,8 @@ public class CourseActivity extends BaseActivity {
         fragment3.setArguments(bundle3);
 
         Fragment fragment4 =  new CourseRateFragment();
-        list.add(fragment2);
         list.add(fragment1);
+        list.add(fragment2);
         list.add(fragment3);
         list.add(fragment4);
 
@@ -69,6 +69,7 @@ public class CourseActivity extends BaseActivity {
         TabPagerAdapter adapter = new TabPagerAdapter(getSupportFragmentManager(),list, Constant.FUNCTIONS);
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(0);
+        viewPager.setOffscreenPageLimit(1);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.function_tabLayout);
         tabLayout.setupWithViewPager(viewPager);
         for (int i = 0; i < Constant.FUNCTION_DRAWABLE_IDS.length; i++) {

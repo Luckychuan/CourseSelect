@@ -125,6 +125,7 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>
                     if (lastItem.type == TYPE_CONTENT) {
                         Message message = (Message) lastItem.bean;
                         Intent intent = new Intent(itemView.getContext(), MessageActivity.class);
+                        intent.putExtra("type", mFunctionType);
                         intent.putExtra("message", (Serializable) message);
                         itemView.getContext().startActivity(intent);
                     }

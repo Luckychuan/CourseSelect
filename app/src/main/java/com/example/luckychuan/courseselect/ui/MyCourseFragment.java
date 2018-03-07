@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ public class MyCourseFragment extends BaseFragment implements MyCourseView {
     private MyCoursePresenter mPresenter;
     private MyCourseRecyclerAdapter mAdapter;
     private ArrayList<MyCourse> mList;
+    private static Set<String> mTags = new HashSet<>();
 
     private TextView mNoCourse;
 
@@ -72,13 +74,16 @@ public class MyCourseFragment extends BaseFragment implements MyCourseView {
         mAdapter.notifyDataSetChanged();
 
         //若是学生，注册推送通知Tag
-        if(LoginActivity.getUser() == LoginActivity.STUDENT){
-            Set<String> tags = new HashSet<>();
-            for(MyCourse myCourse: mList){
-                tags.add(myCourse.getId());
+        if (LoginActivity.getUser() == LoginActivity.STUDENT) {
+            for (MyCourse myCourse : mList) {
+                mTags.add(myCourse.getId());
             }
-            JPushInterface.setTags(getContext(),0,tags);
+            JPushInterface.setTags(getContext(), BaseActivity.COURSE_TAG, mTags);
         }
+    }
+
+    public static Set<String> getTags() {
+        return mTags;
     }
 
     @Override

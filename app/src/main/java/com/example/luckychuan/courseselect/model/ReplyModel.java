@@ -11,4 +11,8 @@ public interface ReplyModel {
 
     void getReplies(String userKey, int replyId, Callback<BaseBeanArray<Reply>> callback);
 
+    void getDebateReplies(String userKey, int replyId, Callback<BaseBeanArray<Reply>> callback);
+
+
+
 }

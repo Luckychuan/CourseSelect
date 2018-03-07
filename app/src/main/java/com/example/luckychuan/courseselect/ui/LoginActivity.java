@@ -236,7 +236,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
         String[] strings = mUserKey.split("_");
         String alias = strings[0]+"_"+strings[2];
         Log.d(TAG, "onResponse: "+alias);
-        JPushInterface.setAlias(this,0,alias);
+        JPushInterface.setAlias(this,LOGIN_ALIAS,alias);
         Log.d("JPushReceiver",alias);
 
         Intent intent = new Intent(this, MainActivity.class);

@@ -15,14 +15,22 @@ import android.widget.Toast;
 import com.example.luckychuan.courseselect.view.BaseView;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.JPushMessage;
+import cn.jpush.android.service.JPushMessageReceiver;
 
 /**
  * Created by Luckychuan on 2018/1/23.
  */
 
 public class BaseActivity extends AppCompatActivity implements BaseView{
+
+    public static int LOGIN_ALIAS = 100001;
+    public static int COURSE_TAG = 100002;
+
 
     private ProgressBar mProgressBar;
     private static ArrayList<Activity> activities = new ArrayList<Activity>();
@@ -110,15 +118,36 @@ public class BaseActivity extends AppCompatActivity implements BaseView{
 
         private void doForceOffline(Context context,String msg) {
             finishAll();
-            JPushInterface.deleteAlias(context,0);
+            JPushInterface.deleteAlias(context,LOGIN_ALIAS);
+            JPushInterface.deleteTags(context,COURSE_TAG,MyCourseFragment.getTags());
             Intent intent = new Intent(context,LoginActivity.class);
             intent.putExtra("logout",true);
             intent.putExtra("forceOfflineMsg",msg);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         }
+    }
 
+    public static class MyJPushMessageReceiver extends JPushMessageReceiver{
+        private static final String TAG = "MyJPushMessageReceiver";
 
+        @Override
+        public void onAliasOperatorResult(Context context, JPushMessage jPushMessage) {
+            super.onAliasOperatorResult(context, jPushMessage);
+            Log.d(TAG, "onAliasOperatorResult: "+jPushMessage.getAlias());
+            Log.d(TAG, "onAliasOperatorResult: "+jPushMessage.getErrorCode());
+        }
+
+        @Override
+        public void onTagOperatorResult(Context context, JPushMessage jPushMessage) {
+            super.onTagOperatorResult(context, jPushMessage);
+            Set<String> tags = jPushMessage.getTags();
+            for (String tag : tags) {
+                Log.d(TAG, "onTagOperatorResult: "+tag);
+            }
+            Log.d(TAG, "onTagOperatorResult: "+jPushMessage.getErrorCode());
+
+        }
     }
 
 

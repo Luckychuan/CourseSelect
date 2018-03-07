@@ -77,7 +77,7 @@ public class MessageFragment extends BaseFragment implements MessageView {
 
         //没有数据的时候
         if (messages == null || messages.length == 0) {
-//            mAdapter.addFooterView(R.layout.recycler_no_more);
+            mAdapter.addFooterView(R.layout.recycler_no_more);
             mAdapter.notifyDataSetChanged();
             return;
         }
@@ -135,7 +135,7 @@ public class MessageFragment extends BaseFragment implements MessageView {
 
                 //显示正在加载界面到最底端
                 if (!isFooterViewExist) {
-//                    mAdapter.addFooterView(R.layout.recycler_loading);
+                    mAdapter.addFooterView(R.layout.recycler_loading);
                     isFooterViewExist = true;
                     mAdapter.notifyDataSetChanged();
                 }
