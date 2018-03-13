@@ -40,8 +40,12 @@
         <activity
             android:name=".ui.MessageActivity"
             android:windowSoftInputMode="adjustResize|stateHidden" >
-
         </activity>
+
+        <activity android:name=".ui.CheckActivity">
+        </activity>
+
+        <activity android:name=".ui.EditCheckActivity"/>
 
         <receiver android:name=".ui.BaseActivity$MyJPushMessageReceiver"
             android:enabled="true">
@@ -53,6 +57,7 @@
 
         </intent-filter>
         </receiver>
+
 
         <receiver
             android:name=".ui.BaseActivity$JPushReceiver"

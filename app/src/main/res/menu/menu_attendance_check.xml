@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/new_check"
+        android:title="新建考勤"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_add"/>
+
+    <item
+        android:id="@+id/edit_check"
+        android:title="编辑当前考勤"
+        app:showAsAction="never"
+        />
+
+
+
+</menu>

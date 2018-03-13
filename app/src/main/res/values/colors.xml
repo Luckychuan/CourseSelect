@@ -11,4 +11,7 @@
     <color name="ripple_material_dark">#44000000</color>
     <color name="colorNavigationItemHint">#88414141</color>
     <color name="light_gray">#55e0e0e0</color>
+    <color name="check_green">#8ed93a</color>
+    <color name="check_orange">#ca812f</color>
+    <color name="check_red">#ff0000</color>
 </resources>

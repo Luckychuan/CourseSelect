@@ -19,16 +19,12 @@ import com.example.luckychuan.courseselect.view.BooleanView;
  * 编写通知和消息的activity
  */
 
-public class WriteActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener, BooleanView {
+public class WriteActivity extends UploadActivity implements Toolbar.OnMenuItemClickListener {
 
     private int mType;
 
     private EditText mTitle;
     private EditText mContent;
-
-    private ProgressDialog mProgressDialog;
-    private UploadPresenter mPresenter;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,7 +41,7 @@ public class WriteActivity extends BaseActivity implements Toolbar.OnMenuItemCli
                 onBackPressed();
             }
         });
-        toolbar.inflateMenu(R.menu.menu_write_message);
+        toolbar.inflateMenu(R.menu.menu_done);
         toolbar.setOnMenuItemClickListener(this);
 
         mTitle = (EditText) findViewById(R.id.edit_title);
@@ -72,11 +68,7 @@ public class WriteActivity extends BaseActivity implements Toolbar.OnMenuItemCli
             Toast.makeText(this, "正文不能为空！", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (mPresenter == null) {
-            mPresenter = new UploadPresenter(this);
-            mPresenter.attach(this);
-        }
-        mPresenter.uploadNotification(LoginActivity.getUserKey(), getIntent().getStringExtra("course_id"), title, content);
+        getUploadPresenter().uploadNotification(LoginActivity.getUserKey(), getIntent().getStringExtra("course_id"), title, content);
     }
 
     private void uploadDebate() {
@@ -85,11 +77,7 @@ public class WriteActivity extends BaseActivity implements Toolbar.OnMenuItemCli
             Toast.makeText(this, "正文不能为空！", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (mPresenter == null) {
-            mPresenter = new UploadPresenter(this);
-            mPresenter.attach(this);
-        }
-        mPresenter.uploadDebate(LoginActivity.getUserKey(), getIntent().getStringExtra("course_id"), content);
+        getUploadPresenter().uploadDebate(LoginActivity.getUserKey(), getIntent().getStringExtra("course_id"), content);
     }
 
 
@@ -102,44 +90,8 @@ public class WriteActivity extends BaseActivity implements Toolbar.OnMenuItemCli
                 uploadDebate();
             }
         }
-
         return true;
     }
 
 
-    @Override
-    public void showProgressbar() {
-        mProgressDialog = ProgressDialog.show(this, "提示", "上传中");
-    }
-
-    @Override
-    public void hideProgressbar() {
-        if (mProgressDialog != null) {
-            mProgressDialog.dismiss();
-        }
-    }
-
-    @Override
-    public void onSuccess() {
-        Toast.makeText(this, "上传成功！", Toast.LENGTH_SHORT).show();
-        finish();
-    }
-
-    @Override
-    public void onError(String errorMsg) {
-        Toast.makeText(this, "上传失败", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onFail(String failMsg) {
-        Toast.makeText(this, "上传失败", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mPresenter != null) {
-            mPresenter.detach();
-        }
-    }
 }

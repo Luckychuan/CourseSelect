@@ -36,11 +36,10 @@ import java.util.List;
  * Created by Luckychuan on 2018/2/12.
  */
 
-public class MessageActivity extends BaseActivity implements ReplyView, BooleanView, ReplyRecyclerAdapter.OnItemClickListener {
+public class MessageActivity extends UploadActivity implements ReplyRecyclerAdapter.OnItemClickListener {
 
     private static final String TAG = "MessageActivity";
     private ReplyPresenter mPresenter;
-    private UploadPresenter mUploadPresenter;
     private List<Reply> mList = new ArrayList<>();
     private AdapterWrapper mAdapter;
     private RecyclerView mRecyclerView;
@@ -98,8 +97,52 @@ public class MessageActivity extends BaseActivity implements ReplyView, BooleanV
         time.setText(message.getTime());
 
 
-        mPresenter = new ReplyPresenter(this);
+        mPresenter = new ReplyPresenter(new ReplyView() {
+            @Override
+            public void onSuccess(Reply[] replies) {
+                if (replies == null || replies.length == 0) {
+                    showNoReplyView();
+                    return;
+                }
+
+                if (mAdapter == null) {
+                    mAdapter = new AdapterWrapper(new ReplyRecyclerAdapter(mList, MessageActivity.this));
+                    mRecyclerView.setLayoutManager(new LinearLayoutManager(MessageActivity.this));
+                    mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                    LinearLayout noReplyLayout = (LinearLayout) findViewById(R.id.no_reply);
+                    noReplyLayout.setVisibility(View.GONE);
+                    mAdapter.addHeaderView(R.layout.activity_message_content, mMessageView);
+                    mRecyclerView.setAdapter(mAdapter);
+                }
+                mRecyclerView.setVisibility(View.VISIBLE);
+                mHolderLayout.removeView(mMessageView);
+                mHolderLayout.setVisibility(View.GONE);
+                Collections.addAll(mList, replies);
+                mAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void showProgressbar() {
+
+            }
+
+            @Override
+            public void hideProgressbar() {
+
+            }
+
+            @Override
+            public void onError(String errorMsg) {
+                MessageActivity.super.onError(errorMsg);
+            }
+
+            @Override
+            public void onFail(String failMsg) {
+
+            }
+        });
         mPresenter.attach(this);
+
         if(mType == MessageFragment.TYPE_NOTIFICATION){
             mPresenter.getReplies(LoginActivity.getUserKey(), mMessageId);
         }else if(mType == MessageFragment.TYPE_DEBATE){
@@ -132,19 +175,16 @@ public class MessageActivity extends BaseActivity implements ReplyView, BooleanV
         mSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mUploadPresenter == null) {
-                    mUploadPresenter = new UploadPresenter(MessageActivity.this);
-                    mUploadPresenter.attach(MessageActivity.this);
-                }
+                    getUploadPresenter().attach(MessageActivity.this);
                 String content = mEditText.getText().toString();
                 if (content.trim().equals("")) {
                     Toast.makeText(MessageActivity.this, "不能输入纯空格号", Toast.LENGTH_SHORT).show();
                 } else {
                     mSendButton.setEnabled(false);
                     if(mType == MessageFragment.TYPE_NOTIFICATION){
-                        mUploadPresenter.uploadNotificationReply(LoginActivity.getUserKey(), mSendId, content);
+                        getUploadPresenter().uploadNotificationReply(LoginActivity.getUserKey(), mSendId, content);
                     }else if(mType == MessageFragment.TYPE_DEBATE){
-                        mUploadPresenter.uploadDebateReply(LoginActivity.getUserKey(), mSendId, content);
+                        getUploadPresenter().uploadDebateReply(LoginActivity.getUserKey(), mSendId, content);
                     }
                 }
             }
@@ -162,32 +202,9 @@ public class MessageActivity extends BaseActivity implements ReplyView, BooleanV
     }
 
 
-    @Override
-    public void onSuccess(Reply[] replies) {
-        if (replies == null || replies.length == 0) {
-            showNoReplyView();
-            return;
-        }
-
-        if (mAdapter == null) {
-            mAdapter = new AdapterWrapper(new ReplyRecyclerAdapter(mList, this));
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-            mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-            LinearLayout noReplyLayout = (LinearLayout) findViewById(R.id.no_reply);
-            noReplyLayout.setVisibility(View.GONE);
-            mAdapter.addHeaderView(R.layout.activity_message_content, mMessageView);
-            mRecyclerView.setAdapter(mAdapter);
-        }
-        mRecyclerView.setVisibility(View.VISIBLE);
-        mHolderLayout.removeView(mMessageView);
-        mHolderLayout.setVisibility(View.GONE);
-        Collections.addAll(mList, replies);
-        mAdapter.notifyDataSetChanged();
-
-
-    }
-
     private void showNoReplyView() {
+        LinearLayout noReplyLayout = (LinearLayout) findViewById(R.id.no_reply);
+        noReplyLayout.setVisibility(View.VISIBLE);
         mHolderLayout.addView(mMessageView);
         mRecyclerView.setVisibility(View.GONE);
     }
@@ -198,9 +215,6 @@ public class MessageActivity extends BaseActivity implements ReplyView, BooleanV
         super.onDestroy();
         if (mPresenter != null) {
             mPresenter.detach();
-        }
-        if (mUploadPresenter != null) {
-            mUploadPresenter.detach();
         }
     }
 

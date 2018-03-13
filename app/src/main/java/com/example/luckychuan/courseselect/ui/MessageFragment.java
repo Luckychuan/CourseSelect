@@ -77,8 +77,11 @@ public class MessageFragment extends BaseFragment implements MessageView {
 
         //没有数据的时候
         if (messages == null || messages.length == 0) {
-            mAdapter.addFooterView(R.layout.recycler_no_more);
-            mAdapter.notifyDataSetChanged();
+            //headerView占了一个数据
+            if (mList.size() > 1) {
+                mAdapter.addFooterView(R.layout.recycler_no_more);
+                mAdapter.notifyDataSetChanged();
+            }
             return;
         }
 

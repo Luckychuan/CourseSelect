@@ -6,6 +6,10 @@ import com.example.luckychuan.courseselect.model.UploadModel;
 import com.example.luckychuan.courseselect.model.UploadModelImpl;
 import com.example.luckychuan.courseselect.view.BooleanView;
 
+import java.util.Map;
+
+import okhttp3.RequestBody;
+
 /**
  * Created by Luckychuan on 2018/2/7.
  */
@@ -29,7 +33,7 @@ public class UploadPresenter extends BasePresenter {
                 if (bean.isSuccess()) {
                     if (bean.getData() > 0) {
                         mView.onSuccess();
-                    }else{
+                    } else {
                         mView.onFail(bean.getError());
                     }
                 } else {
@@ -59,7 +63,7 @@ public class UploadPresenter extends BasePresenter {
                 if (bean.isSuccess()) {
                     if (bean.getData() > 0) {
                         mView.onSuccess();
-                    }else{
+                    } else {
                         mView.onFail(bean.getError());
                     }
                 } else {
@@ -89,7 +93,7 @@ public class UploadPresenter extends BasePresenter {
                 if (bean.isSuccess()) {
                     if (bean.getData() > 0) {
                         mView.onSuccess();
-                    }else{
+                    } else {
                         mView.onFail(bean.getError());
                     }
                 } else {
@@ -119,7 +123,7 @@ public class UploadPresenter extends BasePresenter {
                 if (bean.isSuccess()) {
                     if (bean.getData() > 0) {
                         mView.onSuccess();
-                    }else{
+                    } else {
                         mView.onFail(bean.getError());
                     }
                 } else {
@@ -140,6 +144,35 @@ public class UploadPresenter extends BasePresenter {
         });
     }
 
+    public void uploadAttendanceCheck(String userKey, String courseId, RequestBody requestBody, String date) {
+        mView.showProgressbar();
+        mModel.uploadAttendanceCheck(userKey, courseId, requestBody, date, new Callback<BaseBean<Boolean>>() {
+            @Override
+            public void onNext(BaseBean<Boolean> bean) {
+                mView.hideProgressbar();
+                if (bean.isSuccess()) {
+                    if (bean.getData()) {
+                        mView.onSuccess();
+                    } else {
+                        mView.onFail(bean.getError());
+                    }
+                } else {
+                    mView.onFail(bean.getError());
+                }
+            }
+
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(String errorMsg) {
+                mView.hideProgressbar();
+                mView.onError(errorMsg);
+            }
+        });
+    }
 
 
 }

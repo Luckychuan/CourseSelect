@@ -27,6 +27,10 @@
         <item name="colorAccent">#03A9F4</item>
     </style>
 
+    <style name="SpnStyle" parent="ThemeOverlay.AppCompat.Light" >
+        <item name="android:colorControlNormal">@color/white</item>
+    </style>
+
 
 
 </resources>
